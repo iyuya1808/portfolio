@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yuya Itonaga（テクノフィア代表）のポートフォリオ。慶應義塾大学在学中のエンジニア・起業家。月間55万アクセス・150万PVのメディアを運営。">
+  <title>Yuya Itonaga | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER / NAV ===== -->
+  <header class="header" role="banner">
+    <nav class="nav container" aria-label="メインナビゲーション">
+
+      <ul class="nav-links" role="list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#numbers">実績</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="テーマを切り替える">
+        <span class="theme-icon">☀️</span>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="メニューを開く" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="nav-mobile" id="navMobile" aria-hidden="true">
+      <ul role="list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#numbers">実績</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero" aria-label="ヒーロー">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <div class="hero-badge reveal">
+          <span class="badge-dot"></span>
+          テクノフィア代表 / 慶應義塾大学在学中
+        </div>
+        <h1 class="hero-name reveal">
+          <span class="gradient-text">Yuya Itonaga</span>
+        </h1>
+        <p class="hero-tagline reveal" id="typewriterTarget">
+          エンジニア × 起業家 × コンテンツクリエイター
+        </p>
+        <p class="hero-mission reveal">
+          「テクノロジーで世界をもっと面白く」——<br>
+          SEO メディア・モバイルアプリ・Web 制作をひとりでフルスタックで動かす。
+        </p>
+        <div class="hero-cta reveal">
+          <a href="#numbers" class="btn btn-primary">実績を見る</a>
+          <a href="#contact" class="btn btn-outline">連絡する</a>
+        </div>
+      </div>
+      <div class="hero-scroll-indicator" aria-hidden="true">
+        <span></span>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="section" id="about" aria-label="About">
+      <div class="container">
+        <div class="section-label reveal">About</div>
+        <h2 class="section-title reveal">自分について</h2>
+        <div class="about-grid">
+          <div class="about-bio reveal">
+            <p>
+              中学時代から動画編集・ゲーム攻略サイトを独学で制作し、Web 開発へ。
+              2023年8月に <strong>テクノフィア</strong> を設立し、
+              SEO メディア・アプリ開発・Web 制作を複数展開。
+              設立わずか8ヶ月で月間55万アクセス・月収 <strong>¥586,362</strong> を達成。
+            </p>
+            <p>
+              2024年4月より <strong>慶應義塾大学 理工学部 システムデザイン工学科</strong> に在学。
+              同年6月からベンチャー「taiziii」でのインターンも開始。
+            </p>
+            <p>
+              Flutter・Swift から WordPress・SEO・サーバー管理まで、
+              ひとりでフルスタックをカバーするのが強み。
+            </p>
+            <div class="about-timeline">
+              <div class="timeline-item reveal">
+                <span class="timeline-year">中学生〜</span>
+                <span class="timeline-desc">動画編集・Gamerch でゲーム攻略サイト制作を独学</span>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-year">2023.08</span>
+                <span class="timeline-desc">テクノフィア 設立</span>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-year">2024.04</span>
+                <span class="timeline-desc">慶應義塾大学 理工学部 入学</span>
+              </div>
+              <div class="timeline-item reveal">
+                <span class="timeline-year">2024.06</span>
+                <span class="timeline-desc">taiziii インターン開始</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-card reveal">
+            <div class="about-info-item">
+              <span class="about-info-label">所属</span>
+              <span>慶應義塾大学 理工学部<br>システムデザイン工学科</span>
+            </div>
+            <div class="about-info-item">
+              <span class="about-info-label">会社</span>
+              <span>テクノフィア 代表</span>
+            </div>
+            <div class="about-info-item">
+              <span class="about-info-label">設立</span>
+              <span>2023年8月</span>
+            </div>
+            <div class="about-info-item">
+              <span class="about-info-label">パートナー</span>
+              <span>WonderFox 正規パートナー</span>
+            </div>
+            <div class="about-info-item">
+              <span class="about-info-label">インターン</span>
+              <span>taiziii（2024.06〜）</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NUMBERS ===== -->
+    <section class="section section-alt" id="numbers" aria-label="実績数字">
+      <div class="container">
+        <div class="section-label reveal">Numbers</div>
+        <h2 class="section-title reveal">数字で見る実績</h2>
+        <p class="section-subtitle reveal">設立8ヶ月で達成したKPI（2024年時点）</p>
+        <div class="numbers-grid">
+          <div class="kpi-card reveal">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-value">
+              <span class="count-up" data-target="550000" data-suffix="万">0</span>
+              <span class="kpi-unit">アクセス/月</span>
+            </div>
+            <div class="kpi-label">月間ユニークユーザー</div>
+          </div>
+          <div class="kpi-card reveal">
+            <div class="kpi-icon">📄</div>
+            <div class="kpi-value">
+              <span class="count-up" data-target="1500000" data-suffix="万">0</span>
+              <span class="kpi-unit">PV/月</span>
+            </div>
+            <div class="kpi-label">月間ページビュー</div>
+          </div>
+          <div class="kpi-card reveal">
+            <div class="kpi-icon">🔍</div>
+            <div class="kpi-value">
+              <span class="count-up" data-target="41" data-decimals="1">0</span>
+              <span class="kpi-unit">位</span>
+            </div>
+            <div class="kpi-label">Google 平均掲載順位</div>
+          </div>
+          <div class="kpi-card reveal">
+            <div class="kpi-icon">🖱️</div>
+            <div class="kpi-value">
+              <span class="count-up" data-target="245" data-decimals="1">0</span>
+              <span class="kpi-unit">%</span>
+            </div>
+            <div class="kpi-label">クリック率 (CTR)</div>
+          </div>
+          <div class="kpi-card reveal kpi-highlight">
+            <div class="kpi-icon">💴</div>
+            <div class="kpi-value">
+              <span class="kpi-prefix">¥</span>
+              <span class="count-up" data-target="586362">0</span>
+            </div>
+            <div class="kpi-label">月間最高収益</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section class="section" id="projects" aria-label="プロジェクト">
+      <div class="container">
+        <div class="section-label reveal">Projects</div>
+        <h2 class="section-title reveal">開発プロジェクト</h2>
+        <div class="projects-grid">
+
+          <article class="project-card reveal" aria-label="BrawlTech">
+            <div class="project-header">
+              <div class="project-icon">⚔️</div>
+              <div class="project-status live">公開中</div>
+            </div>
+            <h3 class="project-name">BrawlTech</h3>
+            <p class="project-desc">
+              Brawl Stars 向けの攻略・統計アプリ。
+              Flutter で iOS/Android 両対応。リアルタイムデータ表示とキャラクター攻略情報を提供。
+            </p>
+            <div class="project-tags">
+              <span class="tag">Flutter</span>
+              <span class="tag">iOS</span>
+              <span class="tag">Android</span>
+              <span class="tag">Dart</span>
+            </div>
+          </article>
+
+          <article class="project-card reveal" aria-label="KPass">
+            <div class="project-header">
+              <div class="project-icon">🔑</div>
+              <div class="project-status live">公開中</div>
+            </div>
+            <h3 class="project-name">KPass</h3>
+            <p class="project-desc">
+              Swift / SwiftUI で開発した iOS 向けパスワード管理アプリ。
+              ネイティブの安全な Keychain と連携し、スムーズな UX を実現。
+            </p>
+            <div class="project-tags">
+              <span class="tag">Swift</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">iOS</span>
+              <span class="tag">Keychain</span>
+            </div>
+          </article>
+
+          <article class="project-card reveal project-wip" aria-label="Console Insight">
+            <div class="project-header">
+              <div class="project-icon">📊</div>
+              <div class="project-status wip">開発中</div>
+            </div>
+            <h3 class="project-name">Console Insight</h3>
+            <p class="project-desc">
+              Google Search Console のデータをわかりやすく可視化するツール。
+              SEO 運用を効率化するダッシュボードアプリ。
+            </p>
+            <div class="project-tags">
+              <span class="tag">Web App</span>
+              <span class="tag">GSC API</span>
+              <span class="tag">SEO</span>
+            </div>
+          </article>
+
+          <article class="project-card reveal project-wip" aria-label="VibeStep">
+            <div class="project-header">
+              <div class="project-icon">🎵</div>
+              <div class="project-status wip">開発中</div>
+            </div>
+            <h3 class="project-name">VibeStep</h3>
+            <p class="project-desc">
+              音楽に合わせたインタラクティブな体験を提供するモバイルアプリ。
+              ユニークな UI/UX を追求したエンターテインメント系プロダクト。
+            </p>
+            <div class="project-tags">
+              <span class="tag">Mobile</span>
+              <span class="tag">Audio</span>
+              <span class="tag">UI/UX</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MEDIA ===== -->
+    <section class="section section-alt" id="media" aria-label="メディア">
+      <div class="container">
+        <div class="section-label reveal">Media</div>
+        <h2 class="section-title reveal">運営メディア</h2>
+        <div class="media-grid">
+
+          <article class="media-card reveal">
+            <div class="media-card-inner">
+              <div class="media-icon-wrap">
+                <span class="media-icon">✏️</span>
+              </div>
+              <div class="media-info">
+                <h3>テクログ</h3>
+                <p class="media-domain">blog.technophere.com</p>
+                <p class="media-desc">
+                  テクノフィアの技術ブログ。WordPress・SEO・アプリ開発など
+                  実践的なノウハウを発信。月間数十万 PV を誇る主力メディア。
+                </p>
+                <div class="media-tags">
+                  <span class="tag">WordPress</span>
+                  <span class="tag">SEO</span>
+                  <span class="tag">技術ブログ</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="media-card reveal">
+            <div class="media-card-inner">
+              <div class="media-icon-wrap">
+                <span class="media-icon">🎮</span>
+              </div>
+              <div class="media-info">
+                <h3>攻略 Lab</h3>
+                <p class="media-domain">game.technophere.com</p>
+                <p class="media-desc">
+                  人気ゲームの攻略情報を提供するゲームメディア。
+                  中学生の頃から培ったゲーム攻略の知見を活かして運営。
+                </p>
+                <div class="media-tags">
+                  <span class="tag">ゲーム攻略</span>
+                  <span class="tag">WordPress</span>
+                  <span class="tag">SEO</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section class="section" id="services" aria-label="サービス">
+      <div class="container">
+        <div class="section-label reveal">Services</div>
+        <h2 class="section-title reveal">B2B サービス</h2>
+        <p class="section-subtitle reveal">企業・個人事業主向けの Web 制作・集客支援</p>
+
+        <div class="services-grid">
+
+          <div class="service-card reveal">
+            <div class="service-icon">🌐</div>
+            <h3>Web 制作代行</h3>
+            <p>
+              WordPress をベースにしたコーポレートサイト・LP・メディアサイトを制作。
+              SEO 最適化・表示速度改善まで一貫して対応。
+            </p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-icon">📈</div>
+            <h3>SEO コンサルティング</h3>
+            <p>
+              月間 55 万アクセスのメディア運営で培った実績ある SEO 戦略を提供。
+              キーワード選定から内部対策・コンテンツ改善まで。
+            </p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-icon">🚁</div>
+            <h3>ドローン空撮</h3>
+            <p>
+              物件・イベント・観光地などの空撮映像を提供。
+              高品質な映像コンテンツで Web サイトや SNS を強化。
+            </p>
+          </div>
+
+        </div>
+
+        <div class="pricing-section reveal">
+          <h3 class="pricing-title">料金プラン</h3>
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <div class="pricing-name">スタータープラン</div>
+              <div class="pricing-price">¥9,800<span>/月</span></div>
+              <ul class="pricing-features">
+                <li>WordPress サイト制作</li>
+                <li>基本 SEO 設定</li>
+                <li>月1回の更新対応</li>
+                <li>メールサポート</li>
+              </ul>
+            </div>
+            <div class="pricing-card pricing-card-featured">
+              <div class="pricing-badge">人気</div>
+              <div class="pricing-name">スタンダードプラン</div>
+              <div class="pricing-price">¥29,800<span>/月</span></div>
+              <ul class="pricing-features">
+                <li>カスタムデザイン制作</li>
+                <li>本格 SEO 対策</li>
+                <li>月4回の更新対応</li>
+                <li>優先チャットサポート</li>
+                <li>月次レポート</li>
+              </ul>
+            </div>
+            <div class="pricing-card">
+              <div class="pricing-name">プレミアムプラン</div>
+              <div class="pricing-price">要相談<span></span></div>
+              <ul class="pricing-features">
+                <li>フルカスタム開発</li>
+                <li>SEO 戦略立案〜実行</li>
+                <li>無制限更新対応</li>
+                <li>専任担当</li>
+                <li>ドローン空撮オプション</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== PLUGINS ===== -->
+    <section class="section section-alt" id="plugins" aria-label="WordPressプラグイン">
+      <div class="container">
+        <div class="section-label reveal">Plugins</div>
+        <h2 class="section-title reveal">WordPress プラグイン</h2>
+        <p class="section-subtitle reveal">WordPress 公式ディレクトリに公開中</p>
+        <div class="plugins-grid">
+
+          <article class="plugin-card reveal">
+            <div class="plugin-icon">🔌</div>
+            <h3>Push from GitHub</h3>
+            <p>
+              GitHub リポジトリから WordPress テーマ・プラグインを
+              ワンクリックでデプロイできるプラグイン。
+              CI/CD を WordPress に手軽に導入。
+            </p>
+            <div class="plugin-meta">
+              <span class="tag">WordPress</span>
+              <span class="tag">GitHub</span>
+              <span class="tag">CI/CD</span>
+              <a href="https://wordpress.org/plugins/" class="plugin-link" target="_blank" rel="noopener noreferrer" aria-label="WordPress公式ディレクトリで見る">
+                WP 公式ディレクトリ →
+              </a>
+            </div>
+          </article>
+
+          <article class="plugin-card reveal">
+            <div class="plugin-icon">🔗</div>
+            <h3>App Link Generator</h3>
+            <p>
+              App Store / Google Play のアプリリンクを
+              ブロックエディタから簡単に生成・挿入できるプラグイン。
+              アプリ紹介記事の作成を効率化。
+            </p>
+            <div class="plugin-meta">
+              <span class="tag">WordPress</span>
+              <span class="tag">App Store</span>
+              <span class="tag">Google Play</span>
+              <a href="https://wordpress.org/plugins/" class="plugin-link" target="_blank" rel="noopener noreferrer" aria-label="WordPress公式ディレクトリで見る">
+                WP 公式ディレクトリ →
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section class="section" id="skills" aria-label="スキル">
+      <div class="container">
+        <div class="section-label reveal">Skills</div>
+        <h2 class="section-title reveal">技術スタック</h2>
+        <div class="skills-categories">
+
+          <div class="skill-category reveal">
+            <h3 class="skill-cat-title">📱 モバイル</h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <span class="skill-name">Flutter</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 85%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">Swift / SwiftUI</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 80%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">Dart</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 80%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-category reveal">
+            <h3 class="skill-cat-title">🌐 Web フロントエンド</h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <span class="skill-name">HTML / CSS / JavaScript</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 90%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">Next.js / React</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 70%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">WordPress</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 95%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-category reveal">
+            <h3 class="skill-cat-title">⚙️ インフラ・バックエンド</h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <span class="skill-name">サーバー管理 (Linux)</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 75%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">PHP</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 70%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">GitHub / Git</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 85%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-category reveal">
+            <h3 class="skill-cat-title">📊 マーケティング・SEO</h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <span class="skill-name">SEO 戦略・実装</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 95%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">Google Search Console</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 90%"></div></div>
+              </div>
+              <div class="skill-item">
+                <span class="skill-name">Google Analytics</span>
+                <div class="skill-bar"><div class="skill-fill" style="--fill: 85%"></div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tech-chips reveal">
+          <span class="tech-chip">Flutter</span>
+          <span class="tech-chip">Swift</span>
+          <span class="tech-chip">SwiftUI</span>
+          <span class="tech-chip">Next.js</span>
+          <span class="tech-chip">React</span>
+          <span class="tech-chip">WordPress</span>
+          <span class="tech-chip">PHP</span>
+          <span class="tech-chip">JavaScript</span>
+          <span class="tech-chip">HTML/CSS</span>
+          <span class="tech-chip">Dart</span>
+          <span class="tech-chip">Linux</span>
+          <span class="tech-chip">Git / GitHub</span>
+          <span class="tech-chip">SEO</span>
+          <span class="tech-chip">GSC</span>
+          <span class="tech-chip">Google Analytics</span>
+          <span class="tech-chip">動画編集</span>
+          <span class="tech-chip">ドローン操縦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="section section-alt" id="contact" aria-label="コンタクト">
+      <div class="container">
+        <div class="section-label reveal">Contact</div>
+        <h2 class="section-title reveal">連絡先</h2>
+        <p class="section-subtitle reveal">
+          お仕事・インターン・コラボなど、お気軽にご連絡ください。
+        </p>
+        <div class="contact-grid">
+
+          <a href="mailto:info@technophere.com" class="contact-card reveal" aria-label="メールを送る">
+            <div class="contact-icon">📧</div>
+            <div class="contact-info">
+              <div class="contact-label">メール</div>
+              <div class="contact-value">info@technophere.com</div>
+            </div>
+          </a>
+
+          <a href="https://technophere.com" class="contact-card reveal" target="_blank" rel="noopener noreferrer" aria-label="テクノフィア公式サイト">
+            <div class="contact-icon">🌐</div>
+            <div class="contact-info">
+              <div class="contact-label">公式サイト</div>
+              <div class="contact-value">technophere.com</div>
+            </div>
+          </a>
+
+          <a href="https://twitter.com/technophere" class="contact-card reveal" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+            <div class="contact-icon">𝕏</div>
+            <div class="contact-info">
+              <div class="contact-label">X (Twitter)</div>
+              <div class="contact-value">@technophere</div>
+            </div>
+          </a>
+
+          <a href="https://github.com/technophere" class="contact-card reveal" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <div class="contact-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+            </div>
+            <div class="contact-info">
+              <div class="contact-label">GitHub</div>
+              <div class="contact-value">github.com/technophere</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2023–2026 Yuya Itonaga / テクノフィア</p>
+      <a href="https://technophere.com" class="footer-link" target="_blank" rel="noopener noreferrer">technophere.com</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
