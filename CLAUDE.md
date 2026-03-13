@@ -57,6 +57,14 @@ Hero → About → Numbers → Projects → Media → Services → Plugins → S
 - **タイプライターのフレーズ変更**: `js/main.js` の `phrases` 配列を編集
 - **カラーパレット変更**: `css/style.css` の `:root` と `[data-theme="dark"]` のCSS variablesを編集
 
+## デザインシステム
+
+`DESIGN_RULE.md` に Apple HIG 準拠のデザインルールが定義されている。新しいUI要素を追加する際は必ず参照すること。
+
+- カラー・タイポグラフィ・余白はすべて CSS variables で定義済み（`DESIGN_RULE.md` §2〜§4）
+- コンポーネント（ボタン・カード・入力フィールド等）のスタイル規約は §7 を参照
+- アニメーションのイージング変数（`--ease-default` 等）は §8 を参照
+
 ## cSpell の警告について
 
 `Itonaga`, `taiziii`, `Gamerch`, `technophere` は固有名詞のため cSpell の警告は無視してよい。
