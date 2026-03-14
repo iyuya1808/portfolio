@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (typewriterTarget) {
     const phrases = [
       'AI × エンジニア × コンテンツクリエイター',
-      'フルスタック開発 × SEO × モバイルアプリ',
+      'フルスタック開発 × SEO × アプリケーション',
       '慶應大在学中 × テクノフィア代表',
     ];
     let phraseIndex = 0;
