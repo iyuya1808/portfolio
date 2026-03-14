@@ -128,7 +128,6 @@ body,
 .media-card,
 .service-card,
 .plugin-card,
-.pricing-card,
 .contact-card,
 .about-card,
 .skill-category,
@@ -539,18 +538,36 @@ body {
 /* ============================================================
    ABOUT
    ============================================================ */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 340px;
+.about-flex {
+  display: flex;
   gap: 48px;
   align-items: start;
   margin-top: 48px;
+  margin-bottom: 64px;
+}
+
+.about-bio {
+  flex: 1;
 }
 
 .about-bio p {
   color: var(--text-muted);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   font-size: 1rem;
+}
+
+.about-block {
+  margin-bottom: 40px;
+}
+
+.about-subtitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: block;
 }
 
 .about-bio strong {
@@ -558,73 +575,235 @@ body {
   font-weight: 600;
 }
 
-.about-timeline {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: relative;
-  padding-left: 20px;
+.about-card {
+  width: 340px;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow);
 }
 
-.about-timeline::before {
-  content: '';
+/* ============================================================
+   ABOUT — Timeline V2: 左装飾トラック + 右寄せ項目
+   ============================================================ */
+.about-timeline-wrap {
+  margin-top: 48px;
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  position: relative;
+}
+
+/* — 中央: 装飾アニメーショントラック (PC: 絶対配置で中央) — */
+.timeline-visual-track {
+  width: 56px;
   position: absolute;
-  left: 0;
-  top: 6px;
+  /* about-timeline-wrap の 50% + career-label(48px) + gap(24px) の半分 = 50% + 36px で中央 */
+  /* バー幅56px の半分 28px を引く → 50% + 8px */
+  left: calc(50% + 8px);
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 背景ライン */
+.tvt-bg-line {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  bottom: 5px;
   width: 2px;
-  height: 0;
-  background: linear-gradient(to bottom, var(--accent), rgba(var(--accent-rgb), 0.15));
+  transform: translateX(-50%);
+  background: var(--border);
   border-radius: 2px;
 }
 
-.about-timeline.line-drawn::before {
-  height: calc(100% - 8px);
-  transition: height 1.3s cubic-bezier(0.25, 1, 0.5, 1) 0.1s;
+/* アニメーション塗りライン */
+.tvt-fill-line {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 2px;
+  height: calc(100% - 10px);
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+  border-radius: 2px;
+  z-index: 1;
 }
 
-.timeline-item {
+
+/* ノードコンテナ */
+.tvt-nodes {
+  flex: 1;
   display: flex;
-  gap: 16px;
-  align-items: baseline;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* 個別ノード */
+.tvt-node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+  z-index: 2;
+}
+
+/* — 左: Career ラベル — */
+.timeline-career-label {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   position: relative;
 }
 
-.timeline-item::before {
-  content: '';
-  position: absolute;
-  left: -23px;
-  top: 50%;
-  transform: translateY(-50%) scale(0);
-  width: 8px;
-  height: 8px;
+/* パルス dot */
+.career-dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--accent);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  animation: career-dot-pulse 2.4s ease-in-out infinite;
 }
 
-.timeline-item.visible::before {
-  transform: translateY(-50%) scale(1);
-  animation: timeline-dot-ping 2s ease-out 0.5s;
+@keyframes career-dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1);   box-shadow: 0 0 0 0   rgba(var(--accent-rgb), 0.5); }
+  50%       { opacity: 0.8; transform: scale(1.1); box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0); }
 }
 
-@keyframes timeline-dot-ping {
-  0%   { box-shadow: 0 0 0 0   rgba(var(--accent-rgb), 0.5); }
-  70%  { box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0);   }
-  100% { box-shadow: 0 0 0 0   rgba(var(--accent-rgb), 0);   }
+/* CAREER 縦テキスト — シマーグラジェント */
+.career-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  background: linear-gradient(
+    180deg,
+    var(--text-muted)  0%,
+    var(--accent)      30%,
+    var(--accent-2)    70%,
+    var(--text-muted) 100%
+  );
+  background-size: auto 300%;
+  background-position: 0 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: career-shimmer 4s ease-in-out infinite alternate;
+}
+
+@keyframes career-shimmer {
+  0%   { background-position: 0 100%; }
+  100% { background-position: 0 0%; }
+}
+
+/* 年範囲 縦テキスト */
+.career-range {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+
+/* — タイムライン項目: PC は flex 縦並びで互い違い — */
+.about-timeline {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 0;
+  max-width: none;
+}
+
+.about-timeline::before {
+  display: none;
+}
+
+/* 奇数アイテム → 左半分・右揃え（バー方向へ） */
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-end;
+  text-align: right;
+  width: calc(50% - 40px); /* 中央バー半幅28px + 余白12px */
+  margin-right: auto;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  position: relative;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.timeline-item:hover {
+  background: rgba(var(--accent-rgb), 0.04);
+  transform: translateX(-3px);
+}
+
+/* 偶数アイテム → 右半分・左揃え（バー方向へ） */
+.timeline-item:nth-child(even) {
+  align-items: flex-start;
+  text-align: left;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.timeline-item:nth-child(even):hover {
+  transform: translateX(3px);
+}
+
+.timeline-item::before {
+  display: none;
 }
 
 .timeline-year {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--accent);
   white-space: nowrap;
-  min-width: 68px;
+  letter-spacing: 0.06em;
 }
 
 .timeline-desc {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* 現在項目を強調 */
+/* 強調表示解除 */
+.timeline-item-current .timeline-desc {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.timeline-item-current .timeline-year {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  color: var(--accent);
 }
 
 .about-card {
@@ -670,15 +849,19 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 28px 24px;
+  padding: 32px 24px;
   text-align: center;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
   transition:
-    transform var(--duration-normal) var(--ease-default),
-    box-shadow var(--duration-normal) var(--ease-default),
-    background-color 0.3s ease,
+    transform var(--duration-normal) var(--ease-spring),
+    box-shadow var(--duration-normal) var(--ease-spring),
     border-color 0.3s ease;
 }
 
@@ -702,14 +885,14 @@ body {
   border-radius: inherit;
 }
 
-.kpi-card:hover::after {
-  opacity: 1;
+.kpi-card {
+  background: var(--bg-card);
 }
 
-.kpi-highlight {
-  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08), rgba(var(--accent-2-rgb), 0.08));
-  border-color: rgba(var(--accent-rgb), 0.3);
-  grid-column: span 1;
+.kpi-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
 }
 
 .kpi-icon {
@@ -721,8 +904,10 @@ body {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
   margin-bottom: 8px;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 .kpi-prefix {
@@ -732,12 +917,15 @@ body {
 }
 
 .count-up {
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  /* Remove gradient from text for simplicity */
+}
+
+[data-theme="dark"] .count-up {
+  color: var(--text);
 }
 
 .kpi-unit {
@@ -996,105 +1184,6 @@ body {
   line-height: 1.65;
 }
 
-/* Pricing */
-.pricing-section {
-  margin-top: 16px;
-}
-
-.pricing-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 28px;
-  text-align: center;
-}
-
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.pricing-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px 24px;
-  position: relative;
-  box-shadow: var(--shadow);
-  transition:
-    transform var(--duration-normal) var(--ease-default),
-    box-shadow var(--duration-normal) var(--ease-default),
-    background-color 0.3s ease,
-    border-color 0.3s ease;
-}
-
-.pricing-card:hover {
-  border-color: var(--accent);
-}
-
-.pricing-card-featured {
-  border-color: var(--accent);
-  background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.04), var(--bg-card));
-  box-shadow: 0 0 0 1px var(--accent), var(--shadow-lg);
-}
-
-.pricing-badge {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 4px 14px;
-  border-radius: 100px;
-  letter-spacing: 0.05em;
-}
-
-.pricing-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.pricing-price {
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: var(--text);
-  margin-bottom: 20px;
-  line-height: 1;
-}
-
-.pricing-price span {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-.pricing-features {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.pricing-features li {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  padding-left: 20px;
-  position: relative;
-}
-
-.pricing-features li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: 700;
-}
-
 /* ============================================================
    PLUGINS
    ============================================================ */
@@ -1185,43 +1274,39 @@ body {
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 20px;
-}
-
-.skill-items {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  gap: 8px;
 }
 
-.skill-item {
+.skill-tags {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.skill-name {
-  font-size: 0.85rem;
+.skill-badge {
+  font-size: 0.8rem;
   font-weight: 500;
-  color: var(--text-muted);
-}
-
-.skill-bar {
-  height: 6px;
-  background: var(--border);
+  padding: 6px 14px;
   border-radius: 100px;
-  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all 0.2s ease;
 }
 
-.skill-fill {
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  border-radius: var(--radius-full);
-  transition: width 0.6s var(--ease-out) 0.3s;
+.skill-badge.main {
+  background: rgba(var(--accent-rgb), 0.08);
+  border-color: rgba(var(--accent-rgb), 0.3);
+  color: var(--accent);
+  font-weight: 600;
 }
 
-.skill-category.visible .skill-fill {
-  width: var(--fill);
+.skill-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
 }
 
 .tech-chips {
@@ -1396,12 +1481,65 @@ body {
     display: flex;
   }
 
-  .about-grid {
-    grid-template-columns: 1fr;
+  .about-flex {
+    flex-direction: column;
+    gap: 32px;
   }
 
   .about-card {
+    width: 100%;
     order: -1;
+  }
+
+  .about-timeline-wrap {
+    gap: 12px;
+    padding: 0 4px;
+  }
+
+  .timeline-career-label {
+    display: flex;
+    width: 24px;
+    gap: 8px;
+  }
+
+  .career-text {
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+  }
+
+  .career-range {
+    font-size: 0.45rem;
+  }
+
+  .timeline-visual-track {
+    display: flex;
+    width: 24px;
+    position: relative;
+    left: auto;
+    top: auto;
+    bottom: auto;
+  }
+
+  .about-timeline {
+    display: flex;
+    flex-direction: column;
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .timeline-item {
+    width: auto;
+    margin-right: 0;
+  }
+
+  .timeline-item:nth-child(even) {
+    align-items: flex-end;
+    text-align: right;
+    margin-left: 0;
+  }
+
+  .timeline-item:nth-child(even):hover {
+    transform: translateX(-3px);
   }
 
   .hero {
@@ -1444,9 +1582,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .pricing-grid {
-    grid-template-columns: 1fr;
-  }
 
   .hero-name {
     font-size: clamp(2.2rem, 10vw, 3rem);

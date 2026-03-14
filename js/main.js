@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }, { threshold: 0.3 });
 
-  document.querySelectorAll('.about-timeline').forEach(function (el) {
+  document.querySelectorAll('.about-timeline-wrap').forEach(function (el) {
     timelineObserver.observe(el);
   });
 
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const typewriterTarget = document.getElementById('typewriterTarget');
   if (typewriterTarget) {
     const phrases = [
-      'エンジニア × 起業家 × コンテンツクリエイター',
+      'AI × エンジニア × コンテンツクリエイター',
       'フルスタック開発 × SEO × モバイルアプリ',
       '慶應大在学中 × テクノフィア代表',
     ];
