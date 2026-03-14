@@ -123,7 +123,7 @@ body,
 .header,
 .nav-mobile,
 .section,
-.kpi-card,
+.kpi-item,
 .project-card,
 .media-card,
 .service-card,
@@ -870,108 +870,101 @@ body {
 }
 
 /* ============================================================
-   NUMBERS
+   NUMBERS — Editorial Strip
    ============================================================ */
-.numbers-grid {
+.kpi-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  margin-top: 48px;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 56px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.kpi-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 32px 24px;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  overflow: hidden;
+.kpi-item {
+  padding: 40px 32px 36px;
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  transition:
-    transform var(--duration-normal) var(--ease-spring),
-    box-shadow var(--duration-normal) var(--ease-spring),
-    border-color 0.3s ease;
+  gap: 10px;
+  transition: background-color var(--duration-normal) var(--ease-default);
 }
 
-.kpi-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-xl);
+.kpi-item:last-child {
+  border-right: none;
 }
 
-.kpi-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: radial-gradient(
-    220px circle at var(--cx, 50%) var(--cy, 50%),
-    rgba(var(--accent-rgb), 0.10),
-    transparent 70%
-  );
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-  border-radius: inherit;
+.kpi-item:hover {
+  background: rgba(var(--accent-rgb), 0.03);
 }
 
-.kpi-card {
-  background: var(--bg-card);
+.kpi-metric {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  line-height: 1.3;
 }
 
-.kpi-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-xl);
-  transform: translateY(-4px);
-}
-
-.kpi-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
-}
-
-.kpi-value {
+.kpi-number-row {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-  gap: 2px;
-  margin-bottom: 8px;
-  white-space: nowrap;
-  flex-wrap: nowrap;
-}
-
-.kpi-prefix {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--accent);
+  gap: 3px;
+  line-height: 1;
 }
 
 .count-up {
-  font-size: clamp(2rem, 5vw, 2.6rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  /* Remove gradient from text for simplicity */
+  font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  transition: transform var(--duration-fast) var(--ease-spring);
+  display: inline-block;
 }
 
-[data-theme="dark"] .count-up {
-  color: var(--text);
+.kpi-item:hover .count-up {
+  transform: scale(1.03);
 }
 
 .kpi-unit {
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-muted);
-  font-weight: 500;
 }
 
 .kpi-label {
-  font-size: 0.82rem;
-  color: var(--text-muted);
+  font-size: 0.8rem;
   font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .kpi-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .kpi-item:nth-child(2) { border-right: none; }
+  .kpi-item:nth-child(1),
+  .kpi-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+  .kpi-item:nth-child(3) { border-right: 1px solid var(--border); }
+  .kpi-item:last-child { border-right: none; }
+  .kpi-item { padding: 32px 24px 28px; }
+}
+
+@media (max-width: 480px) {
+  .kpi-strip {
+    grid-template-columns: 1fr;
+    border-bottom: none;
+  }
+  .kpi-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 28px 0;
+  }
+  .kpi-item:last-child { border-bottom: none; }
+  .count-up {
+    font-size: clamp(2.6rem, 12vw, 3.6rem);
+  }
 }
 
 /* ============================================================
