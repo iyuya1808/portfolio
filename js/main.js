@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
      3D TILT + CURSOR SPOTLIGHT (Cards)
      ============================================================ */
   var tiltTargets = document.querySelectorAll(
-    '.project-card, .service-card, .kpi-card, .plugin-card, .media-card'
+    '.work-card, .service-card, .kpi-card, .media-card'
   );
 
   if (!('ontouchstart' in window)) {
