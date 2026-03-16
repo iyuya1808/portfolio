@@ -10,6 +10,15 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  color-scheme: light dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 /* ============================================================
@@ -1263,7 +1272,6 @@ body {
 .work-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-left-width: 3px;
   border-radius: var(--radius-lg);
   padding: 28px;
   box-shadow: var(--shadow);
@@ -1277,18 +1285,19 @@ body {
     border-color var(--duration-normal) var(--ease-default);
 }
 
-.work-card[data-status="live"] {
-  border-left-color: var(--accent);
-}
-
 .work-card[data-status="wip"] {
-  border-left-color: var(--border);
+  display: none;
 }
 
-.work-card:hover {
-  box-shadow: var(--shadow-xl);
-  border-color: var(--accent);
-  border-left-color: var(--accent);
+@media (hover: hover) {
+  .work-card:hover {
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent);
+  }
+
+  .work-card:hover::after {
+    opacity: 1;
+  }
 }
 
 .work-card::after {
@@ -1305,10 +1314,6 @@ body {
   pointer-events: none;
   border-radius: inherit;
   z-index: 0;
-}
-
-.work-card:hover::after {
-  opacity: 1;
 }
 
 .work-card > * {
