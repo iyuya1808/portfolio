@@ -2,6 +2,8 @@
 function updateThemeIcon(theme) {
   const btn = document.getElementById('themeToggle');
   if (btn) btn.setAttribute('aria-checked', theme === 'dark' ? 'true' : 'false');
+  const meta = document.getElementById('themeColorMeta');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
