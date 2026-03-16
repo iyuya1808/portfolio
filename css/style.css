@@ -46,6 +46,12 @@ html {
   /* === ヘッダー === */
   --header-bg:   rgba(255, 255, 255, 0.72);
 
+  /* === テーマトグル === */
+  --toggle-track:        #EDE9E0;
+  --toggle-track-border: rgba(200, 160, 80, 0.25);
+  --toggle-thumb:        #FF9F0A;
+  --toggle-thumb-glow:   rgba(255, 159, 10, 0.35);
+
   /* === 角丸 (Apple Continuous Corners) === */
   --radius-xs:   4px;
   --radius-sm:   8px;
@@ -114,6 +120,12 @@ html {
 
   /* === ヘッダー === */
   --header-bg:   rgba(28, 28, 30, 0.72);
+
+  /* === テーマトグル === */
+  --toggle-track:        #1A1744;
+  --toggle-track-border: rgba(124, 58, 237, 0.30);
+  --toggle-thumb:        #7C3AED;
+  --toggle-thumb-glow:   rgba(124, 58, 237, 0.45);
 }
 
 /* ============================================================
@@ -292,22 +304,65 @@ body {
 
 .theme-toggle {
   background: none;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  width: 40px;
-  height: 40px;
+  border: none;
+  padding: 0;
   cursor: pointer;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  outline: none;
+}
+
+.theme-toggle:focus-visible .toggle-track {
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.35);
+}
+
+.toggle-track {
+  display: block;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--toggle-track);
+  border: 1.5px solid var(--toggle-track-border);
+  transition:
+    background 0.4s var(--ease-default),
+    border-color 0.4s var(--ease-default);
   flex-shrink: 0;
 }
 
-.theme-toggle:hover {
-  background: rgba(var(--accent-rgb), 0.1);
-  border-color: var(--accent);
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--toggle-thumb);
+  box-shadow: 0 0 8px var(--toggle-thumb-glow), 0 1px 3px rgba(0, 0, 0, 0.20);
+  transition:
+    transform 0.35s var(--ease-spring),
+    background 0.4s var(--ease-default),
+    box-shadow 0.4s var(--ease-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="dark"] .toggle-thumb {
+  transform: translateX(20px);
+}
+
+.toggle-icon {
+  width: 10px;
+  height: 10px;
+  color: #fff;
+  flex-shrink: 0;
+  transition: transform 0.4s var(--ease-spring);
+}
+
+[data-theme="dark"] .toggle-icon {
+  transform: rotate(180deg);
 }
 
 .nav-hamburger {

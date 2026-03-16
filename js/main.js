@@ -1,17 +1,7 @@
-/* ============================================================
-   THEME TOGGLE
-   ============================================================ */
-(function initTheme() {
-  const html = document.documentElement;
-  const stored = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = stored || (prefersDark ? 'dark' : 'light');
-  html.setAttribute('data-theme', theme);
-})();
 
 function updateThemeIcon(theme) {
-  const icon = document.querySelector('.theme-icon');
-  if (icon) icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.setAttribute('aria-checked', theme === 'dark' ? 'true' : 'false');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
