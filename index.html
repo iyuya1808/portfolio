@@ -19,7 +19,7 @@
       <ul class="nav-links" role="list">
         <li><a href="#about">About</a></li>
         <li><a href="#numbers">Achievements</a></li>
-        <li><a href="#projects">Projects</a></li>
+        <li><a href="#works">Works</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -35,7 +35,7 @@
       <ul role="list">
         <li><a href="#about">About</a></li>
         <li><a href="#numbers">Achievements</a></li>
-        <li><a href="#projects">Projects</a></li>
+        <li><a href="#works">Works</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -242,80 +242,134 @@
       </div>
     </section>
 
-    <!-- ===== PROJECTS ===== -->
-    <section class="section" id="projects" aria-label="プロジェクト">
+    <!-- ===== WORKS ===== -->
+    <section class="section" id="works" aria-label="プロダクト">
       <div class="container">
-        <div class="section-label reveal">Projects</div>
-        <h2 class="section-title reveal">開発プロジェクト</h2>
-        <div class="projects-grid">
+        <div class="section-label reveal">Works</div>
+        <h2 class="section-title reveal">プロダクト</h2>
+        <div class="works-grid">
 
-          <article class="project-card reveal" aria-label="BrawlTech">
-            <div class="project-header">
-              <div class="project-icon">⚔️</div>
-              <div class="project-status live">公開中</div>
-            </div>
-            <h3 class="project-name">BrawlTech</h3>
-            <p class="project-desc">
+          <article class="work-card reveal" data-category="mobile-app" data-status="live">
+            <div class="work-number" aria-hidden="true">01</div>
+            <div class="work-category">Mobile App</div>
+            <div class="work-mark" aria-hidden="true">B</div>
+            <h3 class="work-name">BrawlTech</h3>
+            <p class="work-desc">
               Brawl Stars 向けの攻略・統計アプリ。
               Flutter で iOS/Android 両対応。リアルタイムデータ表示とキャラクター攻略情報を提供。
             </p>
-            <div class="project-tags">
-              <span class="tag">Flutter</span>
-              <span class="tag">iOS</span>
-              <span class="tag">Android</span>
-              <span class="tag">Dart</span>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag">Flutter</span>
+                <span class="tag">iOS</span>
+                <span class="tag">Android</span>
+                <span class="tag">Dart</span>
+              </div>
+              <span class="work-status live">● Live</span>
             </div>
           </article>
 
-          <article class="project-card reveal" aria-label="KPass">
-            <div class="project-header">
-              <div class="project-icon">🔑</div>
-              <div class="project-status live">公開中</div>
-            </div>
-            <h3 class="project-name">KPass</h3>
-            <p class="project-desc">
+          <article class="work-card reveal" data-category="mobile-app" data-status="live">
+            <div class="work-number" aria-hidden="true">02</div>
+            <div class="work-category">Mobile App</div>
+            <div class="work-mark" aria-hidden="true">K</div>
+            <h3 class="work-name">KPass</h3>
+            <p class="work-desc">
               Swift / SwiftUI で開発した iOS 向けパスワード管理アプリ。
               ネイティブの安全な Keychain と連携し、スムーズな UX を実現。
             </p>
-            <div class="project-tags">
-              <span class="tag">Swift</span>
-              <span class="tag">SwiftUI</span>
-              <span class="tag">iOS</span>
-              <span class="tag">Keychain</span>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag">Swift</span>
+                <span class="tag">SwiftUI</span>
+                <span class="tag">iOS</span>
+                <span class="tag">Keychain</span>
+              </div>
+              <span class="work-status live">● Live</span>
             </div>
           </article>
 
-          <article class="project-card reveal project-wip" aria-label="Console Insight">
-            <div class="project-header">
-              <div class="project-icon">📊</div>
-              <div class="project-status wip">開発中</div>
+          <article class="work-card reveal" data-category="wordpress" data-status="live">
+            <div class="work-number" aria-hidden="true">03</div>
+            <div class="work-category">WordPress</div>
+            <div class="work-mark" aria-hidden="true">P</div>
+            <h3 class="work-name">Push from GitHub</h3>
+            <p class="work-desc">
+              GitHub リポジトリから WordPress テーマ・プラグインを
+              ワンクリックでデプロイできるプラグイン。
+              CI/CD を WordPress に手軽に導入。
+            </p>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag">WordPress</span>
+                <span class="tag">GitHub</span>
+                <span class="tag">CI/CD</span>
+              </div>
+              <div class="work-footer-right">
+                <span class="work-status live">● Live</span>
+                <a class="work-link" href="https://wordpress.org/plugins/" target="_blank" rel="noopener noreferrer" aria-label="WordPress公式ディレクトリで見る">View on WP.org</a>
+              </div>
             </div>
-            <h3 class="project-name">Console Insight</h3>
-            <p class="project-desc">
+          </article>
+
+          <article class="work-card reveal" data-category="wordpress" data-status="live">
+            <div class="work-number" aria-hidden="true">04</div>
+            <div class="work-category">WordPress</div>
+            <div class="work-mark" aria-hidden="true">A</div>
+            <h3 class="work-name">App Link Generator</h3>
+            <p class="work-desc">
+              App Store / Google Play のアプリリンクを
+              ブロックエディタから簡単に生成・挿入できるプラグイン。
+              アプリ紹介記事の作成を効率化。
+            </p>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag">WordPress</span>
+                <span class="tag">App Store</span>
+                <span class="tag">Google Play</span>
+              </div>
+              <div class="work-footer-right">
+                <span class="work-status live">● Live</span>
+                <a class="work-link" href="https://wordpress.org/plugins/" target="_blank" rel="noopener noreferrer" aria-label="WordPress公式ディレクトリで見る">View on WP.org</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-card reveal" data-category="web-app" data-status="wip">
+            <div class="work-number" aria-hidden="true">05</div>
+            <div class="work-category">Web App</div>
+            <div class="work-mark" aria-hidden="true">C</div>
+            <h3 class="work-name">Console Insight</h3>
+            <p class="work-desc">
               Google Search Console のデータをわかりやすく可視化するツール。
               SEO 運用を効率化するダッシュボードアプリ。
             </p>
-            <div class="project-tags">
-              <span class="tag">Web App</span>
-              <span class="tag">GSC API</span>
-              <span class="tag">SEO</span>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag">Web App</span>
+                <span class="tag">GSC API</span>
+                <span class="tag">SEO</span>
+              </div>
+              <span class="work-status wip">● In Progress</span>
             </div>
           </article>
 
-          <article class="project-card reveal project-wip" aria-label="VibeStep">
-            <div class="project-header">
-              <div class="project-icon">🎵</div>
-              <div class="project-status wip">開発中</div>
-            </div>
-            <h3 class="project-name">VibeStep</h3>
-            <p class="project-desc">
+          <article class="work-card reveal" data-category="mobile-app" data-status="wip">
+            <div class="work-number" aria-hidden="true">06</div>
+            <div class="work-category">Mobile App</div>
+            <div class="work-mark" aria-hidden="true">V</div>
+            <h3 class="work-name">VibeStep</h3>
+            <p class="work-desc">
               音楽に合わせたインタラクティブな体験を提供するモバイルアプリ。
               ユニークな UI/UX を追求したエンターテインメント系プロダクト。
             </p>
-            <div class="project-tags">
-              <span class="tag">Mobile</span>
-              <span class="tag">Audio</span>
-              <span class="tag">UI/UX</span>
+            <div class="work-footer">
+              <div class="work-tags">
+                <span class="tag">Mobile</span>
+                <span class="tag">Audio</span>
+                <span class="tag">UI/UX</span>
+              </div>
+              <span class="work-status wip">● In Progress</span>
             </div>
           </article>
 
@@ -416,54 +470,6 @@
 
 
 
-      </div>
-    </section>
-
-    <!-- ===== PLUGINS ===== -->
-    <section class="section section-alt" id="plugins" aria-label="WordPressプラグイン">
-      <div class="container">
-        <div class="section-label reveal">Plugins</div>
-        <h2 class="section-title reveal">WordPress プラグイン</h2>
-        <p class="section-subtitle reveal">WordPress 公式ディレクトリに公開中</p>
-        <div class="plugins-grid">
-
-          <article class="plugin-card reveal">
-            <div class="plugin-icon">🔌</div>
-            <h3>Push from GitHub</h3>
-            <p>
-              GitHub リポジトリから WordPress テーマ・プラグインを
-              ワンクリックでデプロイできるプラグイン。
-              CI/CD を WordPress に手軽に導入。
-            </p>
-            <div class="plugin-meta">
-              <span class="tag">WordPress</span>
-              <span class="tag">GitHub</span>
-              <span class="tag">CI/CD</span>
-              <a href="https://wordpress.org/plugins/" class="plugin-link" target="_blank" rel="noopener noreferrer" aria-label="WordPress公式ディレクトリで見る">
-                WP 公式ディレクトリ →
-              </a>
-            </div>
-          </article>
-
-          <article class="plugin-card reveal">
-            <div class="plugin-icon">🔗</div>
-            <h3>App Link Generator</h3>
-            <p>
-              App Store / Google Play のアプリリンクを
-              ブロックエディタから簡単に生成・挿入できるプラグイン。
-              アプリ紹介記事の作成を効率化。
-            </p>
-            <div class="plugin-meta">
-              <span class="tag">WordPress</span>
-              <span class="tag">App Store</span>
-              <span class="tag">Google Play</span>
-              <a href="https://wordpress.org/plugins/" class="plugin-link" target="_blank" rel="noopener noreferrer" aria-label="WordPress公式ディレクトリで見る">
-                WP 公式ディレクトリ →
-              </a>
-            </div>
-          </article>
-
-        </div>
       </div>
     </section>
 
