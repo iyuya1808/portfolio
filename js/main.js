@@ -342,6 +342,55 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
+     SKILL CARD GLOWING BORDER (mouse-tracking conic gradient)
+     ============================================================ */
+  if (!('ontouchstart' in window)) {
+    var glowCards = document.querySelectorAll('.skill-category');
+    var glowStates = new Map();
+
+    glowCards.forEach(function (card) {
+      glowStates.set(card, { current: 0, target: 0, rafId: 0 });
+    });
+
+    document.addEventListener('pointermove', function (e) {
+      glowCards.forEach(function (card) {
+        var rect = card.getBoundingClientRect();
+        var cx = rect.left + rect.width * 0.5;
+        var cy = rect.top + rect.height * 0.5;
+        var PROXIMITY = 80;
+
+        var near =
+          e.clientX > rect.left - PROXIMITY &&
+          e.clientX < rect.right + PROXIMITY &&
+          e.clientY > rect.top - PROXIMITY &&
+          e.clientY < rect.bottom + PROXIMITY;
+
+        card.style.setProperty('--glow-active', near ? '1' : '0');
+        if (!near) return;
+
+        var angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
+        var state = glowStates.get(card);
+        var diff = ((angle - state.current + 180) % 360) - 180;
+        state.target = state.current + diff;
+
+        if (!state.rafId) {
+          (function tick() {
+            var d = state.target - state.current;
+            if (Math.abs(d) < 0.1) {
+              state.current = state.target;
+              state.rafId = 0;
+              return;
+            }
+            state.current += d * 0.15;
+            card.style.setProperty('--glow-start', String(state.current));
+            state.rafId = requestAnimationFrame(tick);
+          }());
+        }
+      });
+    }, { passive: true });
+  }
+
+  /* ============================================================
      OS THEME CHANGE LISTENER
      ============================================================ */
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
