@@ -344,7 +344,37 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ============================================================
      SKILL CARD GLOWING BORDER (mouse-tracking conic gradient)
      ============================================================ */
-  if (!('ontouchstart' in window)) {
+  var isTouch = window.matchMedia('(hover: none)').matches;
+
+  if (isTouch) {
+    /* タッチデバイス: スクロール位置に連動してグロウ角度・不透明度をリアルタイム更新 */
+    var touchGlowCards = document.querySelectorAll('.skill-category');
+
+    function updateTouchGlow() {
+      var vh = window.innerHeight;
+      touchGlowCards.forEach(function (card) {
+        var r = card.getBoundingClientRect();
+        /* ビューポート内に見えている割合 (0〜1) */
+        var visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+        var ratio = Math.max(0, Math.min(1, visibleH / r.height));
+
+        card.style.setProperty('--glow-active', ratio.toFixed(3));
+        if (ratio <= 0) return;
+
+        /* カード中心がビューポートのどこにいるかでグロウ角度を決定
+           ビューポート下端から入ってくるとき → 180°（下側）
+           ビューポート上端へ抜けるとき      →   0°（上側） */
+        var cardCenter = r.top + r.height / 2;
+        var angle = (cardCenter / vh) * 180;
+        card.style.setProperty('--glow-start', angle.toFixed(1));
+      });
+    }
+
+    window.addEventListener('scroll', updateTouchGlow, { passive: true });
+    updateTouchGlow();
+  }
+
+  if (!isTouch) {
     var glowCards = document.querySelectorAll('.skill-category');
     var glowStates = new Map();
 

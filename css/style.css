@@ -1817,25 +1817,6 @@ body {
   }
 }
 
-/* タッチデバイス: スクロール表示時に一周スイープ */
-@media (hover: none) {
-  .skill-category.visible::before {
-    animation: skill-glow-sweep 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .skills-bento .skill-category:nth-child(1)::before { animation-delay:   0ms; }
-  .skills-bento .skill-category:nth-child(2)::before { animation-delay: 100ms; }
-  .skills-bento .skill-category:nth-child(3)::before { animation-delay: 200ms; }
-  .skills-bento .skill-category:nth-child(4)::before { animation-delay: 300ms; }
-  .skills-bento .skill-category:nth-child(5)::before { animation-delay: 400ms; }
-}
-
-@keyframes skill-glow-sweep {
-  0%   { --glow-start:   0; opacity: 0; }
-  12%  {                    opacity: 1; }
-  88%  {                    opacity: 1; }
-  100% { --glow-start: 360; opacity: 0; }
-}
 
 /* ============================================================
    CONTACT
