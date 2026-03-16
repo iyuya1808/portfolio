@@ -20,27 +20,59 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ============================================================
-     HAMBURGER MENU
+     HEADER SCROLL STATE
+     ============================================================ */
+  const header = document.getElementById('header');
+  if (header) {
+    var scrolled = false;
+    window.addEventListener('scroll', function () {
+      var shouldBeScrolled = window.scrollY > 20;
+      if (shouldBeScrolled !== scrolled) {
+        scrolled = shouldBeScrolled;
+        header.classList.toggle('scrolled', scrolled);
+      }
+    }, { passive: true });
+    // Initial check
+    if (window.scrollY > 20) header.classList.add('scrolled');
+  }
+
+  /* ============================================================
+     MOBILE OVERLAY MENU
      ============================================================ */
   const hamburger = document.getElementById('navHamburger');
-  const mobileNav = document.getElementById('navMobile');
+  const overlay = document.getElementById('navOverlay');
 
-  if (hamburger && mobileNav) {
+  function closeOverlay() {
+    if (!overlay || !hamburger) return;
+    overlay.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburger && overlay) {
     hamburger.addEventListener('click', function () {
-      const isOpen = mobileNav.classList.toggle('open');
+      var isOpen = overlay.classList.toggle('open');
       hamburger.classList.toggle('open', isOpen);
       hamburger.setAttribute('aria-expanded', String(isOpen));
-      mobileNav.setAttribute('aria-hidden', String(!isOpen));
+      overlay.setAttribute('aria-hidden', String(!isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close on backdrop click
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeOverlay();
     });
 
     // Close on link click
-    mobileNav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileNav.setAttribute('aria-hidden', 'true');
-      });
+    overlay.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeOverlay);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();
     });
   }
 

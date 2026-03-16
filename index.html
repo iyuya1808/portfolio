@@ -20,8 +20,13 @@
 <body>
 
   <!-- ===== HEADER / NAV ===== -->
-  <header class="header" role="banner">
+  <header class="header" id="header" role="banner">
     <nav class="nav container" aria-label="メインナビゲーション">
+
+      <a href="#hero" class="nav-logo" aria-label="トップへ戻る">
+        <span class="nav-logo-mark">YI</span>
+        <span class="nav-logo-text">Yuya Itonaga</span>
+      </a>
 
       <ul class="nav-links" role="list">
         <li><a href="#about">About</a></li>
@@ -31,31 +36,47 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <button class="theme-toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="ダークモードを切り替える">
-        <span class="toggle-track">
-          <span class="toggle-thumb">
-            <svg class="toggle-icon" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.3"/>
-              <path d="M7 1.8 A5.2 5.2 0 0 1 7 12.2 Z" fill="currentColor"/>
-            </svg>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="ダークモードを切り替える">
+          <span class="toggle-track">
+            <span class="toggle-thumb">
+              <svg class="toggle-icon" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M7 1.8 A5.2 5.2 0 0 1 7 12.2 Z" fill="currentColor"/>
+              </svg>
+            </span>
           </span>
-        </span>
-      </button>
-      <button class="nav-hamburger" id="navHamburger" aria-label="メニューを開く" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+        </button>
+        <button class="nav-hamburger" id="navHamburger" aria-label="メニューを開く" aria-expanded="false">
+          <span class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
     </nav>
-    <div class="nav-mobile" id="navMobile" aria-hidden="true">
-      <ul role="list">
-        <li><a href="#about">About</a></li>
-        <li><a href="#numbers">Achievements</a></li>
-        <li><a href="#works">Works</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
   </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true" role="dialog" aria-label="モバイルナビゲーション">
+    <div class="nav-overlay-inner">
+      <nav class="nav-overlay-nav">
+        <ul role="list">
+          <li><a href="#about" class="nav-overlay-link">About</a></li>
+          <li><a href="#numbers" class="nav-overlay-link">Achievements</a></li>
+          <li><a href="#works" class="nav-overlay-link">Works</a></li>
+          <li><a href="#services" class="nav-overlay-link">Services</a></li>
+          <li><a href="#skills" class="nav-overlay-link">Skills</a></li>
+          <li><a href="#contact" class="nav-overlay-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-overlay-footer">
+        <span>© 2025 Yuya Itonaga</span>
+      </div>
+    </div>
+  </div>
 
   <main>
 
