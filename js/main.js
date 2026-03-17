@@ -236,23 +236,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     TECH CHIPS STAGGERED POP-IN
+     TECH CHIPS — marquee mode (chip-pop removed; marquee handles reveal)
      ============================================================ */
-  var chipObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.tech-chip').forEach(function (chip, i) {
-          chip.style.setProperty('--chip-i', i);
-          chip.classList.add('chip-pop');
-        });
-        chipObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll('.tech-chips').forEach(function (el) {
-    chipObserver.observe(el);
-  });
 
   /* ============================================================
      TYPEWRITER EFFECT (Hero tagline)
@@ -342,13 +327,13 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ============================================================
-     SKILL CARD GLOWING BORDER (mouse-tracking conic gradient)
+     CONTACT CARD GLOWING BORDER (mouse-tracking conic gradient)
      ============================================================ */
   var isTouch = window.matchMedia('(hover: none)').matches;
 
   if (isTouch) {
     /* タッチデバイス: スクロール位置に連動してグロウ角度・不透明度をリアルタイム更新 */
-    var touchGlowCards = document.querySelectorAll('.skill-category');
+    var touchGlowCards = document.querySelectorAll('.contact-card');
 
     function updateTouchGlow() {
       var vh = window.innerHeight;
@@ -376,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (!isTouch) {
-    var glowCards = document.querySelectorAll('.skill-category');
+    var glowCards = document.querySelectorAll('.contact-card');
     var glowStates = new Map();
 
     glowCards.forEach(function (card) {
