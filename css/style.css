@@ -2331,7 +2331,7 @@ a {
   transition: color var(--duration-fast) var(--ease-default);
 }
 
-a:not(.btn):hover {
+a:not(.btn):not(.work-link):hover {
   color: #0071E3;
 }
 
