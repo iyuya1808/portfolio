@@ -2432,7 +2432,8 @@ a:focus-visible {
   }
 
   .hero {
-    padding: 100px 0 60px;
+    min-height: 100svh;
+    padding: 80px 0 60px;
     text-align: center;
   }
 
@@ -2551,16 +2552,6 @@ a:focus-visible {
 
   .contact-value {
     font-size: 0.78rem;
-  }
-
-  /* Timeline: サイドラベルは装飾なので極小画面では非表示 */
-  .timeline-career-label,
-  .timeline-visual-track {
-    display: none;
-  }
-
-  .about-timeline-wrap {
-    display: block;
   }
 
   .kpi-strip {
