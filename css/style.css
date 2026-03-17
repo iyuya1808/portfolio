@@ -1640,16 +1640,24 @@ body {
   opacity: 1;
 }
 
-/* 左グラデーションボーダー（常時表示） */
+/* 左グラデーションボーダー */
 .service-card::before {
   content: '';
   position: absolute;
-  left: 0;
+  left: 1px;
   top: 0;
   width: 3px;
   height: 100%;
   background: linear-gradient(to bottom, var(--accent), #5E5CE6);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s var(--ease-default);
   pointer-events: none;
+}
+
+.service-card:hover::before,
+.service-card.visible::before {
+  transform: scaleY(1);
 }
 
 .service-card__inner {
@@ -1751,6 +1759,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .service-card:hover {
     transform: none;
+  }
+  .service-card::before {
+    transform: scaleY(1);
+    transition: none;
   }
   .service-card:hover .service-card__icon-wrap {
     transform: none;
