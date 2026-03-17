@@ -2554,16 +2554,6 @@ a:focus-visible {
     font-size: 0.78rem;
   }
 
-  /* Timeline: サイドラベルは装飾なので極小画面では非表示 */
-  .timeline-career-label,
-  .timeline-visual-track {
-    display: none;
-  }
-
-  .about-timeline-wrap {
-    display: block;
-  }
-
   .kpi-strip {
     gap: 12px;
   }
