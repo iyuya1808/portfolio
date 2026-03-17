@@ -1640,22 +1640,16 @@ body {
   opacity: 1;
 }
 
-/* アクセントバー（左縦ライン） */
-.service-card__accent-bar {
+/* 左グラデーションボーダー（常時表示） */
+.service-card::before {
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
   width: 3px;
   height: 100%;
-  background: var(--accent);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.45s var(--ease-default);
-  border-radius: 0 0 2px 2px;
-}
-
-.service-card:hover .service-card__accent-bar {
-  transform: scaleY(1);
+  background: linear-gradient(to bottom, var(--accent), #5E5CE6);
+  pointer-events: none;
 }
 
 .service-card__inner {
@@ -1738,13 +1732,10 @@ body {
   gap: 10px;
 }
 
-/* タッチデバイス: reveal 時にアクセントバーを表示 + タップフィードバック */
+/* タッチデバイス: タップフィードバック */
 @media (hover: none) {
   .service-card__cta {
     gap: 10px;
-  }
-  .service-card.visible .service-card__accent-bar {
-    transform: scaleY(1);
   }
   .service-card:active {
     transform: scale(0.97);
@@ -1760,9 +1751,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .service-card:hover {
     transform: none;
-  }
-  .service-card__accent-bar {
-    transform: scaleY(1);
   }
   .service-card:hover .service-card__icon-wrap {
     transform: none;
