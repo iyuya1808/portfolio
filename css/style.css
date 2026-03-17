@@ -1640,18 +1640,22 @@ body {
   opacity: 1;
 }
 
-/* グラデーションアクセントバー */
+/* アクセントバー（左縦ライン） */
 .service-card__accent-bar {
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  flex-shrink: 0;
-  transform: scaleX(var(--bar-scale, 0.55));
-  transform-origin: left;
-  transition: transform 0.4s var(--ease-default);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.45s var(--ease-default);
+  border-radius: 0 0 2px 2px;
 }
 
 .service-card:hover .service-card__accent-bar {
-  transform: scaleX(1);
+  transform: scaleY(1);
 }
 
 .service-card__inner {
@@ -1734,10 +1738,13 @@ body {
   gap: 10px;
 }
 
-/* タッチデバイス: スクロール連動（--bar-scale は JS で更新）+ タップフィードバック */
+/* タッチデバイス: reveal 時にアクセントバーを表示 + タップフィードバック */
 @media (hover: none) {
   .service-card__cta {
     gap: 10px;
+  }
+  .service-card.visible .service-card__accent-bar {
+    transform: scaleY(1);
   }
   .service-card:active {
     transform: scale(0.97);
@@ -1755,7 +1762,7 @@ body {
     transform: none;
   }
   .service-card__accent-bar {
-    transform: scaleX(1);
+    transform: scaleY(1);
   }
   .service-card:hover .service-card__icon-wrap {
     transform: none;

@@ -373,19 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', updateTouchGlow, { passive: true });
     updateTouchGlow();
 
-    /* サービスカード アクセントバー: スクロール連動で --bar-scale を更新 */
-    var serviceCards = document.querySelectorAll('.service-card');
-    function updateServiceBars() {
-      var vh = window.innerHeight;
-      serviceCards.forEach(function (card) {
-        var r = card.getBoundingClientRect();
-        var visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-        var ratio = Math.max(0, Math.min(1, visibleH / r.height));
-        card.style.setProperty('--bar-scale', (0.55 + ratio * 0.45).toFixed(3));
-      });
-    }
-    window.addEventListener('scroll', updateServiceBars, { passive: true });
-    updateServiceBars();
   }
 
   if (!isTouch) {
