@@ -1644,11 +1644,13 @@ body {
 .service-card::before {
   content: '';
   position: absolute;
-  left: 1px;
-  top: 0;
-  width: 3px;
-  height: 100%;
+  left: 8px;
+  top: 12px;
+  bottom: 12px;
+  width: 4px;
+  height: auto;
   background: linear-gradient(to bottom, var(--accent), #5E5CE6);
+  border-radius: 999px;
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 0.5s var(--ease-default);
