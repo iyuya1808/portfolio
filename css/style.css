@@ -34,6 +34,7 @@ html {
 
   /* === バックグラウンド === */
   --bg:          #FFFFFF;
+  --bg-rgb:      255, 255, 255;
   --bg-secondary: #F2F2F7;             /* Apple systemGray6 */
   --bg-card:     #FFFFFF;
   --bg-tertiary: #EFEFF4;
@@ -103,6 +104,7 @@ html {
 [data-theme="dark"] {
   /* === バックグラウンド (Apple Dark) === */
   --bg:          #000000;
+  --bg-rgb:      0, 0, 0;
   --bg-secondary: #1C1C1E;             /* Apple systemGray6 Dark */
   --bg-card:     #1C1C1E;
   --bg-tertiary: #2C2C2E;
@@ -732,6 +734,8 @@ body {
     linear-gradient(90deg, rgba(var(--accent-rgb), 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 12%, rgba(0,0,0,1) 40%, rgba(0,0,0,1) 65%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 12%, rgba(0,0,0,1) 40%, rgba(0,0,0,1) 65%, transparent 100%);
 }
 
 .hero-glow {
@@ -742,6 +746,7 @@ body {
   height: 600px;
   background: radial-gradient(circle, rgba(var(--accent-rgb), 0.20) 0%, transparent 70%);
   pointer-events: none;
+  z-index: 2;
   animation: glow-float 5s ease-in-out infinite;
 }
 
@@ -753,6 +758,7 @@ body {
   height: 400px;
   background: radial-gradient(circle, rgba(var(--accent-rgb), 0.13) 0%, transparent 70%);
   pointer-events: none;
+  z-index: 2;
   animation: glow-float-2 7s ease-in-out infinite;
 }
 
@@ -773,7 +779,7 @@ body {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 .hero-text {
@@ -799,8 +805,8 @@ body {
   inset: 0;
   z-index: 2;
   background:
-    linear-gradient(to right, var(--bg) 0%, transparent 48%),
-    linear-gradient(to bottom, var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%);
+    linear-gradient(to right, var(--bg) 0%, rgba(var(--bg-rgb), 0.85) 18%, transparent 60%, rgba(var(--bg-rgb), 0.4) 90%, var(--bg) 100%),
+    linear-gradient(to bottom, var(--bg) 0%, transparent 18%, transparent 80%, var(--bg) 100%);
   pointer-events: none;
 }
 
