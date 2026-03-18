@@ -25,9 +25,9 @@
 
   <!-- ===== HEADER / NAV ===== -->
   <header class="header" id="header" role="banner">
-    <nav class="nav container" aria-label="メインナビゲーション">
+    <nav class="nav container" aria-label="メインナビゲーション" data-i18n-aria="nav.ariaLabel">
 
-      <a href="#hero" class="nav-logo" aria-label="トップへ戻る">
+      <a href="#hero" class="nav-logo" aria-label="トップへ戻る" data-i18n-aria="nav.logo.ariaLabel">
         <img src="assets/images/technophere-icon.png" alt="Technophere" class="nav-logo-icon">
         <span class="nav-logo-text">Portfolio</span>
       </a>
@@ -42,6 +42,9 @@
       </ul>
 
       <div class="nav-actions">
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language / 言語切替">
+          <span class="lang-toggle-label">EN</span>
+        </button>
         <button class="theme-toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="ダークモードを切り替える">
           <span class="toggle-track">
             <span class="toggle-thumb">
@@ -52,7 +55,7 @@
             </span>
           </span>
         </button>
-        <button class="nav-hamburger" id="navHamburger" aria-label="メニューを開く" aria-expanded="false">
+        <button class="nav-hamburger" id="navHamburger" aria-label="メニューを開く" aria-expanded="false" data-i18n-aria="nav.hamburger.ariaLabel">
           <span class="hamburger-icon">
             <span></span>
             <span></span>
@@ -64,7 +67,7 @@
   </header>
 
   <!-- Mobile Menu Overlay -->
-  <div class="nav-overlay" id="navOverlay" aria-hidden="true" role="dialog" aria-label="モバイルナビゲーション">
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true" role="dialog" aria-label="モバイルナビゲーション" data-i18n-aria="nav.overlay.ariaLabel">
     <div class="nav-overlay-inner">
       <nav class="nav-overlay-nav">
         <ul role="list">
@@ -94,7 +97,7 @@
         <div class="hero-text">
           <div class="hero-badge reveal">
             <span class="badge-dot"></span>
-            テクノフィア代表 / プロダクトクリエイター
+            <span data-i18n="hero.badge">テクノフィア代表 / プロダクトクリエイター</span>
           </div>
           <h1 class="hero-name reveal">
             <span class="gradient-text">Yuya Itonaga</span>
@@ -102,7 +105,7 @@
           <p class="hero-tagline reveal" id="typewriterTarget">
             AI プロンプトエンジニア × フルスタック開発者
           </p>
-          <p class="hero-mission reveal">
+          <p class="hero-mission reveal" data-i18n-html="hero.mission">
             「最新テクノロジーで世界をもっと面白く」——<br>
             Webサイト運営やアプリ開発をはじめとし、最新のAI技術を開発プロセスの核に据え、思考の速度でプロダクトを形に。
           </p>
@@ -120,46 +123,46 @@
     <section class="section" id="about" aria-label="About">
       <div class="container">
         <div class="section-label reveal">About</div>
-        <h2 class="section-title reveal">私について</h2>
+        <h2 class="section-title reveal" data-i18n="about.title">私について</h2>
         <div class="about-flex">
           <div class="about-bio reveal">
 
             <div class="about-block">
               <h3 class="about-subtitle">Web Site Management</h3>
-              <p>
+              <p data-i18n="about.bio.wsm.p1">
                 コンテンツ運用・SEO対策・アクセス解析を軸に、継続的な情報発信を続けることで、独自のWebメディア「テクノフィア」で月間150万PVを達成。
               </p>
-              <p>
+              <p data-i18n="about.bio.wsm.p2">
                 データを起点にPDCAを回し、検索流入の最大化とエンゲージメント向上を実現しています。
               </p>
             </div>
 
             <div class="about-block">
               <h3 class="about-subtitle">AI Driven Development</h3>
-              <p>
+              <p data-i18n="about.bio.ai.p1">
                 最新のAI技術を開発プロセスの中枢に据え、プロジェクトに最適なモデルを選定しながら「AI駆動型開発」で開発速度と品質を最大化。自分の目でコードレビューを行い、AIと人間の協働による最高のアウトプットを追求しています。
               </p>
             </div>
 
             <div class="about-block">
               <h3 class="about-subtitle">Full-stack Experience</h3>
-              <p>
+              <p data-i18n="about.bio.fullstack.p1">
                 FlutterやSwift、Next.js、WordPressなどの技術選定からMVP構築、さらにアプリストア公開、クローズドテスト実施、ユーザーフィードバックに基づく改善まで、リリース後の全工程を一通り経験しています。
               </p>
             </div>
           </div>
           <div class="about-card reveal">
             <div class="about-info-item">
-              <span class="about-info-label">所属</span>
-              <span>慶應義塾大学 理工学部<br>システムデザイン工学科</span>
+              <span class="about-info-label" data-i18n="about.info.affiliationLabel">所属</span>
+              <span data-i18n-html="about.info.affiliationValue">慶應義塾大学 理工学部<br>システムデザイン工学科</span>
             </div>
             <div class="about-info-item">
-              <span class="about-info-label">事業</span>
-              <span>テクノフィア 代表</span>
+              <span class="about-info-label" data-i18n="about.info.businessLabel">事業</span>
+              <span data-i18n="about.info.businessValue">テクノフィア 代表</span>
             </div>
             <div class="about-info-item">
-              <span class="about-info-label">設立</span>
-              <span>2023年8月</span>
+              <span class="about-info-label" data-i18n="about.info.foundedLabel">設立</span>
+              <span data-i18n="about.info.foundedValue">2023年8月</span>
             </div>
           </div>
         </div>
@@ -177,51 +180,51 @@
           <div class="about-timeline">
             <div class="timeline-item reveal">
               <span class="timeline-year">2018.04</span>
-              <span class="timeline-desc">慶應義塾湘南藤沢中等部 入学</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2018_04">慶應義塾湘南藤沢中等部 入学</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2021.01</span>
-              <span class="timeline-desc"><a href="https://gamerch.com/" class="timeline-link" target="_blank" rel="noopener noreferrer">Gamerch</a> で数種類のゲーム攻略サイトの運営を開始</span>
+              <span class="timeline-desc" data-i18n-html="about.timeline.2021_01"><a href="https://gamerch.com/" class="timeline-link" target="_blank" rel="noopener noreferrer">Gamerch</a> で数種類のゲーム攻略サイトの運営を開始</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2021.04</span>
-              <span class="timeline-desc">慶應義塾湘南藤沢高等部 入学</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2021_04">慶應義塾湘南藤沢高等部 入学</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2022.02</span>
-              <span class="timeline-desc"><a href="https://gamepedia.jp/" class="timeline-link" target="_blank" rel="noopener noreferrer">攻略大百科</a>の専属ライター（業務委託）として100記事以上を寄稿</span>
+              <span class="timeline-desc" data-i18n-html="about.timeline.2022_02"><a href="https://gamepedia.jp/" class="timeline-link" target="_blank" rel="noopener noreferrer">攻略大百科</a>の専属ライター（業務委託）として100記事以上を寄稿</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2023.08</span>
-              <span class="timeline-desc">テクノフィア 設立</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2023_08">テクノフィア 設立</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2024.03</span>
-              <span class="timeline-desc">ドローン空撮を用いた学校紹介ムービー制作で「高等部部長賞」受賞</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2024_03">ドローン空撮を用いた学校紹介ムービー制作で「高等部部長賞」受賞</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2024.04</span>
-              <span class="timeline-desc">慶應義塾大学 理工学部 入学</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2024_04">慶應義塾大学 理工学部 入学</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2024.06</span>
-              <span class="timeline-desc">ベンチャー企業「株式会社Taiziii」にてインターン開始</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2024_06">ベンチャー企業「株式会社Taiziii」にてインターン開始</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2025.08</span>
-              <span class="timeline-desc">ブロスタ戦略サポートアプリ「BrawlTech」リリース</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2025_08">ブロスタ戦略サポートアプリ「BrawlTech」リリース</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2025.09</span>
-              <span class="timeline-desc">企業向け Web サイト制作代行サービスを開始</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2025_09">企業向け Web サイト制作代行サービスを開始</span>
             </div>
             <div class="timeline-item reveal">
               <span class="timeline-year">2025.12</span>
-              <span class="timeline-desc">慶應生向けの学習サポートアプリ「KPass」をリリース</span>
+              <span class="timeline-desc" data-i18n="about.timeline.2025_12">慶應生向けの学習サポートアプリ「KPass」をリリース</span>
             </div>
             <div class="timeline-item reveal timeline-item-current">
-              <span class="timeline-year">現在</span>
-              <span class="timeline-desc">慶應義塾大学理工学部 システムデザイン工学科 在学中</span>
+              <span class="timeline-year" data-i18n="about.timeline.presentYear">現在</span>
+              <span class="timeline-desc" data-i18n="about.timeline.present">慶應義塾大学理工学部 システムデザイン工学科 在学中</span>
             </div>
           </div>
 
@@ -253,36 +256,36 @@
     <section class="section section-alt" id="numbers" aria-label="実績数字">
       <div class="container">
         <div class="section-label reveal">Numbers</div>
-        <h2 class="section-title reveal">数字で見る実績</h2>
-        <p class="section-subtitle reveal">テクノフィア設立8ヶ月で達成したKPI</p>
+        <h2 class="section-title reveal" data-i18n="numbers.title">数字で見る実績</h2>
+        <p class="section-subtitle reveal" data-i18n="numbers.subtitle">テクノフィア設立8ヶ月で達成したKPI</p>
         <div class="kpi-strip">
           <div class="kpi-item reveal">
             <div class="kpi-metric">Monthly Unique Users</div>
             <div class="kpi-number-row">
-              <span class="count-up" data-target="550000" data-suffix="万">0</span>
+              <span class="count-up" data-target="550000" data-suffix="万" data-en-target="550" data-en-suffix="K">0</span>
             </div>
-            <div class="kpi-label">月間ユニークユーザー</div>
+            <div class="kpi-label" data-i18n="numbers.kpi.uuLabel">月間ユニークユーザー</div>
           </div>
           <div class="kpi-item reveal">
             <div class="kpi-metric">Page Views / Month</div>
             <div class="kpi-number-row">
-              <span class="count-up" data-target="1500000" data-suffix="万">0</span>
+              <span class="count-up" data-target="1500000" data-suffix="万" data-en-target="15" data-en-decimals="1" data-en-suffix="M">0</span>
             </div>
-            <div class="kpi-label">月間ページビュー</div>
+            <div class="kpi-label" data-i18n="numbers.kpi.pvLabel">月間ページビュー</div>
           </div>
           <div class="kpi-item reveal">
             <div class="kpi-metric">Avg. Search Position</div>
             <div class="kpi-number-row">
-              <span class="count-up" data-target="41" data-decimals="1" data-count-down="true" data-from="999">0</span><span class="kpi-unit">位</span>
+              <span class="count-up" data-target="41" data-decimals="1" data-count-down="true" data-from="999">0</span><span class="kpi-unit" data-i18n="numbers.kpi.rankUnit">位</span>
             </div>
-            <div class="kpi-label">Google 平均掲載順位</div>
+            <div class="kpi-label" data-i18n="numbers.kpi.rankLabel">Google 平均掲載順位</div>
           </div>
           <div class="kpi-item reveal">
             <div class="kpi-metric">Click-Through Rate</div>
             <div class="kpi-number-row">
               <span class="count-up" data-target="245" data-decimals="1">0</span><span class="kpi-unit">%</span>
             </div>
-            <div class="kpi-label">クリック率 (CTR)</div>
+            <div class="kpi-label" data-i18n="numbers.kpi.ctrLabel">クリック率 (CTR)</div>
           </div>
         </div>
       </div>
@@ -293,7 +296,7 @@
     <section class="section" id="works" aria-label="プロダクト">
       <div class="container">
         <div class="section-label reveal">Works</div>
-        <h2 class="section-title reveal">プロダクト</h2>
+        <h2 class="section-title reveal" data-i18n="works.title">プロダクト</h2>
         <div class="works-grid">
 
           <article class="work-card reveal" data-category="mobile-app" data-status="live">
@@ -301,7 +304,7 @@
             <div class="work-category">Mobile App</div>
             <img class="work-icon" src="assets/images/BrawlTech-icon.png" alt="BrawlTech">
             <h3 class="work-name">BrawlTech</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.brawltech.desc">
               アクションゲーム「ブロスタ」の攻略・統計アプリ。
               Supercell公式のAPIや外部APIを使用し、リアルタイムデータ表示とキャラクター攻略情報を提供。
               Flutter で iOS/Android 両対応。
@@ -328,7 +331,7 @@
             <div class="work-category">Mobile App</div>
             <img class="work-icon" src="assets/images/KPass-icon.png" alt="KPass">
             <h3 class="work-name">KPass</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.kpass.desc">
               慶應生向け学習サポートアプリ。
               公式の学習支援サービス「K-LMS（Canvas）」のAPIから情報を取得し、アプリ内で整理された状態で表示。
               数日のログイン保持機能と課題チェックが売り。
@@ -353,7 +356,7 @@
             <div class="work-category">Web App</div>
             <img class="work-icon" src="assets/images/mimishare-icon.jpg" alt="Mimishare">
             <h3 class="work-name">Mimishare</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.mimishare.desc">
               ディズニーランド利用者向けカチューシャレンタルサービス。
               来園の1回だけのためにカチューシャを購入するよりも断然お得。
               「デポジット制の予約→QRコードで貸出と返却」という簡単フロー。
@@ -378,7 +381,7 @@
             <div class="work-category">WordPress</div>
             <div class="work-mark" aria-hidden="true">A</div>
             <h3 class="work-name">App Link Generator</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.applinkgenerator.desc">
               App Store / Google Play のアプリリンクを
               ブロックエディタから簡単に生成・挿入できる WordPress プラグイン。
               アプリ紹介記事の作成を効率化。
@@ -408,7 +411,7 @@
             <div class="work-category">WordPress</div>
             <div class="work-mark" aria-hidden="true">P</div>
             <h3 class="work-name">Push from GitHub</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.pushfromgithub.desc">
               GitHub リポジトリと連携している自作の WordPress テーマ・プラグインを
               ワンクリックでデプロイ（更新）できるプラグイン。
               CI/CD を WordPress に手軽に導入。
@@ -434,7 +437,7 @@
             <div class="work-category">Web App</div>
             <div class="work-mark" aria-hidden="true">C</div>
             <h3 class="work-name">Console Insight</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.consoleinsight.desc">
               Google Search Console のデータをわかりやすく可視化するツール。
               SEO 運用を効率化するダッシュボードアプリ。
             </p>
@@ -453,7 +456,7 @@
             <div class="work-category">Mobile App</div>
             <div class="work-mark" aria-hidden="true">V</div>
             <h3 class="work-name">VibeStep</h3>
-            <p class="work-desc">
+            <p class="work-desc" data-i18n="works.vibestep.desc">
               音楽に合わせたインタラクティブな体験を提供するモバイルアプリ。
               ユニークな UI/UX を追求したエンターテインメント系プロダクト。
             </p>
@@ -475,7 +478,7 @@
     <section class="section section-alt" id="media" aria-label="メディア">
       <div class="container">
         <div class="section-label reveal">Media</div>
-        <h2 class="section-title reveal">運営メディア</h2>
+        <h2 class="section-title reveal" data-i18n="media.title">運営メディア</h2>
         <div class="media-grid">
 
           <article class="media-card reveal">
@@ -495,8 +498,8 @@
               </div>
             </div>
             <div class="media-card-body">
-              <h3 class="media-card-title">テクログ</h3>
-              <p class="media-desc">
+              <h3 class="media-card-title" data-i18n="media.techlog.title">テクログ</h3>
+              <p class="media-desc" data-i18n="media.techlog.desc">
                 WordPress・SEO・アプリ開発などの技術情報に加え、
                 エンターテイメントやライフスタイルまで幅広いテーマで発信する
                 総合メディア。
@@ -507,7 +510,7 @@
                     <img src="assets/images/technophere-icon.png" alt="">
                   </div>
                   <div class="media-card-meta">
-                    <span class="media-card-name">テクノフィア</span>
+                    <span class="media-card-name" data-i18n="media.author">テクノフィア</span>
                     <span class="media-domain">blog.technophere.com</span>
                   </div>
                 </div>
@@ -536,8 +539,8 @@
               </div>
             </div>
             <div class="media-card-body">
-              <h3 class="media-card-title">攻略 Lab</h3>
-              <p class="media-desc">
+              <h3 class="media-card-title" data-i18n="media.gamelab.title">攻略 Lab</h3>
+              <p class="media-desc" data-i18n="media.gamelab.desc">
                 テクノフィアの主力メディア。約7つのゲーム攻略サイトを傘下に持つ
                 ゲームメディアグループ。中学生の頃から培った攻略の知見を活かし、
                 月間数十万 PV を達成。
@@ -548,7 +551,7 @@
                     <img src="assets/images/technophere-icon.png" alt="">
                   </div>
                   <div class="media-card-meta">
-                    <span class="media-card-name">テクノフィア</span>
+                    <span class="media-card-name" data-i18n="media.author">テクノフィア</span>
                     <span class="media-domain">game.technophere.com</span>
                   </div>
                 </div>
@@ -568,8 +571,8 @@
     <section class="section" id="services" aria-label="サービス">
       <div class="container">
         <div class="section-label reveal">Services</div>
-        <h2 class="section-title reveal">B2B サービス</h2>
-        <p class="section-subtitle reveal">個人 / 企業様向けの Web 制作・その他依頼</p>
+        <h2 class="section-title reveal" data-i18n="services.title">B2B サービス</h2>
+        <p class="section-subtitle reveal" data-i18n="services.subtitle">個人 / 企業様向けの Web 制作・その他依頼</p>
 
         <div class="services-grid">
 
@@ -589,13 +592,13 @@
                 </div>
                 <span class="service-card__num" aria-hidden="true">01</span>
               </div>
-              <h3 class="service-card__title">Web サイト制作</h3>
-              <p class="service-card__desc">
+              <h3 class="service-card__title" data-i18n="services.web.title">Web サイト制作</h3>
+              <p class="service-card__desc" data-i18n="services.web.desc">
                 WordPress をベースにしたコーポレートサイト・LP・メディアサイトを制作。
                 SEO 最適化・表示速度改善まで一貫して対応。
               </p>
               <div class="service-card__footer">
-                <a href="https://technophere.com/web-production/" class="service-card__cta" target="_blank" rel="noopener noreferrer">詳しく見る <span aria-hidden="true">→</span></a>
+                <a href="https://technophere.com/web-production/" class="service-card__cta" target="_blank" rel="noopener noreferrer"><span data-i18n="services.web.cta">詳しく見る</span> <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </article>
@@ -614,13 +617,13 @@
                 </div>
                 <span class="service-card__num" aria-hidden="true">02</span>
               </div>
-              <h3 class="service-card__title">その他・柔軟対応</h3>
-              <p class="service-card__desc">
+              <h3 class="service-card__title" data-i18n="services.other.title">その他・柔軟対応</h3>
+              <p class="service-card__desc" data-i18n="services.other.desc">
                 商品レビュー記事の執筆など、Web 制作に限らずさまざまな案件に対応。
                 まずはお気軽にご相談ください。
               </p>
               <div class="service-card__footer">
-                <a href="#contact" class="service-card__cta">相談する <span aria-hidden="true">→</span></a>
+                <a href="#contact" class="service-card__cta"><span data-i18n="services.other.cta">相談する</span> <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </article>
@@ -691,7 +694,7 @@
     <section class="section" id="skills" aria-label="スキル">
       <div class="container">
         <div class="section-label reveal">Skills</div>
-        <h2 class="section-title reveal">技術スタック</h2>
+        <h2 class="section-title reveal" data-i18n="skills.title">技術スタック</h2>
         <ul class="skills-bento">
 
           <li class="skill-category reveal">
@@ -775,8 +778,8 @@
             <span class="tech-chip">SEO Strategy</span>
             <span class="tech-chip">Promotion Engineering</span>
             <span class="tech-chip">MVP Development</span>
-            <span class="tech-chip">動画編集</span>
-            <span class="tech-chip">ドローン操縦</span>
+            <span class="tech-chip" data-i18n="skills.chips.videoEditing">動画編集</span>
+            <span class="tech-chip" data-i18n="skills.chips.dronePiloting">ドローン操縦</span>
             <!-- duplicate for seamless loop -->
             <span class="tech-chip" aria-hidden="true">Antigravity</span>
             <span class="tech-chip" aria-hidden="true">Claude Code</span>
@@ -800,8 +803,8 @@
     <section class="section section-alt" id="contact" aria-label="コンタクト">
       <div class="container">
         <div class="section-label reveal">Contact</div>
-        <h2 class="section-title reveal">連絡先</h2>
-        <p class="section-subtitle reveal">
+        <h2 class="section-title reveal" data-i18n="contact.title">連絡先</h2>
+        <p class="section-subtitle reveal" data-i18n="contact.subtitle">
           ご依頼・コラボ・ご質問など、お気軽にご連絡ください。
         </p>
         <div class="contact-grid">
@@ -809,10 +812,10 @@
           <div class="contact-card reveal">
             <div class="contact-icon">📧</div>
             <div class="contact-info">
-              <div class="contact-label">メール</div>
+              <div class="contact-label" data-i18n="contact.emailLabel">メール</div>
               <div class="contact-value">contact@technophere.com</div>
             </div>
-            <a href="mailto:contact@technophere.com" class="contact-btn" aria-label="メールを送る">
+            <a href="mailto:contact@technophere.com" class="contact-btn" aria-label="メールを送る" data-i18n-aria="contact.emailAriaLabel">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
@@ -820,10 +823,10 @@
           <div class="contact-card reveal">
             <div class="contact-icon">🌐</div>
             <div class="contact-info">
-              <div class="contact-label">公式サイト</div>
+              <div class="contact-label" data-i18n="contact.siteLabel">公式サイト</div>
               <div class="contact-value">technophere.com</div>
             </div>
-            <a href="https://technophere.com" class="contact-btn" target="_blank" rel="noopener noreferrer" aria-label="テクノフィア公式サイトを開く">
+            <a href="https://technophere.com" class="contact-btn" target="_blank" rel="noopener noreferrer" aria-label="テクノフィア公式サイトを開く" data-i18n-aria="contact.siteAriaLabel">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
@@ -863,11 +866,12 @@
   <!-- ===== FOOTER ===== -->
   <footer class="footer" role="contentinfo">
     <div class="container footer-inner">
-      <p class="footer-copy">© 2026 Yuya Itonaga / テクノフィア</p>
+      <p class="footer-copy" data-i18n="footer.copy">© 2026 Yuya Itonaga / テクノフィア</p>
       <a href="https://technophere.com" class="footer-link" target="_blank" rel="noopener noreferrer">technophere.com</a>
     </div>
   </footer>
 
+  <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

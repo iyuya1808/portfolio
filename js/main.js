@@ -120,9 +120,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function animateCount(el) {
-    const rawTarget = parseFloat(el.dataset.target);
-    const decimals = parseInt(el.dataset.decimals || '0', 10);
-    const suffix = el.dataset.suffix || '';
+    const lang = document.documentElement.lang || 'ja';
+    const rawTarget = parseFloat(
+      (lang === 'en' && el.dataset.enTarget) ? el.dataset.enTarget : el.dataset.target
+    );
+    const decimals = parseInt(
+      (lang === 'en' && el.dataset.enDecimals) ? el.dataset.enDecimals : (el.dataset.decimals || '0')
+    , 10);
+    const suffix = (lang === 'en' && el.dataset.enSuffix !== undefined)
+      ? el.dataset.enSuffix
+      : (el.dataset.suffix || '');
     const countDown = el.dataset.countDown === 'true';
     const rawFrom = el.dataset.from ? parseFloat(el.dataset.from) : null;
     const duration = 1000;
@@ -156,7 +163,8 @@ document.addEventListener('DOMContentLoaded', function () {
       displayTarget = rawTarget;
       displayFrom = rawFrom !== null ? rawFrom : 0;
       formatFn = function (val) {
-        return Math.round(val).toLocaleString('ja-JP');
+        var locale = document.documentElement.lang === 'en' ? 'en-US' : 'ja-JP';
+        return Math.round(val).toLocaleString(locale);
       };
     }
 
@@ -198,6 +206,9 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.count-up').forEach(function (el) {
     countObserver.observe(el);
   });
+
+  /* Expose for i18n lang switch */
+  window.i18nAnimateCount = animateCount;
 
   /* ============================================================
      3D TILT + CURSOR SPOTLIGHT (Cards)
@@ -255,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
      ============================================================ */
   const typewriterTarget = document.getElementById('typewriterTarget');
   if (typewriterTarget) {
-    const phrases = [
+    let phrases = (window.i18nPhrases) || [
       'AI × エンジニア × コンテンツクリエイター',
       'フルスタック開発 × SEO × アプリケーション',
       '慶應大在学中 × テクノフィア代表',
@@ -264,6 +275,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let charIndex = 0;
     let isDeleting = false;
     let isPaused = false;
+    let typeTimer = null;
 
     // Create cursor
     const cursor = document.createElement('span');
@@ -284,14 +296,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (charIndex === currentPhrase.length) {
           isPaused = true;
-          setTimeout(function () {
+          typeTimer = setTimeout(function () {
             isPaused = false;
             isDeleting = true;
             type();
           }, 2400);
           return;
         }
-        setTimeout(type, 60);
+        typeTimer = setTimeout(type, 60);
       } else {
         charIndex--;
         typewriterTarget.textContent = currentPhrase.slice(0, charIndex);
@@ -300,15 +312,27 @@ document.addEventListener('DOMContentLoaded', function () {
         if (charIndex === 0) {
           isDeleting = false;
           phraseIndex = (phraseIndex + 1) % phrases.length;
-          setTimeout(type, 400);
+          typeTimer = setTimeout(type, 400);
           return;
         }
-        setTimeout(type, 30);
+        typeTimer = setTimeout(type, 30);
       }
     }
 
+    window.updateTypewriterPhrases = function (newPhrases) {
+      if (typeTimer) clearTimeout(typeTimer);
+      phrases = newPhrases;
+      phraseIndex = 0;
+      charIndex = 0;
+      isDeleting = false;
+      isPaused = false;
+      typewriterTarget.textContent = '';
+      typewriterTarget.appendChild(cursor);
+      type();
+    };
+
     // Start after a short delay so reveal animation finishes
-    setTimeout(type, 800);
+    typeTimer = setTimeout(type, 800);
   }
 
   /* ============================================================

@@ -399,6 +399,37 @@ body {
   flex-shrink: 0;
 }
 
+/* ---- Lang Toggle ---- */
+.lang-toggle {
+  background: none;
+  border: 1.5px solid var(--border);
+  padding: 0 10px;
+  height: 24px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  outline: none;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  transition:
+    color 0.2s var(--ease-default),
+    border-color 0.2s var(--ease-default);
+}
+
+.lang-toggle:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.lang-toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.35);
+}
+
 /* ---- Theme Toggle ---- */
 .theme-toggle {
   background: none;
