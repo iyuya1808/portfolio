@@ -2062,13 +2062,14 @@ body {
 .skill-category {
   --cat-rgb: var(--cat-r), var(--cat-g), var(--cat-b);
   position: relative;
+  overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 28px 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   min-height: 180px;
   box-shadow: var(--shadow);
   transition:
@@ -2077,33 +2078,52 @@ body {
     border-color var(--duration-normal) var(--ease-default);
 }
 
+/* カテゴリカラーのグラジェントアクセントライン */
+.skill-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--cat-rgb), 0.8) 0%,
+    rgba(var(--cat-rgb), 0.3) 60%,
+    transparent 100%
+  );
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* 背景に大きくフェードしたカテゴリ番号 */
+.skill-cat-num {
+  position: absolute;
+  top: -8px;
+  right: 18px;
+  font-size: 5.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: rgb(var(--cat-rgb));
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+  font-feature-settings: "tnum";
+}
+
 @media (hover: hover) {
   .skill-category:hover {
     box-shadow:
-      0 0 0 1px rgba(var(--cat-rgb), 0.25),
-      0 12px 40px rgba(var(--cat-rgb), 0.08),
+      0 0 0 1px rgba(var(--cat-rgb), 0.22),
+      0 12px 40px rgba(var(--cat-rgb), 0.09),
       var(--shadow-xl);
-    border-color: rgba(var(--cat-rgb), 0.35);
+    border-color: rgba(var(--cat-rgb), 0.3);
     transform: translateY(-3px);
   }
-}
-
-.skill-cat-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--cat-rgb), 0.18) 0%,
-    rgba(var(--cat-rgb), 0.06) 100%
-  );
-  border: 1px solid rgba(var(--cat-rgb), 0.22);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(var(--cat-rgb), 0.12);
+  .skill-category:hover .skill-cat-num {
+    opacity: 0.1;
+  }
 }
 
 .skill-cat-body {
@@ -2111,14 +2131,29 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .skill-cat-title {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  color: rgba(var(--cat-rgb), 0.9);
-  letter-spacing: 0.1em;
+  color: rgba(var(--cat-rgb), 0.85);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skill-cat-title::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: rgba(var(--cat-rgb), 0.7);
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .skill-tags {
@@ -2128,39 +2163,42 @@ body {
 }
 
 .skill-badge {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  padding: 5px 12px;
-  border-radius: 100px;
-  background: var(--bg-secondary);
+  padding: 5px 13px;
+  border-radius: 6px;
+  background: transparent;
   border: 1px solid var(--border);
   color: var(--text-muted);
   transition: all 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
 .skill-badge.main {
-  background: rgba(var(--cat-rgb), 0.1);
-  border-color: rgba(var(--cat-rgb), 0.3);
+  background: rgba(var(--cat-rgb), 0.08);
+  border-color: rgba(var(--cat-rgb), 0.25);
   color: rgb(var(--cat-rgb));
   font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .skill-badge.main::before {
   content: '';
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: currentColor;
   margin-right: 6px;
   vertical-align: middle;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .skill-badge:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(var(--cat-rgb), 0.18);
-  border-color: rgba(var(--cat-rgb), 0.5);
+  box-shadow: 0 4px 12px rgba(var(--cat-rgb), 0.15);
+  border-color: rgba(var(--cat-rgb), 0.45);
+  background: rgba(var(--cat-rgb), 0.05);
 }
 
 /* ── Tech Chips Marquee ── */
