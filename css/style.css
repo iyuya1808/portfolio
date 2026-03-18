@@ -1694,12 +1694,40 @@ body {
   pointer-events: auto;
 }
 
-/* タッチデバイス: 常にオーバーレイを表示 */
+/* タッチデバイス用 Visit ボタン: デスクトップでは非表示 */
+.media-touch-visit-btn {
+  display: none;
+}
+
+/* タッチデバイス: オーバーレイ非表示、フッターにVisitボタン表示 */
 @media (hover: none) {
   .media-card-overlay {
-    opacity: 1;
-    pointer-events: auto;
-    background: rgba(0,0,0,0.3);
+    display: none;
+  }
+
+  .media-touch-visit-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--accent);
+    box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
+  }
+
+  .media-touch-visit-btn:hover,
+  .media-touch-visit-btn:visited {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .media-card-footer {
+    justify-content: space-between;
   }
 }
 
