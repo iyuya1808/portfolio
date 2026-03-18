@@ -1699,6 +1699,14 @@ body {
   display: none;
 }
 
+/* 全状態でリンク色を白に固定 */
+.media-touch-visit-btn,
+.media-touch-visit-btn:hover,
+.media-touch-visit-btn:visited,
+.media-touch-visit-btn:active {
+  color: #fff;
+}
+
 /* タッチデバイス: オーバーレイ非表示、フッターにVisitボタン表示 */
 @media (hover: none) {
   .media-card-overlay {
@@ -1712,18 +1720,10 @@ body {
     gap: 5px;
     padding: 7px 14px;
     border-radius: var(--radius-md);
-    color: #fff;
     font-size: 0.78rem;
     font-weight: 600;
-    text-decoration: none;
     background: var(--accent);
     box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
-  }
-
-  .media-touch-visit-btn:hover,
-  .media-touch-visit-btn:visited {
-    color: #fff;
-    text-decoration: none;
   }
 
   .media-card-footer {
@@ -1746,12 +1746,6 @@ body {
   transition: transform 0.2s var(--ease-default), box-shadow 0.2s var(--ease-default);
 }
 
-.media-hover-btn:hover,
-.media-hover-btn:visited,
-.media-hover-btn:focus {
-  color: #fff;
-  text-decoration: none;
-}
 
 .media-hover-btn:hover {
   transform: scale(1.05);
@@ -2403,7 +2397,7 @@ a {
   transition: color var(--duration-fast) var(--ease-default);
 }
 
-a:not(.btn):not(.work-link):hover {
+a:not(.btn):not(.work-link):not(.media-hover-btn):not(.media-touch-visit-btn):hover {
   color: #0071E3;
 }
 
