@@ -123,7 +123,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const rawTarget = parseFloat(el.dataset.target);
     const decimals = parseInt(el.dataset.decimals || '0', 10);
     const suffix = el.dataset.suffix || '';
-    const duration = 1800;
+    const countDown = el.dataset.countDown === 'true';
+    const rawFrom = el.dataset.from ? parseFloat(el.dataset.from) : null;
+    const duration = 1000;
     const start = performance.now();
 
     // Determine display format
@@ -134,21 +136,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // For 586362 → display as "586,362"
 
     let displayTarget;
+    let displayFrom;
     let formatFn;
 
     if (suffix === '万') {
       displayTarget = rawTarget / 10000;
+      displayFrom = rawFrom !== null ? rawFrom / 10000 : 0;
       formatFn = function (val) {
         return Math.floor(val) + suffix;
       };
     } else if (decimals > 0) {
       // target is already * 10^decimals, need to divide
       displayTarget = rawTarget / Math.pow(10, decimals);
+      displayFrom = rawFrom !== null ? rawFrom / Math.pow(10, decimals) : 0;
       formatFn = function (val) {
         return val.toFixed(1);
       };
     } else {
       displayTarget = rawTarget;
+      displayFrom = rawFrom !== null ? rawFrom : 0;
       formatFn = function (val) {
         return Math.round(val).toLocaleString('ja-JP');
       };
@@ -158,7 +164,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const easedProgress = easeOut(progress);
-      const current = displayTarget * easedProgress;
+      let current;
+      if (countDown) {
+        current = displayFrom - (displayFrom - displayTarget) * easedProgress;
+      } else {
+        current = displayTarget * easedProgress;
+      }
       el.textContent = formatFn(current);
 
       if (progress < 1) {
