@@ -28,6 +28,7 @@ portfolio/
 ├── index.html       # 全セクションのHTML（1ファイル完結）
 ├── css/style.css    # CSS variables によるテーマ管理 + 全スタイル
 ├── js/main.js       # テーマ切り替え・アニメーション・Intersection Observer
+├── js/i18n.js       # 言語切り替えロジック（EN翻訳辞書 + DOMキャッシュ方式）
 ├── DESIGN_RULE.md   # Apple HIG 準拠のデザインシステム仕様書
 └── CLAUDE.md        # このファイル
 ```
@@ -35,6 +36,20 @@ portfolio/
 外部依存は Google Fonts（Inter）のみ。
 
 ## アーキテクチャ
+
+### 言語切り替え（i18n）
+- ヘッダーの `[EN]` / `[JA]` ボタンで切り替え（`#langToggle`）
+- `localStorage` キー `"lang"` でユーザー設定を保持。デフォルトは `"ja"`
+- **設計方針: HTMLがJAのソース・オブ・トゥルース**
+  - `DOMContentLoaded` 時に `[data-i18n]` / `[data-i18n-html]` / `[data-i18n-aria]` 要素の初期値を `jaCache` に保存
+  - JA復元時は `jaCache` から読み出し → HTMLを変更するだけでJA側は自動追従
+  - EN翻訳のみ `js/i18n.js` の `enTranslations` オブジェクトで管理
+- **属性の使い分け**:
+  - `data-i18n="キー"` → `textContent` を置換（通常テキスト）
+  - `data-i18n-html="キー"` → `innerHTML` を置換（リンク・`<br>` を含む要素）
+  - `data-i18n-aria="キー"` → `aria-label` 属性を置換
+- タイプライターフレーズはDOMに存在しないため `js/i18n.js` の `jaPhrases` / `enTranslations.typewriter.phrases` で個別管理
+- count-up アニメーションは言語切り替え時に再実行。EN用の数値は `data-en-target` / `data-en-suffix` / `data-en-decimals` で指定（例: JA「55万」→ EN「550K」）
 
 ### テーマシステム
 - `<html data-theme="light|dark">` 属性で切り替え
@@ -81,11 +96,20 @@ Hero (#hero) → About (#about) → Numbers (#numbers) → Works (#works)
   - `data-category` 属性: `mobile-app` / `wordpress` / `web-app`
   - `data-status` 属性: `live` / `wip`
   - ステータスバッジ: `<span class="work-status live">● Live</span>` または `<span class="work-status wip">● In Progress</span>`
-- **タイプライターのフレーズ変更**: `js/main.js` の `phrases` 配列を編集
+- **タイプライターのフレーズ変更**: `js/i18n.js` の `jaPhrases`（日本語）と `enTranslations.typewriter.phrases`（英語）を編集
 - **カラーパレット変更**: `css/style.css` の `:root, [data-theme="light"]` と `[data-theme="dark"]` のCSS variablesを編集
-- **タイムラインへの項目追加**: `#about` 内の `.about-timeline` に `.timeline-item.reveal` を追加（現在地には `.timeline-item-current` も付与）
+- **タイムラインへの項目追加**: `#about` 内の `.about-timeline` に `.timeline-item.reveal` を追加（現在地には `.timeline-item-current` も付与）。`data-i18n` または `data-i18n-html` を付与し、`js/i18n.js` の `enTranslations.about.timeline` に英訳を追加
 - **スキルの追加**: `#skills` 内の `.skill-category` に `.skill-badge` を追加（主要スキルには `.main` クラスを付与）
-- **tech-chips の更新**: `#skills` 内の `.tech-chips` に `.tech-chip` を追加
+- **tech-chips の更新**: `#skills` 内の `.tech-chips` に `.tech-chip` を追加（日本語チップには `data-i18n` を付与し `enTranslations.skills.chips` に英訳を追加）
+
+## i18n 更新ルール
+
+| やりたいこと | 変更するファイル |
+|-------------|----------------|
+| 日本語テキストを修正 | `index.html` のみ |
+| 英語テキストを修正 | `js/i18n.js` の `enTranslations` のみ |
+| 新しい翻訳対象要素を追加 | `index.html` に `data-i18n="新キー"` を付与 ＋ `js/i18n.js` の `enTranslations` に英訳を追加 |
+| タイプライターフレーズを変更 | `js/i18n.js` の `jaPhrases`（JA）と `enTranslations.typewriter.phrases`（EN）を両方編集 |
 
 ## CSS変数リファレンス（主要）
 
