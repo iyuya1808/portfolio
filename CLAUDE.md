@@ -21,6 +21,17 @@ python3 -m http.server 8080
 
 依存パッケージなし。ビルドステップなし。lint・テストコマンドなし。
 
+## デプロイ
+
+`main` ブランチに push すると GitHub Actions が自動で Xserver へ FTP デプロイする。
+
+- **本番URL**: `https://technophere.com/portfolio`
+- **デプロイ先**: Xserver `technophere.com/public_html/portfolio/`
+- **ワークフロー**: `.github/workflows/deploy.yml`
+- **必要なシークレット**: `FTP_PASSWORD`（GitHub リポジトリの Settings → Secrets に登録済み）
+
+Vercel（`portfolio-gules-pi-71.vercel.app`）はプレビュー用として残してあるが、本番は Xserver。
+
 ## ファイル構成
 
 ```
