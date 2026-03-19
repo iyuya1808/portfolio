@@ -179,9 +179,18 @@ body {
 }
 
 .gradient-text {
-  color: var(--bg);
-  -webkit-text-stroke: 2px var(--accent);
-  paint-order: stroke fill;
+  display: block;
+  width: 100%;
+  height: 1em;
+  overflow: visible;
+}
+
+.gradient-text text,
+.gradient-text .outline-mask-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: inherit;
+  letter-spacing: -0.02em;
 }
 
 .btn {
@@ -309,21 +318,6 @@ body {
   text-decoration: none;
   flex-shrink: 0;
   margin-right: auto;
-}
-
-.nav-logo-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
 }
 
 .nav-logo-icon {
@@ -879,13 +873,6 @@ body {
   letter-spacing: -0.02em;
 }
 
-.hero-name-en {
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
-  font-weight: 300;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
-}
-
 .hero-tagline {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   font-weight: 500;
@@ -971,16 +958,6 @@ body {
 .about-bio strong {
   color: var(--text);
   font-weight: 600;
-}
-
-.about-card {
-  width: 340px;
-  flex-shrink: 0;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  box-shadow: var(--shadow);
 }
 
 /* ============================================================
@@ -1205,6 +1182,8 @@ body {
 }
 
 .about-card {
+  width: 340px;
+  flex-shrink: 0;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1474,12 +1453,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-}
-
-.work-footer-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .work-status {
@@ -2603,6 +2576,11 @@ a:focus-visible {
     text-align: center;
   }
 
+  .outline-mask-text {
+    transform: translateX(50%);
+    text-anchor: middle;
+  }
+
   .hero-badge {
     align-self: center;
   }
@@ -2641,14 +2619,6 @@ a:focus-visible {
     padding: 18px 20px;
   }
 
-  .numbers-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .kpi-highlight {
-    grid-column: 1 / -1;
-  }
-
   .section {
     padding: 64px 0;
   }
@@ -2660,10 +2630,6 @@ a:focus-visible {
 }
 
 @media (max-width: 480px) {
-  .numbers-grid {
-    grid-template-columns: 1fr;
-  }
-
   .hero-name {
     font-size: clamp(2.2rem, 10vw, 3rem);
   }

@@ -80,7 +80,7 @@
         </ul>
       </nav>
       <div class="nav-overlay-footer">
-        <span>© 2025 Yuya Itonaga</span>
+        <span>© 2026 Yuya Itonaga</span>
       </div>
     </div>
   </div>
@@ -100,7 +100,17 @@
             <span data-i18n="hero.badge">テクノフィア代表 / プロダクトクリエイター</span>
           </div>
           <h1 class="hero-name reveal">
-            <span class="gradient-text">Yuya Itonaga</span>
+            <svg class="gradient-text" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Yuya Itonaga">
+              <defs>
+                <mask id="name-outline">
+                  <rect x="-50" y="-50" width="2000" height="300" fill="black"/>
+                  <text class="outline-mask-text" x="0" y="0.82em"
+                        fill="black" stroke="white" stroke-width="3"
+                        paint-order="stroke fill">Yuya Itonaga</text>
+                </mask>
+              </defs>
+              <rect x="-50" y="-50" width="2000" height="300" fill="var(--accent)" mask="url(#name-outline)"/>
+            </svg>
           </h1>
           <p class="hero-tagline reveal" id="typewriterTarget">
             AI プロンプトエンジニア × フルスタック開発者
@@ -628,65 +638,7 @@
             </div>
           </article>
 
-          <!-- display:none — 復活可能 -->
-          <article class="service-card reveal" style="display: none;">
-            <div class="service-card__inner">
-              <div class="service-card__header">
-                <div class="service-card__icon-wrap" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="10" cy="10" r="7"/>
-                    <line x1="15.5" y1="15.5" x2="21" y2="21"/>
-                    <polyline points="7 12.5 9.5 9.5 11.5 11.5 14 7"/>
-                  </svg>
-                </div>
-                <span class="service-card__num" aria-hidden="true">02</span>
-              </div>
-              <h3 class="service-card__title">SEO コンサルティング</h3>
-              <p class="service-card__desc">
-                月間 55 万アクセスのメディア運営で培った実績ある SEO 戦略を提供。
-                キーワード選定から内部対策・コンテンツ改善まで。
-              </p>
-              <div class="service-card__footer">
-                <span class="service-card__cta">詳しく見る <span aria-hidden="true">→</span></span>
-              </div>
-            </div>
-          </article>
-
-          <!-- display:none — 復活可能 -->
-          <article class="service-card reveal" style="display: none;">
-            <div class="service-card__inner">
-              <div class="service-card__header">
-                <div class="service-card__icon-wrap" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="3"/>
-                    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
-                    <line x1="9.9" y1="9.9" x2="5.5" y2="5.5"/>
-                    <line x1="14.1" y1="9.9" x2="18.5" y2="5.5"/>
-                    <line x1="9.9" y1="14.1" x2="5.5" y2="18.5"/>
-                    <line x1="14.1" y1="14.1" x2="18.5" y2="18.5"/>
-                    <circle cx="4.5" cy="4.5" r="2.5"/>
-                    <circle cx="19.5" cy="4.5" r="2.5"/>
-                    <circle cx="4.5" cy="19.5" r="2.5"/>
-                    <circle cx="19.5" cy="19.5" r="2.5"/>
-                  </svg>
-                </div>
-                <span class="service-card__num" aria-hidden="true">03</span>
-              </div>
-              <h3 class="service-card__title">ドローン空撮</h3>
-              <p class="service-card__desc">
-                物件・イベント・観光地などの空撮映像を提供。
-                高品質な映像コンテンツで Web サイトや SNS を強化。
-              </p>
-              <div class="service-card__footer">
-                <span class="service-card__cta">詳しく見る <span aria-hidden="true">→</span></span>
-              </div>
-            </div>
-          </article>
-
         </div>
-
-
-
       </div>
     </section>
 

@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
      ============================================================ */
   const header = document.getElementById('header');
   if (header) {
-    var scrolled = false;
+    let scrolled = false;
     window.addEventListener('scroll', function () {
-      var shouldBeScrolled = window.scrollY > 20;
+      const shouldBeScrolled = window.scrollY > 20;
       if (shouldBeScrolled !== scrolled) {
         scrolled = shouldBeScrolled;
         header.classList.toggle('scrolled', scrolled);
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (hamburger && overlay) {
     hamburger.addEventListener('click', function () {
-      var isOpen = overlay.classList.toggle('open');
+      const isOpen = overlay.classList.toggle('open');
       hamburger.classList.toggle('open', isOpen);
       hamburger.setAttribute('aria-expanded', String(isOpen));
       overlay.setAttribute('aria-hidden', String(!isOpen));
@@ -92,24 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelectorAll('.reveal').forEach(function (el) {
     revealObserver.observe(el);
-  });
-
-  /* ============================================================
-     SKILL BARS (triggered by reveal visible class)
-     ============================================================ */
-  // skill-fill animation is CSS-driven when parent gets .visible
-  // We watch each .skill-category separately
-  const skillObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        skillObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll('.skill-category').forEach(function (el) {
-    skillObserver.observe(el);
   });
 
   /* ============================================================
@@ -163,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
       displayTarget = rawTarget;
       displayFrom = rawFrom !== null ? rawFrom : 0;
       formatFn = function (val) {
-        var locale = document.documentElement.lang === 'en' ? 'en-US' : 'ja-JP';
+        const locale = document.documentElement.lang === 'en' ? 'en-US' : 'ja-JP';
         return Math.round(val).toLocaleString(locale);
       };
     }
@@ -213,20 +195,20 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ============================================================
      3D TILT + CURSOR SPOTLIGHT (Cards)
      ============================================================ */
-  var tiltTargets = document.querySelectorAll(
+  const tiltTargets = document.querySelectorAll(
     '.work-card, .service-card, .kpi-card, .media-card'
   );
 
   if (!('ontouchstart' in window)) {
     tiltTargets.forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
-        var rect = card.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        var cx = rect.width / 2;
-        var cy = rect.height / 2;
-        var rotX = ((y - cy) / cy) * -5;
-        var rotY = ((x - cx) / cx) * 5;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotX = ((y - cy) / cy) * -5;
+        const rotY = ((x - cx) / cx) * 5;
         card.style.transform =
           'perspective(700px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.02)';
         card.style.setProperty('--cx', ((x / rect.width) * 100) + '%');
@@ -244,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ============================================================
      TIMELINE LINE DRAW
      ============================================================ */
-  var timelineObserver = new IntersectionObserver(function (entries) {
+  const timelineObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('line-drawn');
@@ -256,10 +238,6 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.about-timeline-wrap').forEach(function (el) {
     timelineObserver.observe(el);
   });
-
-  /* ============================================================
-     TECH CHIPS — marquee mode (chip-pop removed; marquee handles reveal)
-     ============================================================ */
 
   /* ============================================================
      TYPEWRITER EFFECT (Hero tagline)
@@ -364,19 +342,19 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ============================================================
      CONTACT CARD GLOWING BORDER (mouse-tracking conic gradient)
      ============================================================ */
-  var isTouch = window.matchMedia('(hover: none)').matches;
+  const isTouch = window.matchMedia('(hover: none)').matches;
 
   if (isTouch) {
     /* タッチデバイス: スクロール位置に連動してグロウ角度・不透明度をリアルタイム更新 */
-    var touchGlowCards = document.querySelectorAll('.contact-card');
+    const touchGlowCards = document.querySelectorAll('.contact-card');
 
     function updateTouchGlow() {
-      var vh = window.innerHeight;
+      const vh = window.innerHeight;
       touchGlowCards.forEach(function (card) {
-        var r = card.getBoundingClientRect();
+        const r = card.getBoundingClientRect();
         /* ビューポート内に見えている割合 (0〜1) */
-        var visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-        var ratio = Math.max(0, Math.min(1, visibleH / r.height));
+        const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+        const ratio = Math.max(0, Math.min(1, visibleH / r.height));
 
         card.style.setProperty('--glow-active', ratio.toFixed(3));
         if (ratio <= 0) return;
@@ -384,8 +362,8 @@ document.addEventListener('DOMContentLoaded', function () {
         /* カード中心がビューポートのどこにいるかでグロウ角度を決定
            ビューポート下端から入ってくるとき → 180°（下側）
            ビューポート上端へ抜けるとき      →   0°（上側） */
-        var cardCenter = r.top + r.height / 2;
-        var angle = (cardCenter / vh) * 180;
+        const cardCenter = r.top + r.height / 2;
+        const angle = (cardCenter / vh) * 180;
         card.style.setProperty('--glow-start', angle.toFixed(1));
       });
     }
@@ -396,8 +374,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (!isTouch) {
-    var glowCards = document.querySelectorAll('.contact-card');
-    var glowStates = new Map();
+    const glowCards = document.querySelectorAll('.contact-card');
+    const glowStates = new Map();
 
     glowCards.forEach(function (card) {
       glowStates.set(card, { current: 0, target: 0, rafId: 0 });
@@ -405,12 +383,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('pointermove', function (e) {
       glowCards.forEach(function (card) {
-        var rect = card.getBoundingClientRect();
-        var cx = rect.left + rect.width * 0.5;
-        var cy = rect.top + rect.height * 0.5;
-        var PROXIMITY = 80;
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width * 0.5;
+        const cy = rect.top + rect.height * 0.5;
+        const PROXIMITY = 80;
 
-        var near =
+        const near =
           e.clientX > rect.left - PROXIMITY &&
           e.clientX < rect.right + PROXIMITY &&
           e.clientY > rect.top - PROXIMITY &&
@@ -419,14 +397,14 @@ document.addEventListener('DOMContentLoaded', function () {
         card.style.setProperty('--glow-active', near ? '1' : '0');
         if (!near) return;
 
-        var angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
-        var state = glowStates.get(card);
-        var diff = ((angle - state.current + 180) % 360) - 180;
+        const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
+        const state = glowStates.get(card);
+        const diff = ((angle - state.current + 180) % 360) - 180;
         state.target = state.current + diff;
 
         if (!state.rafId) {
           (function tick() {
-            var d = state.target - state.current;
+            const d = state.target - state.current;
             if (Math.abs(d) < 0.1) {
               state.current = state.target;
               state.rafId = 0;
