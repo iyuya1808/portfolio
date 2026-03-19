@@ -10,15 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: sv14468.xserver.jp
+          username: iyuya0623
           password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
           server-dir: /technophere.com/public_html/portfolio/
           local-dir: ./
           exclude: |
