@@ -2573,7 +2573,13 @@ a:focus-visible {
     text-align: center;
   }
 
+  .hero-text {
+    align-items: center;
+    width: 100%;
+  }
+
   .outline-mask-text {
+    transform-box: view-box;
     transform: translateX(50%);
     text-anchor: middle;
   }
@@ -2589,6 +2595,7 @@ a:focus-visible {
   .hero-mission {
     margin: 0 auto 40px;
     max-width: 100%;
+    text-align: center;
   }
 
   /* Works: タブレットで2列 → 自動調整 */
