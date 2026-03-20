@@ -429,4 +429,9 @@ document.addEventListener('DOMContentLoaded', function () {
       updateThemeIcon(next);
     }
   });
+
+  /* wip カードを非表示 */
+  document.querySelectorAll('.work-card[data-status="wip"]').forEach(function (card) {
+    card.style.display = 'none';
+  });
 });

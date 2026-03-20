@@ -1327,6 +1327,7 @@ body {
   }
 }
 
+
 .work-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -1341,10 +1342,6 @@ body {
     transform var(--duration-normal) var(--ease-default),
     box-shadow var(--duration-normal) var(--ease-default),
     border-color var(--duration-normal) var(--ease-default);
-}
-
-.work-card[data-status="wip"] {
-  display: none;
 }
 
 @media (hover: hover) {

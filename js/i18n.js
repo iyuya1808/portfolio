@@ -87,7 +87,8 @@ var enTranslations = {
     applinkgenerator: { desc: 'A WordPress plugin that generates and inserts App Store / Google Play links directly from the block editor. Streamlines writing app review articles.' },
     pushfromgithub: { desc: 'A plugin that deploys (updates) your own WordPress themes and plugins linked to a GitHub repository with one click. Easy CI/CD for WordPress.' },
     consoleinsight: { desc: 'A tool that visualizes Google Search Console data in a clear, intuitive way. A dashboard app to streamline SEO operations.' },
-    vibestep: { desc: 'A mobile app delivering interactive experiences synchronized to music. An entertainment product pursuing unique UI/UX.' }
+    vibestep: { desc: 'A mobile app delivering interactive experiences synchronized to music. An entertainment product pursuing unique UI/UX.' },
+    lemonai: { desc: 'An AI platform exclusively for the Keio University engineering circle "Lemon". Features a 24/7 AI mentor, a virtual clubroom dashboard, and an Idea Gacha system. Restricted to circle members via @keio.jp authentication and invite-only access. Responsible for FE / UI·UX in team development.' }
   },
   media: {
     title: 'Media',
