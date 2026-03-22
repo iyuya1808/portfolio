@@ -2578,6 +2578,10 @@ a:focus-visible {
     width: 100%;
   }
 
+  .hero-name {
+    width: 100%;
+  }
+
   .hero-badge {
     align-self: center;
   }

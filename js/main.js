@@ -30,14 +30,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.innerWidth <= 768) {
       const svg = heroSvgText.closest('svg');
       const w = svg ? svg.getBoundingClientRect().width : 0;
-      heroSvgText.setAttribute('x', w / 2);
-      heroSvgText.setAttribute('text-anchor', 'middle');
+      if (w > 0) {
+        heroSvgText.setAttribute('x', w / 2);
+        heroSvgText.setAttribute('text-anchor', 'middle');
+      }
     } else {
       heroSvgText.setAttribute('x', '0');
       heroSvgText.removeAttribute('text-anchor');
     }
   }
-  updateHeroTextX();
+  requestAnimationFrame(updateHeroTextX);
   window.addEventListener('resize', updateHeroTextX, { passive: true });
 
   /* ============================================================
