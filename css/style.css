@@ -2578,12 +2578,6 @@ a:focus-visible {
     width: 100%;
   }
 
-  .outline-mask-text {
-    transform-box: view-box;
-    transform: translateX(50%);
-    text-anchor: middle;
-  }
-
   .hero-badge {
     align-self: center;
   }

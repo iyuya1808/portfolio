@@ -22,6 +22,25 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ============================================================
+     HERO SVG NAME CENTERING (mobile)
+     ============================================================ */
+  const heroSvgText = document.querySelector('.outline-mask-text');
+  function updateHeroTextX() {
+    if (!heroSvgText) return;
+    if (window.innerWidth <= 768) {
+      const svg = heroSvgText.closest('svg');
+      const w = svg ? svg.getBoundingClientRect().width : 0;
+      heroSvgText.setAttribute('x', w / 2);
+      heroSvgText.setAttribute('text-anchor', 'middle');
+    } else {
+      heroSvgText.setAttribute('x', '0');
+      heroSvgText.removeAttribute('text-anchor');
+    }
+  }
+  updateHeroTextX();
+  window.addEventListener('resize', updateHeroTextX, { passive: true });
+
+  /* ============================================================
      HEADER SCROLL STATE
      ============================================================ */
   const header = document.getElementById('header');
