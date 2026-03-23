@@ -24,6 +24,11 @@ html {
 /* ============================================================
    CSS VARIABLES — LIGHT THEME (default)
    ============================================================ */
+:root {
+  /* === フォント === */
+  --font-base: 'Zen Kaku Gothic Antique', system-ui, -apple-system, sans-serif;
+}
+
 :root,
 [data-theme="light"] {
   /* === ブランドカラー (Apple HIG) === */
@@ -161,7 +166,7 @@ body,
    BODY
    ============================================================ */
 body {
-  font-family: 'Zen Kaku Gothic Antique', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-base);
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.7;
