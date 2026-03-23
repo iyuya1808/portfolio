@@ -26,7 +26,7 @@ html {
    ============================================================ */
 :root {
   /* === フォント === */
-  --font-base: 'Zen Kaku Gothic Antique', system-ui, -apple-system, sans-serif;
+  --font-base: 'Zen Kaku Gothic New', system-ui, -apple-system, sans-serif;
 }
 
 :root,
