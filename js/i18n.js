@@ -56,7 +56,7 @@ var enTranslations = {
       '2018_04': 'Enrolled in Keio Shonan Fujisawa Junior High School',
       '2021_01': 'Started managing several game strategy sites on <a href="https://gamerch.com/" class="timeline-link" target="_blank" rel="noopener noreferrer">Gamerch</a>',
       '2021_04': 'Enrolled in Keio Shonan Fujisawa Senior High School',
-      '2022_02': 'Contributed 100+ articles as a dedicated writer (contract) for <a href="https://gamepedia.jp/" class="timeline-link" target="_blank" rel="noopener noreferrer">Koryaku Daihyakka</a>',
+      '2022_02': 'Contributed 100+ articles as a dedicated writer (contract) for <a href="https://gamepedia.jp/" class="timeline-link" target="_blank" rel="noopener noreferrer">Gamepedia</a>',
       '2023_08': 'Founded Technophere',
       '2024_03': "Won the Principal's Award for a school intro video using drone aerial photography",
       '2024_04': 'Enrolled at Keio University, Faculty of Science and Technology',
@@ -65,7 +65,7 @@ var enTranslations = {
       '2025_09': 'Launched web development agency services for businesses',
       '2025_12': 'Launched KPass — a study support app for Keio students',
       presentYear: 'Present',
-      present: 'Currently enrolled at Keio University, Dept. of System Design Engineering'
+      present: 'Currently enrolled at Keio University, Department of System Design Engineering'
     }
   },
   numbers: {
@@ -88,7 +88,7 @@ var enTranslations = {
     pushfromgithub: { desc: 'A plugin that deploys (updates) your own WordPress themes and plugins linked to a GitHub repository with one click. Easy CI/CD for WordPress.' },
     consoleinsight: { desc: 'A tool that visualizes Google Search Console data in a clear, intuitive way. A dashboard app to streamline SEO operations.' },
     vibestep: { desc: 'A mobile app delivering interactive experiences synchronized to music. An entertainment product focused on unique UI/UX experiences.' },
-    lemonai: { desc: 'An AI platform exclusively for the Keio University engineering club "Lemon". Features a 24/7 AI mentor, a virtual clubroom dashboard, and an Idea Gacha system. Restricted to club members via @keio.jp authentication and invite-only access. Responsible for FE / UI·UX in team development.' }
+    lemonai: { desc: 'An AI platform exclusively for the Keio University engineering club "Lemon". Features a 24/7 AI mentor, a virtual clubroom dashboard, and an Idea Gacha (random idea generator) system. Restricted to club members via @keio.jp authentication and invite-only access. Responsible for FE / UI·UX in team development.' }
   },
   media: {
     title: 'Media',
