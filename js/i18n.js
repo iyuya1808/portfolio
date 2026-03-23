@@ -18,7 +18,7 @@ var jaPhrases = [
 /* ---- EN translations ---- */
 var enTranslations = {
   meta: {
-    description: 'Portfolio of Yuya Itonaga, CEO of Technophere. AI engineer at Keio University. Runs media sites with up to 1.5M monthly PV and builds apps.'
+    description: 'Portfolio of Yuya Itonaga, CEO of Technophere. An AI engineer and student at Keio University. Runs media sites with up to 1.5M monthly page views and builds apps.'
   },
   nav: {
     ariaLabel: 'Main navigation',
@@ -34,7 +34,7 @@ var enTranslations = {
     title: 'About Me',
     bio: {
       wsm: {
-        p1: 'By consistently publishing content centered on content operations, SEO, and analytics, I grew Technophere — my own web media brand — to 1.5 million monthly page views.',
+        p1: 'By consistently publishing on topics like SEO, analytics, and content strategy, I grew Technophere — my own web media brand — to 1.5 million monthly page views.',
         p2: 'I run data-driven PDCA cycles to maximize organic search traffic and boost engagement.'
       },
       ai: {
@@ -60,7 +60,7 @@ var enTranslations = {
       '2023_08': 'Founded Technophere',
       '2024_03': "Won the Principal's Award for a school intro video using drone aerial photography",
       '2024_04': 'Enrolled at Keio University, Faculty of Science and Technology',
-      '2024_06': "Started internship at venture company 'Taiziii Co., Ltd.'",
+      '2024_06': "Started internship at startup 'Taiziii Co., Ltd.'",
       '2025_08': 'Launched BrawlTech — a Brawl Stars strategy & stats app',
       '2025_09': 'Launched web development agency services for businesses',
       '2025_12': 'Launched KPass — a study support app for Keio students',
@@ -82,13 +82,13 @@ var enTranslations = {
   works: {
     title: 'Products',
     brawltech: { desc: "A strategy and stats app for the action game 'Brawl Stars'. Provides real-time data and character guides using Supercell's official API and third-party APIs. Supports iOS and Android via Flutter." },
-    kpass: { desc: "A study support app for Keio students. Fetches data from the official learning platform 'K-LMS (Canvas)' API and displays it in an organized view. Features multi-day session persistence and assignment tracking." },
+    kpass: { desc: "A study support app for Keio students. Fetches data from the official learning platform 'K-LMS (Canvas)' API and displays it in an organized view. Features extended login sessions and assignment tracking." },
     mimishare: { desc: 'A headband rental service for Disneyland visitors. Far cheaper than buying one for a single visit. Simple flow: deposit-based reservation → borrow and return via QR code.' },
     applinkgenerator: { desc: 'A WordPress plugin that generates and inserts App Store / Google Play links directly from the block editor. Streamlines writing app review articles.' },
     pushfromgithub: { desc: 'A plugin that deploys (updates) your own WordPress themes and plugins linked to a GitHub repository with one click. Easy CI/CD for WordPress.' },
     consoleinsight: { desc: 'A tool that visualizes Google Search Console data in a clear, intuitive way. A dashboard app to streamline SEO operations.' },
-    vibestep: { desc: 'A mobile app delivering interactive experiences synchronized to music. An entertainment product pursuing unique UI/UX.' },
-    lemonai: { desc: 'An AI platform exclusively for the Keio University engineering circle "Lemon". Features a 24/7 AI mentor, a virtual clubroom dashboard, and an Idea Gacha system. Restricted to circle members via @keio.jp authentication and invite-only access. Responsible for FE / UI·UX in team development.' }
+    vibestep: { desc: 'A mobile app delivering interactive experiences synchronized to music. An entertainment product focused on unique UI/UX experiences.' },
+    lemonai: { desc: 'An AI platform exclusively for the Keio University engineering club "Lemon". Features a 24/7 AI mentor, a virtual clubroom dashboard, and an Idea Gacha system. Restricted to club members via @keio.jp authentication and invite-only access. Responsible for FE / UI·UX in team development.' }
   },
   media: {
     title: 'Media',
