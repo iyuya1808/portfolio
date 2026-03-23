@@ -161,7 +161,7 @@ body,
    BODY
    ============================================================ */
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Zen Kaku Gothic Antique', system-ui, -apple-system, sans-serif;
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.7;
@@ -832,6 +832,7 @@ body {
   border-radius: 100px;
   background: rgba(var(--accent-rgb), 0.1);
   border: 1px solid rgba(var(--accent-rgb), 0.25);
+  font-family: 'Zen Kaku Gothic Antique', sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--accent);
@@ -853,14 +854,16 @@ body {
 
 .hero-name {
   font-size: clamp(2.8rem, 8vw, 5.5rem);
-  font-weight: 700;
+  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-weight: 600;
   line-height: 1.05;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
-  color: var(--text);
+  color: var(--text-muted);
 }
 
 .hero-tagline {
+  font-family: 'Zen Kaku Gothic Antique', sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   font-weight: 500;
   color: var(--text-muted);
@@ -869,6 +872,7 @@ body {
 }
 
 .hero-mission {
+  font-family: 'Zen Kaku Gothic Antique', sans-serif;
   font-size: clamp(0.9rem, 2vw, 1.05rem);
   color: var(--text-muted);
   max-width: 580px;
