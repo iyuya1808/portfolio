@@ -853,12 +853,11 @@ body {
 
 .hero-name {
   font-size: clamp(2.8rem, 8vw, 5.5rem);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.05;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--accent);
+  color: var(--text);
 }
 
 .hero-tagline {
