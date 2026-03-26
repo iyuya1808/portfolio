@@ -348,12 +348,21 @@ document.addEventListener('DOMContentLoaded', function () {
     /* タッチデバイス: スクロール位置に連動してグロウ角度・不透明度をリアルタイム更新 */
     const touchGlowCards = document.querySelectorAll('.contact-card');
 
+    /* scrollStart をDOMContentLoaded後に一度だけキャッシュ（CSS transformの影響を排除） */
+    const scrollY0 = window.scrollY || window.pageYOffset;
+    const vh0 = window.innerHeight;
+    const cardScrollStarts = Array.from(touchGlowCards).map(function (card) {
+      const r = card.getBoundingClientRect();
+      const absTop = scrollY0 + r.top;
+      return absTop + r.height - vh0; /* カード下端がビューポート下端に入る scrollY */
+    });
+
     function updateTouchGlow() {
       const vh = window.innerHeight;
       const scrollY = window.scrollY || window.pageYOffset;
       const maxScrollY = Math.max(1, document.documentElement.scrollHeight - vh);
 
-      touchGlowCards.forEach(function (card) {
+      touchGlowCards.forEach(function (card, i) {
         const r = card.getBoundingClientRect();
         /* ビューポート内に見えている割合 (0〜1) */
         const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
@@ -362,16 +371,15 @@ document.addEventListener('DOMContentLoaded', function () {
         card.style.setProperty('--glow-active', ratio.toFixed(3));
         if (ratio <= 0) return;
 
-        /* ページ最下部に到達した時点でグロウが1周（360°）するように
-           scrollStart = カード下端がビューポート下端に入る瞬間の scrollY
-           scrollEnd   = ページ最大スクロール量 */
-        const cardAbsTop = scrollY + r.top;
-        const scrollStart = cardAbsTop + r.height - vh;
+        /* progress: カード初表示(0) → ページ最下部(1)
+           angle: 180°(下)スタート → 270°(左) → 360°(上) → 90°(右) → 180°(下) と1周
+           左辺は progress=0.25 の序盤に出現し、見逃しにくい */
+        const scrollStart = cardScrollStarts[i];
         const scrollRange = maxScrollY - scrollStart;
         const progress = scrollRange > 0
           ? Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollRange))
           : 1;
-        const angle = progress * 720;
+        const angle = progress * 360 + 180;
         card.style.setProperty('--glow-start', angle.toFixed(1));
       });
     }
