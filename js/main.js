@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const progress = scrollRange > 0
           ? Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollRange))
           : 1;
-        const angle = progress * 360;
+        const angle = progress * 720;
         card.style.setProperty('--glow-start', angle.toFixed(1));
       });
     }
