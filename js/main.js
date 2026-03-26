@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let phrases = (window.i18nPhrases) || [
       'AI × エンジニア × コンテンツクリエイター',
       'フルスタック開発 × SEO × アプリケーション',
-      '慶應大在学中 × テクノフィア代表',
+      '慶應義塾大学 × テクノフィア代表',
     ];
     let phraseIndex = 0;
     let charIndex = 0;
@@ -434,6 +434,32 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.work-card[data-status="wip"]').forEach(function (card) {
     card.style.display = 'none';
   });
+  /* ============================================================
+     HERO PARALLAX
+     ============================================================ */
+  const hero = document.getElementById('hero');
+  const heroImg = document.querySelector('.hero-photo-img');
+  
+  if (hero && heroImg) {
+    function updateParallax() {
+      const scrollPos = window.scrollY;
+      const heroHeight = hero.offsetHeight;
+      
+      // Calculate how much of the hero is scrolled (0 to 1+)
+      // Since it's at the top, scrollPos is enough.
+      if (scrollPos <= heroHeight) {
+        // Move image up by ~35% of the scroll distance
+        // Since height is 150% and top is -25%, we have 25% room up and 25% room down.
+        const yPos = scrollPos * 0.35;
+        heroImg.style.transform = `translate3d(0, ${yPos}px, 0)`;
+      }
+    }
+    
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    // Initial call
+    updateParallax();
+  }
+
   /* ============================================================
      CACHE CLEAR / RESET
      ============================================================ */
