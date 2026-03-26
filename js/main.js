@@ -350,6 +350,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateTouchGlow() {
       const vh = window.innerHeight;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const maxScrollY = Math.max(1, document.documentElement.scrollHeight - vh);
+
       touchGlowCards.forEach(function (card) {
         const r = card.getBoundingClientRect();
         /* ビューポート内に見えている割合 (0〜1) */
@@ -359,11 +362,16 @@ document.addEventListener('DOMContentLoaded', function () {
         card.style.setProperty('--glow-active', ratio.toFixed(3));
         if (ratio <= 0) return;
 
-        /* カード中心がビューポートのどこにいるかでグロウ角度を決定
-           ビューポート下端から入ってくるとき → 180°（下側）
-           ビューポート上端へ抜けるとき      →   0°（上側） */
-        const cardCenter = r.top + r.height / 2;
-        const angle = (cardCenter / vh) * 1440;
+        /* ページ最下部に到達した時点でグロウが1周（360°）するように
+           scrollStart = カード下端がビューポート下端に入る瞬間の scrollY
+           scrollEnd   = ページ最大スクロール量 */
+        const cardAbsTop = scrollY + r.top;
+        const scrollStart = cardAbsTop + r.height - vh;
+        const scrollRange = maxScrollY - scrollStart;
+        const progress = scrollRange > 0
+          ? Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollRange))
+          : 1;
+        const angle = progress * 360;
         card.style.setProperty('--glow-start', angle.toFixed(1));
       });
     }
