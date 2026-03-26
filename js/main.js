@@ -440,11 +440,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const hero = document.getElementById('hero');
   const heroImg = document.querySelector('.hero-photo-img');
   
-  if (hero && heroImg) {
+  if (hero && heroImg && window.matchMedia('(min-width: 768px)').matches) {
     function updateParallax() {
       const scrollPos = window.scrollY;
       const heroHeight = hero.offsetHeight;
-      
+
       // Calculate how much of the hero is scrolled (0 to 1+)
       // Since it's at the top, scrollPos is enough.
       if (scrollPos <= heroHeight) {
@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
         heroImg.style.transform = `translate3d(0, ${yPos}px, 0)`;
       }
     }
-    
+
     window.addEventListener('scroll', updateParallax, { passive: true });
     // Initial call
     updateParallax();
