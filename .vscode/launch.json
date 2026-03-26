@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Git: Sync Develop to Main",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "git",
+      "runtimeArgs": ["sync", "${input:commitMessage}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "type": "promptString",
+      "description": "コミットメッセージを入力してください（空でもOK）",
+      "default": "Update: sync develop to main"
+    }
+  ]
+}
