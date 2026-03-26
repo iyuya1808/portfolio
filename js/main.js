@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
            ビューポート下端から入ってくるとき → 180°（下側）
            ビューポート上端へ抜けるとき      →   0°（上側） */
         const cardCenter = r.top + r.height / 2;
-        const angle = (cardCenter / vh) * 180;
+        const angle = (cardCenter / vh) * 540;
         card.style.setProperty('--glow-start', angle.toFixed(1));
       });
     }
