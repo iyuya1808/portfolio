@@ -687,6 +687,15 @@ body {
   align-items: flex-start;
 }
 
+.nav-version {
+  display: inline-block;
+  margin-left: 6px;
+  opacity: 0.5;
+  font-weight: 400;
+  font-size: 0.65rem;
+  vertical-align: middle;
+}
+
 .cache-clear-btn {
   background: none;
   border: 1px solid var(--border);
