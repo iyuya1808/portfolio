@@ -2344,17 +2344,17 @@ body {
 .contact-card::before {
   content: "";
   position: absolute;
-  inset: -1px;
-  padding: 1px;
-  border-radius: calc(16px + 1px);
+  inset: -2px;
+  padding: 2px;
+  border-radius: calc(16px + 2px);
   background: conic-gradient(
-    from calc((var(--glow-start) - 40) * 1deg) at 50% 50%,
+    from calc((var(--glow-start) - 80) * 1deg) at 50% 50%,
     transparent 0deg,
-    #dd7bbb 12deg,
-    #d79f1e 32deg,
-    #5a922c 52deg,
-    #4c7894 72deg,
-    transparent 82deg,
+    #dd7bbb 20deg,
+    #d79f1e 50deg,
+    #5a922c 90deg,
+    #4c7894 130deg,
+    transparent 160deg,
     transparent 360deg
   );
   -webkit-mask:
