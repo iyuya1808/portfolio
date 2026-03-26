@@ -434,4 +434,36 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.work-card[data-status="wip"]').forEach(function (card) {
     card.style.display = 'none';
   });
+  /* ============================================================
+     CACHE CLEAR / RESET
+     ============================================================ */
+  const cacheBtn = document.getElementById('cacheClearBtn');
+  if (cacheBtn) {
+    cacheBtn.addEventListener('click', function() {
+      const lang = document.documentElement.lang || 'ja';
+      const msg = lang === 'ja' 
+        ? 'すべての設定を初期化してページを再読み込みしますか？\n(言語やテーマの設定がリセットされます)' 
+        : 'Are you sure you want to reset all settings and reload the page?\n(Theme and language settings will be reset)';
+      
+      if (confirm(msg)) {
+        // Clear Storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Clear Cookies
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i];
+          const eqPos = cookie.indexOf("=");
+          const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        }
+
+        // Hard reload with cache busting
+        const url = new URL(window.location.href);
+        url.searchParams.set('reset', Date.now().toString());
+        window.location.href = url.toString();
+      }
+    });
+  }
 });

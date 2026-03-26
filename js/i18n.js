@@ -132,7 +132,8 @@ var enTranslations = {
     siteAriaLabel: 'Open Technophere official site'
   },
   footer: {
-    copy: '© 2026 Yuya Itonaga / Technophere'
+    copy: '© 2026 Yuya Itonaga / Technophere',
+    cacheClear: 'Clear Cache & Reset'
   },
   typewriter: {
     phrases: [
