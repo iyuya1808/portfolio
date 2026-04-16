@@ -50,9 +50,7 @@ var enTranslations = {
       businessLabel: 'Business',
       businessValue: 'Head of Technophere',
       foundedLabel: 'Founded',
-      foundedValue: 'August 2023',
-      mentorLabel: 'Mentor',
-      mentorValue: 'Life is Tech! DX Mentor'
+      foundedValue: 'August 2023'
     },
     timeline: {
       '2018_04': 'Enrolled in Keio Shonan Fujisawa Junior High School',
@@ -66,6 +64,7 @@ var enTranslations = {
       '2025_08': 'Launched BrawlTech — a Brawl Stars strategy & stats app',
       '2025_09': 'Launched web development agency services for businesses',
       '2025_12': 'Launched KPass — a study support app for Keio students',
+      '2026_04': 'Started as a DX Mentor at Life is Tech!',
       presentYear: 'Present',
       present: 'Currently enrolled at Keio University, Department of System Design Engineering'
     }
