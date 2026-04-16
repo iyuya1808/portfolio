@@ -50,7 +50,9 @@ var enTranslations = {
       businessLabel: 'Business',
       businessValue: 'Head of Technophere',
       foundedLabel: 'Founded',
-      foundedValue: 'August 2023'
+      foundedValue: 'August 2023',
+      mentorLabel: 'Mentor',
+      mentorValue: 'Life is Tech! DX Mentor'
     },
     timeline: {
       '2018_04': 'Enrolled in Keio Shonan Fujisawa Junior High School',
