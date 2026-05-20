@@ -1,2 +1,8 @@
 .DS_Store
 firebase-debug.log
+
+# 開発者向けファイル（公開リポジトリに含めない）
+CLAUDE.md
+AGENTS.md
+DESIGN_RULE.md
+.vscode/
