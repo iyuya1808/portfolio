@@ -65,6 +65,7 @@ var enTranslations = {
       '2025_09': 'Launched web development agency services for businesses',
       '2025_12': 'Launched KPass — a study support app for Keio students',
       '2026_04': 'Started as a DX Mentor at Life is Tech!',
+      '2026_07': 'Appointed as a Google AI Student Ambassador',
       presentYear: 'Present',
       present: 'Currently enrolled at Keio University, Department of System Design Engineering'
     }
