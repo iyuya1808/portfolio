@@ -1,0 +1,236 @@
+// 点群の「形」。各関数は out（全点の目標座標・大きさ・色・不透明度）と edges を書く。
+// 座標はワールド単位。カメラは z=6、fov 40 なので画面の高さ ≒ 4.4 単位。
+import { LOGO_NODES, LOGO_BASE, LOGO_EDGES } from './logo-graph.js';
+import { PV_MONTHLY, SKILLS } from './data.js';
+
+export const N_MAIN = LOGO_NODES.length;
+
+export function hash(i, s = 0) {
+  const x = Math.sin(i * 12.9898 + s * 78.233 + 1.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const mix = (a, b, t) => a + (b - a) * t;
+
+// 電球の台座（3本のバー）を点に分解する
+export function baseSamples() {
+  const pts = [];
+  for (const b of LOGO_BASE) {
+    const n = Math.max(3, Math.round(b.w / 0.06));
+    for (let k = 0; k < n; k++) {
+      const t = n === 1 ? 0.5 : k / (n - 1);
+      pts.push({ x: b.x - b.w / 2 + b.h / 2 + (b.w - b.h) * t, y: b.y, r: b.h / 2 });
+    }
+  }
+  return pts;
+}
+const BASE = baseSamples();
+export const N_BASE = BASE.length;
+
+const COLOR_KEY = {
+  '#1e2087': 'navy', '#162b88': 'navy', '#181c62': 'navy', '#00a0e8': 'sky',
+  '#23ab39': 'green', '#006935': 'green2', '#7e308f': 'purple', '#e60013': 'red', '#f8b62d': 'yellow',
+};
+export const NODE_KEYS = LOGO_NODES.map((n) => COLOR_KEY[n.c] || 'navy');
+
+// 電球の中心からの距離（灯るときに内側から黄色くなる）
+const bulbCenter = { x: 0, y: 0.15 };
+const INNER = LOGO_NODES.map((n) => {
+  const d = Math.hypot(n.x - bulbCenter.x, n.y - bulbCenter.y);
+  const t = clamp01(1.15 - d * 1.3);
+  return t * t * (3 - 2 * t); // smoothstep: 内側は黄色、外側は元の色のまま
+});
+
+function setPoint(out, i, x, y, z, size, col, alpha) {
+  out.pos[i * 3] = x; out.pos[i * 3 + 1] = y; out.pos[i * 3 + 2] = z;
+  out.size[i] = size;
+  out.col[i * 3] = col[0]; out.col[i * 3 + 1] = col[1]; out.col[i * 3 + 2] = col[2];
+  out.alpha[i] = alpha;
+}
+function mixCol(a, b, t) { return [mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t)]; }
+
+function center(L, mobileY) {
+  return { cx: L.isMobile ? 0 : L.side * L.halfW * (L.sideFactor || 0.5), cy: L.isMobile ? (mobileY == null ? 0 : mobileY) : 0 };
+}
+
+/* ---------- 0 / 5: 電球（lit で灯る） ---------- */
+export function bulb(out, L, P, o) {
+  const S = L.scale, lit = o.lit || 0, rot = o.rot || 0;
+  const { cx, cy } = center(L, L.mobileY);
+  const cs = Math.cos(rot), sn = Math.sin(rot);
+  const edges = [];
+  for (let i = 0; i < N_MAIN; i++) {
+    const n = LOGO_NODES[i];
+    const z0 = (hash(i, 11) - 0.5) * 0.35;
+    const x = n.x * cs + z0 * sn, z = -n.x * sn + z0 * cs;
+    let col = P[NODE_KEYS[i]];
+    if (lit > 0) col = mixCol(col, P.spark, lit * INNER[i]);
+    const size = n.r * 2 * S * (1 + lit * INNER[i] * 0.35);
+    setPoint(out, i, cx + x * S, cy + n.y * S, z * S, size, col, 1);
+  }
+  for (let k = 0; k < N_BASE; k++) {
+    const b = BASE[k];
+    const x = b.x * cs, z = -b.x * sn;
+    setPoint(out, N_MAIN + k, cx + x * S, cy + b.y * S, z * S, b.r * 2 * S * 0.9, P.navy, 1);
+  }
+  const NH = out.n - N_MAIN - N_BASE;
+  for (let k = 0; k < NH; k++) {
+    const i = N_MAIN + N_BASE + k;
+    const u = hash(k, 1), v = hash(k, 2);
+    const r = (1.45 + 1.3 * hash(k, 3)) * S * (1 - 0.4 * lit);
+    const th = u * Math.PI * 2 + L.time * 0.04 * (0.4 + hash(k, 4));
+    const ph = Math.acos(2 * v - 1);
+    const x = r * Math.sin(ph) * Math.cos(th), y = r * Math.cos(ph) * 0.85, z = r * Math.sin(ph) * Math.sin(th) * 0.5;
+    setPoint(out, i, cx + x, cy + 0.1 * S + y, z, (0.02 + 0.02 * hash(k, 5)) * S, P.ink, P.dustAlpha * (1 + lit * 0.6));
+  }
+  for (const e of LOGO_EDGES) edges.push([e[0], e[1], 0.85 + lit * 0.15]);
+  return edges;
+}
+
+/* ---------- 1: 経歴の道 ---------- */
+export function path(out, L, P, o) {
+  const S = L.scale, n = o.events || 15, iCur = clamp01(o.progress || 0) * (n - 1);
+  const cx = L.isMobile ? 0 : -0.16 * L.halfW, cy = 0;
+  const spacing = 0.62 * S, amp = 0.34 * S;
+  const posAt = (e) => ({ x: cx + amp * Math.sin(e * 1.1 + 0.4), y: cy + (iCur - e) * spacing });
+  const edges = [];
+  for (let i = 0; i < N_MAIN; i++) {
+    const e = i, p = posAt(e);
+    if (e < n) {
+      const done = e <= iCur + 0.02;
+      const cur = Math.abs(e - iCur) < 0.5;
+      const col = done ? (cur ? P.navy : P.sky) : P.ink;
+      const size = (cur ? 0.17 : done ? 0.11 : 0.07) * S;
+      setPoint(out, i, p.x, p.y, 0, size, col, done ? 1 : 0.4);
+    } else {
+      setPoint(out, i, p.x, p.y, 0, 0.05 * S, P.ink, 0.22);
+    }
+  }
+  const NH = out.n - N_MAIN, total = N_MAIN - 1;
+  for (let k = 0; k < NH; k++) {
+    const i = N_MAIN + k;
+    const ef = (k / (NH - 1)) * total;
+    const p = posAt(ef);
+    const j = (hash(k, 6) - 0.5) * 0.08 * S;
+    const a = ef <= iCur ? 0.38 : 0.16;
+    setPoint(out, i, p.x + j, p.y + (hash(k, 7) - 0.5) * 0.04, (hash(k, 8) - 0.5) * 0.3, 0.02 * S, P.ink, a);
+  }
+  for (let e = 0; e < N_MAIN - 1; e++) edges.push([e, e + 1, e + 1 <= iCur + 0.02 ? 0.8 : e < n ? 0.3 : 0.15]);
+  return edges;
+}
+
+/* ---------- 2: 月次PVの面グラフ ---------- */
+const PV_MAX = Math.max(...PV_MONTHLY);
+const PV_ARGMAX = PV_MONTHLY.indexOf(PV_MAX);
+const PV_CUM = (() => { const c = []; let s = 0; for (const v of PV_MONTHLY) { s += v; c.push(s); } return c.map((v) => v / s); })();
+
+export function chart(out, L, P, o) {
+  const S = L.scale, M = PV_MONTHLY.length, reveal = clamp01(o.reveal || 0) * (M - 1) + 0.5;
+  const { cx, cy } = center(L, -L.mobileY);
+  const W = L.isMobile ? L.halfW * 1.7 : L.halfW * 0.86, H = 1.6 * S;
+  const base = cy - H / 2;
+  const colX = (m) => cx - W / 2 + (W * m) / (M - 1);
+  const fac = (m) => clamp01(reveal - m);
+  const top = (m) => base + (H * PV_MONTHLY[m] / PV_MAX) * fac(m);
+  const edges = [];
+  for (let i = 0; i < N_MAIN; i++) {
+    const m = Math.round((i * (M - 1)) / (N_MAIN - 1));
+    const f = fac(m), peak = m === PV_ARGMAX;
+    const col = peak ? P.spark : P.sky;
+    setPoint(out, i, colX(m), top(m), 0, (peak ? 0.14 : 0.06) * S, col, 0.3 + 0.7 * f);
+    if (i > 0) edges.push([i - 1, i, 0.35 + 0.4 * f]);
+  }
+  for (let k = 0; k < N_BASE; k++) {
+    setPoint(out, N_MAIN + k, cx - W / 2 + (W * k) / (N_BASE - 1), base, 0, 0.02 * S, P.ink, 0.4);
+  }
+  const NH = out.n - N_MAIN - N_BASE;
+  for (let k = 0; k < NH; k++) {
+    const i = N_MAIN + N_BASE + k;
+    const u = hash(k, 9);
+    let m = 0; while (m < M - 1 && PV_CUM[m] < u) m++;
+    const f = fac(m);
+    const x = colX(m) + (hash(k, 10) - 0.5) * (W / (M - 1)) * 0.95;
+    const y = base + (top(m) - base) * hash(k, 12);
+    setPoint(out, i, x, y, (hash(k, 13) - 0.5) * 0.4, 0.022 * S, P.navy, 0.06 + 0.3 * f);
+  }
+  return edges;
+}
+
+/* ---------- 3: 散らばった場（作品・メディアの章の背景） ---------- */
+export function field(out, L, P, o) {
+  const dim = o.dim == null ? 1 : o.dim;
+  const NH = out.n - N_MAIN - N_BASE;
+  for (let i = 0; i < N_MAIN; i++) {
+    const a = (i / N_MAIN) * Math.PI * 2 + L.time * 0.03;
+    setPoint(out, i, Math.cos(a) * L.halfW * 0.82, Math.sin(a) * L.halfH * 0.78, -0.5, 0.05 * L.scale, i % 2 ? P.sky : P.navy, 0.28 * dim);
+  }
+  for (let k = 0; k < N_BASE; k++) setPoint(out, N_MAIN + k, 0, 0, -2, 0.01, P.ink, 0);
+  for (let k = 0; k < NH; k++) {
+    const i = N_MAIN + N_BASE + k;
+    const x = (hash(k, 14) - 0.5) * L.halfW * 2.3, y = (hash(k, 15) - 0.5) * L.halfH * 2.3 + Math.sin(L.time * 0.25 + k) * 0.04;
+    setPoint(out, i, x, y, (hash(k, 16) - 0.5) * 2, (0.018 + 0.02 * hash(k, 17)) * L.scale, P.ink, 0.16 * dim);
+  }
+  return [];
+}
+
+/* ---------- 4: 使う道具の力学グラフ ---------- */
+export const SKILL_INDEX = Object.fromEntries(SKILLS.map((s, i) => [s.id, i]));
+export const SKILL_EDGES = [];
+SKILLS.forEach((s, i) => (s.to || []).forEach((t) => SKILL_EDGES.push([i, SKILL_INDEX[t]])));
+
+export function layoutSkills() {
+  const n = SKILLS.length;
+  const px = new Float32Array(n), py = new Float32Array(n);
+  // 分類ごとに初期位置を輪にして置く
+  const hubs = SKILLS.map((s, i) => i).filter((i) => SKILLS[i].hub);
+  const hubAngle = {};
+  hubs.forEach((h, k) => (hubAngle[SKILLS[h].id] = (k / hubs.length) * Math.PI * 2));
+  for (let i = 0; i < n; i++) {
+    const s = SKILLS[i];
+    const hubId = s.hub ? s.id : (s.to || []).find((t) => SKILLS[SKILL_INDEX[t]].hub) || 'ai';
+    const a = hubAngle[hubId] + (s.hub ? 0 : (hash(i, 20) - 0.5) * 1.2);
+    const r = s.hub ? 0.55 : 0.9 + hash(i, 21) * 0.4;
+    px[i] = Math.cos(a) * r; py[i] = Math.sin(a) * r;
+  }
+  for (let it = 0; it < 360; it++) {
+    const fx = new Float32Array(n), fy = new Float32Array(n);
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+      let dx = px[i] - px[j], dy = py[i] - py[j];
+      const d2 = dx * dx + dy * dy + 0.01, d = Math.sqrt(d2);
+      const rep = 0.045 / d2;
+      dx /= d; dy /= d;
+      fx[i] += dx * rep; fy[i] += dy * rep; fx[j] -= dx * rep; fy[j] -= dy * rep;
+    }
+    for (const [i, j] of SKILL_EDGES) {
+      const dx = px[j] - px[i], dy = py[j] - py[i], d = Math.hypot(dx, dy) || 0.001;
+      const rest = SKILLS[i].hub && SKILLS[j].hub ? 0.9 : 0.5;
+      const f = (d - rest) * 0.08;
+      fx[i] += (dx / d) * f; fy[i] += (dy / d) * f; fx[j] -= (dx / d) * f; fy[j] -= (dy / d) * f;
+    }
+    for (let i = 0; i < n; i++) {
+      fx[i] -= px[i] * 0.02; fy[i] -= py[i] * 0.02;
+      px[i] += fx[i] * 0.5; py[i] += fy[i] * 0.5;
+    }
+  }
+  let mx = 0, my = 0;
+  for (let i = 0; i < n; i++) { mx = Math.max(mx, Math.abs(px[i])); my = Math.max(my, Math.abs(py[i])); }
+  for (let i = 0; i < n; i++) { px[i] = (px[i] / mx) * 1.05; py[i] = (py[i] / my) * 0.95; }
+  return { px, py };
+}
+
+export function graph(out, L, P, o) {
+  const S = L.scale, lay = o.layout;
+  const { cx, cy } = center(L);
+  const n = SKILLS.length;
+  field(out, L, P, { dim: 0.55 });
+  for (let i = 0; i < N_MAIN; i++) {
+    if (i < n) {
+      const s = SKILLS[i];
+      const size = (s.hub ? 0.15 : 0.06 + 0.05 * s.w) * S;
+      setPoint(out, i, cx + lay.px[i] * S * 1.05, cy + lay.py[i] * S * 1.05, (hash(i, 22) - 0.5) * 0.2, size, s.hub ? P.navy : P.sky, 1);
+    } else {
+      setPoint(out, i, cx, cy, -1, 0.01, P.ink, 0);
+    }
+  }
+  return SKILL_EDGES.map(([i, j]) => [i, j, 0.6]);
+}

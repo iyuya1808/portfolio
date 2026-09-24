@@ -1,511 +1,164 @@
+// ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
+import { createScene, supportsWebGL } from './scene.js';
+import { SKILLS, PV_MONTHLY } from './data.js';
 
-function updateThemeIcon(theme) {
-  const btn = document.getElementById('themeToggle');
-  if (btn) btn.setAttribute('aria-checked', theme === 'dark' ? 'true' : 'false');
-  const meta = document.getElementById('themeColorMeta');
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff');
+const html = document.documentElement;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const useScene = !reduceMotion && supportsWebGL();
+
+/* ---------- テーマ ---------- */
+const themeBtn = document.getElementById('themeToggle');
+const themeMeta = document.getElementById('themeColorMeta');
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  themeBtn.setAttribute('aria-checked', t === 'dark' ? 'true' : 'false');
+  if (themeMeta) themeMeta.setAttribute('content', t === 'dark' ? '#0B1033' : '#F4F6FB');
+  try { localStorage.setItem('theme', t); } catch (e) {}
+}
+themeBtn.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+themeBtn.setAttribute('aria-checked', html.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+
+/* ---------- メニュー（モバイル） ---------- */
+const menuBtn = document.getElementById('menuToggle');
+const menu = document.getElementById('menu');
+function closeMenu() { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); if (lenis) lenis.start(); }
+menuBtn.addEventListener('click', () => {
+  const open = menu.hidden;
+  menu.hidden = !open;
+  menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (lenis) open ? lenis.stop() : lenis.start();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) closeMenu(); });
+
+/* ---------- 慣性スクロールと ScrollTrigger ---------- */
+let lenis = null;
+gsap.registerPlugin(ScrollTrigger);
+if (!reduceMotion) {
+  lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((t) => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+const top = document.getElementById('top');
+function scrollToHash(hash) {
+  const el = document.querySelector(hash);
+  if (!el) return;
+  const offset = hash === '#cover' ? 0 : -72;
+  if (lenis) lenis.scrollTo(el, { offset, duration: 1.4 });
+  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: 'auto' });
+}
+document.querySelectorAll('a[data-scroll]').forEach((a) => {
+  a.addEventListener('click', (e) => {
+    const hash = a.getAttribute('href');
+    if (!hash || !hash.startsWith('#')) return;
+    e.preventDefault();
+    if (!menu.hidden) closeMenu();
+    scrollToHash(hash);
+    history.replaceState(null, '', hash);
+  });
+});
+window.addEventListener('scroll', () => top.classList.toggle('is-scrolled', window.scrollY > 24), { passive: true });
+
+/* ---------- 点群 ---------- */
+let scene = null;
+if (useScene) {
+  scene = createScene(document.getElementById('scene'));
+  scene.setTheme(html.getAttribute('data-theme'));
+  new MutationObserver(() => scene.setTheme(html.getAttribute('data-theme'))).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
+} else {
+  html.classList.add('no-scene');
+  document.getElementById('coverFallback').hidden = false;
+  buildNumbersFallback();
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  const html = document.documentElement;
-  const toggleBtn = document.getElementById('themeToggle');
-  const currentTheme = html.getAttribute('data-theme') || 'light';
-  updateThemeIcon(currentTheme);
+/* ---------- 章ごとの形 ---------- */
+const events = document.querySelectorAll('#events li');
+const chapters = document.querySelectorAll('.chapter');
+const navLinks = document.querySelectorAll('.top__nav a');
+const skillLabels = document.getElementById('skillLabels');
+let current = null;
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', function () {
-      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      updateThemeIcon(next);
-    });
-  }
+function enter(section) {
+  if (current === section) return;
+  current = section;
+  const id = section.id;
+  navLinks.forEach((a) => a.classList.toggle('is-current', a.getAttribute('href') === '#' + id));
+  if (!scene) return;
+  scene.setFormation(section.dataset.formation, Number(section.dataset.side));
+  scene.setDim(window.innerWidth < 760 && id !== 'cover' && id !== 'contact' ? 0.55 : 1);
+  skillLabels.classList.toggle('is-on', id === 'tools');
+}
 
-  /* ============================================================
-     HEADER SCROLL STATE
-     ============================================================ */
-  const header = document.getElementById('header');
-  if (header) {
-    let scrolled = false;
-    window.addEventListener('scroll', function () {
-      const shouldBeScrolled = window.scrollY > 20;
-      if (shouldBeScrolled !== scrolled) {
-        scrolled = shouldBeScrolled;
-        header.classList.toggle('scrolled', scrolled);
-      }
-    }, { passive: true });
-    // Initial check
-    if (window.scrollY > 20) header.classList.add('scrolled');
-  }
-
-  /* ============================================================
-     MOBILE OVERLAY MENU
-     ============================================================ */
-  const hamburger = document.getElementById('navHamburger');
-  const overlay = document.getElementById('navOverlay');
-
-  function closeOverlay() {
-    if (!overlay || !hamburger) return;
-    overlay.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    overlay.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  if (hamburger && overlay) {
-    hamburger.addEventListener('click', function () {
-      const isOpen = overlay.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-      overlay.setAttribute('aria-hidden', String(!isOpen));
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    // Close on backdrop click
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeOverlay();
-    });
-
-    // Close on link click
-    overlay.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', closeOverlay);
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();
-    });
-  }
-
-  /* ============================================================
-     SCROLL REVEAL (Intersection Observer)
-     ============================================================ */
-  const revealObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(function (el) {
-    revealObserver.observe(el);
+chapters.forEach((section) => {
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 55%',
+    end: 'bottom 55%',
+    onEnter: () => enter(section),
+    onEnterBack: () => enter(section),
+    onUpdate: (self) => {
+      if (!scene) return;
+      const p = self.progress;
+      if (section.id === 'numbers') scene.setParams({ reveal: Math.min(1, p / 0.55) });
+      else if (section.id === 'contact') scene.setParams({ lit: Math.min(1, p / 0.6) });
+      else if (section.id === 'cover') scene.setParams({ rot: p * 0.6 });
+    },
   });
-
-  /* ============================================================
-     COUNT-UP ANIMATION
-     ============================================================ */
-  function easeOut(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function animateCount(el) {
-    const lang = document.documentElement.lang || 'ja';
-    const rawTarget = parseFloat(
-      (lang === 'en' && el.dataset.enTarget) ? el.dataset.enTarget : el.dataset.target
-    );
-    const decimals = parseInt(
-      (lang === 'en' && el.dataset.enDecimals) ? el.dataset.enDecimals : (el.dataset.decimals || '0')
-    , 10);
-    const suffix = (lang === 'en' && el.dataset.enSuffix !== undefined)
-      ? el.dataset.enSuffix
-      : (el.dataset.suffix || '');
-    const countDown = el.dataset.countDown === 'true';
-    const rawFrom = el.dataset.from ? parseFloat(el.dataset.from) : null;
-    const duration = 1000;
-    const start = performance.now();
-
-    // Determine display format
-    // For large numbers like 550000 → display as "55" with suffix "万"
-    // For 1500000 → display as "150" with suffix "万"
-    // For 41 (target=41, decimals=1) → display as "4.1"
-    // For 245 (target=245, decimals=1) → display as "24.5"
-    // For 586362 → display as "586,362"
-
-    let displayTarget;
-    let displayFrom;
-    let formatFn;
-
-    if (suffix === '万') {
-      displayTarget = rawTarget / 10000;
-      displayFrom = rawFrom !== null ? rawFrom / 10000 : 0;
-      formatFn = function (val) {
-        return Math.floor(val) + suffix;
-      };
-    } else if (decimals > 0) {
-      // target is already * 10^decimals, need to divide
-      displayTarget = rawTarget / Math.pow(10, decimals);
-      displayFrom = rawFrom !== null ? rawFrom / Math.pow(10, decimals) : 0;
-      formatFn = function (val) {
-        return val.toFixed(1);
-      };
-    } else {
-      displayTarget = rawTarget;
-      displayFrom = rawFrom !== null ? rawFrom : 0;
-      formatFn = function (val) {
-        const locale = document.documentElement.lang === 'en' ? 'en-US' : 'ja-JP';
-        return Math.round(val).toLocaleString(locale);
-      };
-    }
-
-    function step(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOut(progress);
-      let current;
-      if (countDown) {
-        current = displayFrom - (displayFrom - displayTarget) * easedProgress;
-      } else {
-        current = displayTarget * easedProgress;
-      }
-      el.textContent = formatFn(current);
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        el.textContent = formatFn(displayTarget);
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
-
-  const countObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        if (!el.dataset.animated) {
-          el.dataset.animated = 'true';
-          animateCount(el);
-        }
-        countObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  document.querySelectorAll('.count-up').forEach(function (el) {
-    countObserver.observe(el);
-  });
-
-  /* Expose for i18n lang switch */
-  window.i18nAnimateCount = animateCount;
-
-  /* ============================================================
-     3D TILT + CURSOR SPOTLIGHT (Cards)
-     ============================================================ */
-  const tiltTargets = document.querySelectorAll(
-    '.work-card, .service-card, .kpi-card, .media-card'
-  );
-
-  if (!('ontouchstart' in window)) {
-    tiltTargets.forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const cx = rect.width / 2;
-        const cy = rect.height / 2;
-        const rotX = ((y - cy) / cy) * -5;
-        const rotY = ((x - cx) / cx) * 5;
-        card.style.transform =
-          'perspective(700px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.02)';
-        card.style.setProperty('--cx', ((x / rect.width) * 100) + '%');
-        card.style.setProperty('--cy', ((y / rect.height) * 100) + '%');
-      });
-
-      card.addEventListener('mouseleave', function () {
-        card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        card.style.transform = '';
-        setTimeout(function () { card.style.transition = ''; }, 620);
-      });
-    });
-  }
-
-  /* ============================================================
-     TIMELINE LINE DRAW
-     ============================================================ */
-  const timelineObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('line-drawn');
-        timelineObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-
-  document.querySelectorAll('.about-timeline-wrap').forEach(function (el) {
-    timelineObserver.observe(el);
-  });
-
-  /* ============================================================
-     TYPEWRITER EFFECT (Hero tagline)
-     ============================================================ */
-  const typewriterTarget = document.getElementById('typewriterTarget');
-  if (typewriterTarget) {
-    let phrases = (window.i18nPhrases) || [
-      'AI × エンジニア × コンテンツクリエイター',
-      'フルスタック開発 × SEO × アプリケーション',
-      '慶應義塾大学 × テクノフィア代表',
-    ];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isPaused = false;
-    let typeTimer = null;
-
-    // Create cursor
-    const cursor = document.createElement('span');
-    cursor.className = 'typewriter-cursor';
-    cursor.setAttribute('aria-hidden', 'true');
-    typewriterTarget.textContent = '';
-    typewriterTarget.appendChild(cursor);
-
-    function type() {
-      if (isPaused) return;
-
-      const currentPhrase = phrases[phraseIndex];
-
-      if (!isDeleting) {
-        charIndex++;
-        typewriterTarget.textContent = currentPhrase.slice(0, charIndex);
-        typewriterTarget.appendChild(cursor);
-
-        if (charIndex === currentPhrase.length) {
-          isPaused = true;
-          typeTimer = setTimeout(function () {
-            isPaused = false;
-            isDeleting = true;
-            type();
-          }, 2400);
-          return;
-        }
-        typeTimer = setTimeout(type, 60);
-      } else {
-        charIndex--;
-        typewriterTarget.textContent = currentPhrase.slice(0, charIndex);
-        typewriterTarget.appendChild(cursor);
-
-        if (charIndex === 0) {
-          isDeleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          typeTimer = setTimeout(type, 400);
-          return;
-        }
-        typeTimer = setTimeout(type, 30);
-      }
-    }
-
-    window.updateTypewriterPhrases = function (newPhrases) {
-      if (typeTimer) clearTimeout(typeTimer);
-      phrases = newPhrases;
-      phraseIndex = 0;
-      charIndex = 0;
-      isDeleting = false;
-      isPaused = false;
-      typewriterTarget.textContent = '';
-      typewriterTarget.appendChild(cursor);
-      type();
-    };
-
-    // Start after a short delay so reveal animation finishes
-    typeTimer = setTimeout(type, 800);
-  }
-
-  /* ============================================================
-     SMOOTH ACTIVE NAV HIGHLIGHT
-     ============================================================ */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a, .nav-mobile a');
-
-  const navObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navLinks.forEach(function (link) {
-          const href = link.getAttribute('href');
-          if (href === '#' + id) {
-            link.style.color = 'var(--accent)';
-          } else {
-            link.style.color = '';
-          }
-        });
-      }
-    });
-  }, { threshold: 0.4 });
-
-  sections.forEach(function (section) {
-    navObserver.observe(section);
-  });
-
-  /* ============================================================
-     CONTACT CARD GLOWING BORDER (mouse-tracking conic gradient)
-     ============================================================ */
-  const isTouch = window.matchMedia('(hover: none)').matches;
-
-  if (isTouch) {
-    /* タッチデバイス: スクロール位置に連動してグロウ角度・不透明度をリアルタイム更新 */
-    const touchGlowCards = document.querySelectorAll('.contact-card');
-
-    /* scrollStart をDOMContentLoaded後に一度だけキャッシュ（CSS transformの影響を排除） */
-    const scrollY0 = window.scrollY || window.pageYOffset;
-    const vh0 = window.innerHeight;
-    const cardScrollStarts = Array.from(touchGlowCards).map(function (card) {
-      const r = card.getBoundingClientRect();
-      const absTop = scrollY0 + r.top;
-      return absTop + r.height - vh0; /* カード下端がビューポート下端に入る scrollY */
-    });
-
-    function updateTouchGlow() {
-      const vh = window.innerHeight;
-      const scrollY = window.scrollY || window.pageYOffset;
-      const maxScrollY = Math.max(1, document.documentElement.scrollHeight - vh);
-
-      touchGlowCards.forEach(function (card, i) {
-        const r = card.getBoundingClientRect();
-        /* ビューポート内に見えている割合 (0〜1) */
-        const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-        const ratio = Math.max(0, Math.min(1, visibleH / r.height));
-
-        card.style.setProperty('--glow-active', ratio.toFixed(3));
-        if (ratio <= 0) return;
-
-        /* progress: カード初表示(0) → ページ最下部(1)
-           angle: 180°(下)スタート → 270°(左) → 360°(上) → 90°(右) → 180°(下) と1周
-           左辺は progress=0.25 の序盤に出現し、見逃しにくい */
-        const scrollStart = cardScrollStarts[i];
-        const scrollRange = maxScrollY - scrollStart;
-        const progress = scrollRange > 0
-          ? Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollRange))
-          : 1;
-        const angle = progress * 360 + 180;
-        card.style.setProperty('--glow-start', angle.toFixed(1));
-      });
-    }
-
-    window.addEventListener('scroll', updateTouchGlow, { passive: true });
-    updateTouchGlow();
-
-  }
-
-  if (!isTouch) {
-    const glowCards = document.querySelectorAll('.contact-card');
-    const glowStates = new Map();
-
-    glowCards.forEach(function (card) {
-      glowStates.set(card, { current: 0, target: 0, rafId: 0 });
-    });
-
-    document.addEventListener('pointermove', function (e) {
-      glowCards.forEach(function (card) {
-        const rect = card.getBoundingClientRect();
-        const cx = rect.left + rect.width * 0.5;
-        const cy = rect.top + rect.height * 0.5;
-        const PROXIMITY = 80;
-
-        const near =
-          e.clientX > rect.left - PROXIMITY &&
-          e.clientX < rect.right + PROXIMITY &&
-          e.clientY > rect.top - PROXIMITY &&
-          e.clientY < rect.bottom + PROXIMITY;
-
-        card.style.setProperty('--glow-active', near ? '1' : '0');
-        if (!near) return;
-
-        const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
-        const state = glowStates.get(card);
-        const diff = ((angle - state.current + 180) % 360) - 180;
-        state.target = state.current + diff;
-
-        if (!state.rafId) {
-          (function tick() {
-            const d = state.target - state.current;
-            if (Math.abs(d) < 0.1) {
-              state.current = state.target;
-              state.rafId = 0;
-              return;
-            }
-            state.current += d * 0.15;
-            card.style.setProperty('--glow-start', String(state.current));
-            state.rafId = requestAnimationFrame(tick);
-          }());
-        }
-      });
-    }, { passive: true });
-  }
-
-  /* ============================================================
-     OS THEME CHANGE LISTENER
-     ============================================================ */
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-    if (!localStorage.getItem('theme')) {
-      const next = e.matches ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', next);
-      updateThemeIcon(next);
-    }
-  });
-
-  /* wip カードを非表示 */
-  document.querySelectorAll('.work-card[data-status="wip"]').forEach(function (card) {
-    card.style.display = 'none';
-  });
-  /* ============================================================
-     HERO PARALLAX
-     ============================================================ */
-  const hero = document.getElementById('hero');
-  const heroImg = document.querySelector('.hero-photo-img');
-  
-  if (hero && heroImg && window.matchMedia('(min-width: 768px)').matches) {
-    function updateParallax() {
-      const scrollPos = window.scrollY;
-      const heroHeight = hero.offsetHeight;
-
-      // Calculate how much of the hero is scrolled (0 to 1+)
-      // Since it's at the top, scrollPos is enough.
-      if (scrollPos <= heroHeight) {
-        // Move image up by ~35% of the scroll distance
-        // Since height is 150% and top is -25%, we have 25% room up and 25% room down.
-        const yPos = scrollPos * 0.35;
-        heroImg.style.transform = `translate3d(0, ${yPos}px, 0)`;
-      }
-    }
-
-    window.addEventListener('scroll', updateParallax, { passive: true });
-    // Initial call
-    updateParallax();
-  }
-
-  /* ============================================================
-     CACHE CLEAR / RESET
-     ============================================================ */
-  const cacheBtn = document.getElementById('cacheClearBtn');
-  if (cacheBtn) {
-    cacheBtn.addEventListener('click', function() {
-      const lang = document.documentElement.lang || 'ja';
-      const msg = lang === 'ja' 
-        ? 'すべての設定を初期化してページを再読み込みしますか？\n(言語やテーマの設定がリセットされます)' 
-        : 'Are you sure you want to reset all settings and reload the page?\n(Theme and language settings will be reset)';
-      
-      if (confirm(msg)) {
-        // Clear Storage
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // Clear Cookies
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i];
-          const eqPos = cookie.indexOf("=");
-          const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-        }
-
-        // Hard reload with cache busting
-        const url = new URL(window.location.href);
-        url.searchParams.set('reset', Date.now().toString());
-        window.location.href = url.toString();
-      }
-    });
-  }
 });
+if (scene) scene.setParams({ events: events.length });
+
+/* 経歴: 見えている出来事に合わせて年号と点を進める */
+const yearStamp = document.getElementById('yearStamp');
+let yearShown = '2018';
+function setYear(y) {
+  if (y === yearShown) return;
+  yearShown = y;
+  yearStamp.classList.add('is-swap');
+  setTimeout(() => { yearStamp.textContent = y; yearStamp.classList.remove('is-swap'); }, 180);
+}
+events.forEach((li, i) => {
+  ScrollTrigger.create({
+    trigger: li,
+    start: 'top 62%',
+    onEnter: () => { li.classList.add('is-lit'); setYear(li.dataset.year); if (scene) scene.setParams({ progress: i / (events.length - 1) }); },
+    onLeaveBack: () => { li.classList.remove('is-lit'); const prev = events[i - 1]; setYear(prev ? prev.dataset.year : '2018'); if (scene) scene.setParams({ progress: Math.max(0, i - 1) / (events.length - 1) }); },
+  });
+});
+
+/* 使う道具: ノード位置に HTML のラベルを重ねる */
+if (scene) {
+  const labels = SKILLS.map((s) => {
+    const el = document.createElement('span');
+    el.className = 'label' + (s.hub ? ' is-hub' : '');
+    el.textContent = s.label;
+    skillLabels.appendChild(el);
+    return el;
+  });
+  gsap.ticker.add(() => {
+    if (!skillLabels.classList.contains('is-on')) return;
+    for (let i = 0; i < labels.length; i++) {
+      const p = scene.project(i);
+      labels[i].style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px) translate(-50%, -50%)`;
+      labels[i].style.opacity = Math.min(1, p.alpha * 1.2).toFixed(2);
+    }
+  });
+}
+
+/* ---------- レイアウトが変わったら ScrollTrigger を測り直す ---------- */
+const refresh = () => ScrollTrigger.refresh();
+document.fonts?.ready.then(refresh);
+document.addEventListener('langchange', () => setTimeout(refresh, 50));
+document.querySelectorAll('img[loading="lazy"]').forEach((img) => { if (!img.complete) img.addEventListener('load', refresh, { once: true }); });
+window.addEventListener('load', refresh);
+
+/* ---------- 動きを減らす／WebGL 無し: 数字の章に静止した折れ線 ---------- */
+function buildNumbersFallback() {
+  const box = document.getElementById('numbersFallback');
+  const W = 600, H = 260, max = Math.max(...PV_MONTHLY), n = PV_MONTHLY.length;
+  const pts = PV_MONTHLY.map((v, i) => `${(i / (n - 1)) * W},${H - 20 - (v / max) * (H - 40)}`);
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="月次ページビューの推移">
+    <polyline points="${pts.join(' ')}" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".7"/>
+    <line x1="0" y1="${H - 20}" x2="${W}" y2="${H - 20}" stroke="currentColor" stroke-width="1" opacity=".25"/>
+  </svg>`;
+  box.hidden = false;
+}

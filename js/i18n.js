@@ -1,285 +1,110 @@
 /* ============================================================
-   i18n — Language switch logic
-   ============================================================
-   設計方針:
-   - 日本語テキストは HTML がソース。translations.ja は不要。
-   - DOMContentLoaded 時に [data-i18n] 要素の初期値を jaCache へ保存。
-   - JA 切り替え時は jaCache から復元 → HTML を更新するだけで JA 側は自動追従。
-   - EN 翻訳のみ enTranslations で管理。
+   言語切替。日本語は HTML がソース。英語だけ辞書で持つ。
+   切替後に document へ 'langchange' を投げる（main.js が ScrollTrigger.refresh する）。
    ============================================================ */
-
-/* ---- JA typewriter phrases (DOM に存在しないため個別管理) ---- */
-var jaPhrases = [
-  'AI × エンジニア × コンテンツクリエイター',
-  'フルスタック開発 × SEO × アプリケーション',
-  '慶應大在学中 × テクノフィア代表'
-];
-
-/* ---- EN translations ---- */
-var enTranslations = {
-  meta: {
-    description: 'Portfolio of Yuya Itonaga, Head of Technophere. An AI engineer and student at Keio University. Runs media sites with up to 1.5M monthly page views and builds apps.'
-  },
-  nav: {
-    ariaLabel: 'Main navigation',
-    logo: { ariaLabel: 'Back to top' },
-    hamburger: { ariaLabel: 'Open menu' },
-    overlay: { ariaLabel: 'Mobile navigation' }
-  },
-  hero: {
-    badge: 'Head of Technophere · Product Creator',
-    mission: '"Making the world more exciting with cutting-edge technology"——<br>From web media to app development, I place the latest AI at the core of every build, turning ideas into products at the speed of thought.'
-  },
-  about: {
-    title: 'About Me',
-    bio: {
-      wsm: {
-        p1: 'By consistently publishing on topics like SEO, analytics, and content strategy, I grew Technophere — my own web media brand — to 1.5 million monthly page views.',
-        p2: 'I run data-driven PDCA cycles to maximize organic search traffic and boost engagement.'
-      },
-      ai: {
-        p1: 'I place the latest AI at the core of the development process, selecting the right model for each project to balance speed and quality. Every project is built through close human–AI collaboration.'
-      },
-      fullstack: {
-        p1: 'I have end-to-end experience — from tech selection and MVP development with Flutter, Swift, Next.js, and WordPress, to App Store releases, closed beta testing, and iterating on user feedback.'
+(function () {
+  var EN = {
+    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech and KPass, and WordPress plugins.' },
+    nav: { top: 'Back to top', chapters: 'Chapters', theme: 'Dark mode', menu: 'Menu', story: 'Beginnings', numbers: 'Numbers', works: 'Work', media: 'Media', tools: 'Tools', contact: 'Contact' },
+    cover: {
+      statement: 'I started writing game guides in junior high. Today I run media read 19 million times and build apps that live in the App Store.',
+      role: 'Third-year, Faculty of Science and Technology, Keio University / Head of Technophere',
+      cue: 'Scroll'
+    },
+    story: {
+      title: 'Beginnings',
+      p1: 'My first readers were people stuck on the same game as me. In 2021 I began running strategy sites on Gamerch, and the next year I wrote more than 100 articles as a contract writer for Gamepedia.',
+      p2: 'In August 2023, in my last year of high school, I founded Technophere. Game-guide media is the core; SEO and analytics grew the readership, and now I ship my own apps and plugins too. Design, implementation, store release, post-launch iteration: I do all of it myself. AI sits at the center of how I build, and the last eyes on the code are mine.',
+      photoAlt: 'Yuya Itonaga sitting in the lounge at Yagami Campus'
+    },
+    tl: {
+      '2018_04': 'Enrolled at Keio Shonan Fujisawa Junior High School',
+      '2021_01': 'Started running several game strategy sites on <a href="https://gamerch.com/" target="_blank" rel="noopener noreferrer">Gamerch</a>',
+      '2021_04': 'Enrolled at Keio Shonan Fujisawa Senior High School',
+      '2022_02': 'Wrote 100+ articles as a contract writer for <a href="https://gamepedia.jp/" target="_blank" rel="noopener noreferrer">Gamepedia</a>',
+      '2023_08': 'Founded Technophere',
+      '2024_03': "Won the Principal's Award for a school film shot with drones",
+      '2024_04': 'Enrolled at Keio University, Faculty of Science and Technology',
+      '2024_06': 'Started an internship at Taiziii, a startup',
+      '2025_08': 'Released BrawlTech, a Brawl Stars strategy app',
+      '2025_09': 'Started building websites for businesses',
+      '2025_12': 'Released KPass, a study app for Keio students',
+      '2026_04': 'Started as a DX mentor at Life is Tech!',
+      '2026_07a': 'Started as an iPhone app development mentor for teens at Life is Tech! (100+ hours of training)',
+      '2026_07b': 'Appointed Google AI Student Ambassador',
+      nowYear: 'Now',
+      now: 'Third-year, Department of System Design Engineering, Keio University'
+    },
+    numbers: {
+      title: 'Numbers', lead: 'Measured across all the media I run.',
+      peakLabel: 'Best month, page views', peakNote: 'May 2024, all sites',
+      totalLabel: 'Page views to date', totalNote: 'August 2023 to September 2026',
+      usersLabel: 'Best month, users', usersNote: 'May 2024, Brawl Stars Lab',
+      clicksLabel: 'Search clicks, last 28 days', clicksNote: 'game.technophere.com. 3.09M impressions, average position 6.4',
+      note: 'As of September 24, 2026. Google Analytics and Search Console.'
+    },
+    works: {
+      title: 'Work', lead: 'Apps in the stores, and services and plugins I have published.',
+      brawltech: { what: 'A strategy companion for Brawl Stars', desc: "Pulls live match records and brawler stats from Supercell's official API and third-party APIs, and pairs them with guides. Built in Flutter for iOS and Android at once, released in August 2025." },
+      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Reads courses, assignments and timetables from the university's K-LMS (Canvas) API and lays them out inside the app. Keeps you logged in for days and shows deadlines at a glance. Built in SwiftUI, released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
+      mimishare: { what: 'Rent a Disney headband for just one day', desc: 'Cheaper than buying one for a single visit. Reserve with a deposit, borrow and return by QR code. Built alone in Next.js and Stripe, from catalog to checkout.', link: 'Open mimishare.technophere.com' },
+      more: 'Also',
+      alg: { desc: 'A WordPress plugin that generates App Store and Google Play links from the block editor. Published in the official WordPress.org directory.' },
+      pfg: { desc: 'A WordPress plugin that deploys your own themes and plugins from a linked GitHub repository with one click in the admin.' },
+      lemon: { desc: 'An AI platform for Lemon, the engineering club at Keio. A mentor that answers around the clock and an idea gacha. I built the frontend and UI in a team.' }
+    },
+    media: {
+      title: 'Media I grow', lead: 'One WordPress site per game, with encyclopedias and rankings updated automatically from official APIs and game data. The core of Technophere.',
+      hubLink: 'Open game.technophere.com',
+      labs: {
+        brawlstars: 'Brawler tier list and win rates by map and mode', tsumtsum: 'Gacha news and Tsum rankings', msfs: 'Aircraft encyclopedia, add-ons and airport data',
+        efootball: 'Player and manager database with a training simulator', clashroyale: 'Card encyclopedia and deck usage and win rates from the official API',
+        cs: 'City-building guides and mods', nte: 'Character and disc stats and gacha schedule, auto-updated from game data',
+        blog: 'A blog on tech and everyday life', app: 'A gallery of Technophere apps and their docs'
       }
     },
-    info: {
-      affiliationLabel: 'Affiliation',
-      affiliationValue: 'Keio University, Faculty of Science<br>and Technology',
-      businessLabel: 'Business',
-      businessValue: 'Head of Technophere',
-      foundedLabel: 'Founded',
-      foundedValue: 'August 2023'
+    tools: {
+      title: 'Tools', p1: 'AI sits at the center of my workflow. I run Claude Code, Cursor and Antigravity side by side and pick the model that fits each project. Build fast, then read the code with my own eyes.',
+      p2: 'Apps in Swift and Flutter, the web in WordPress and Next.js. I check the numbers in Search Console and Analytics every day.',
+      app: 'Apps', infra: 'Infra', growth: 'Growth', other: 'Also', otherValue: 'Video editing, drone piloting'
     },
-    timeline: {
-      '2018_04': 'Enrolled in Keio Shonan Fujisawa Junior High School',
-      '2021_01': 'Started managing several game strategy sites on <a href="https://gamerch.com/" class="timeline-link" target="_blank" rel="noopener noreferrer">Gamerch</a>',
-      '2021_04': 'Enrolled in Keio Shonan Fujisawa Senior High School',
-      '2022_02': 'Contributed 100+ articles as a dedicated writer (contract) for <a href="https://gamepedia.jp/" class="timeline-link" target="_blank" rel="noopener noreferrer">Gamepedia</a>',
-      '2023_08': 'Founded Technophere',
-      '2024_03': "Won the Principal's Award for a school intro video using drone aerial photography",
-      '2024_04': 'Enrolled at Keio University, Faculty of Science and Technology',
-      '2024_06': 'Started internship at Taiziii',
-      '2025_08': 'Launched BrawlTech — a Brawl Stars strategy & stats app',
-      '2025_09': 'Launched web development agency services for businesses',
-      '2025_12': 'Launched KPass — a study support app for Keio students',
-      '2026_04': 'Started as a DX Mentor at Life is Tech!',
-      '2026_07': 'Appointed as a Google AI Student Ambassador',
-      presentYear: 'Present',
-      present: 'Currently enrolled at Keio University, Department of System Design Engineering'
-    }
-  },
-  numbers: {
-    title: 'Numbers',
-    subtitle: 'Results within the first 8 months of founding Technophere',
-    kpi: {
-      uuLabel: 'Monthly Unique Users',
-      pvLabel: 'Monthly Page Views',
-      rankLabel: 'Avg. Search Position',
-      rankUnit: '',
-      ctrLabel: 'Click-Through Rate'
-    }
-  },
-  works: {
-    title: 'Products',
-    brawltech: { desc: "A strategy and stats app for the action game 'Brawl Stars'. Provides real-time data and character guides using Supercell's official API and third-party APIs. Supports iOS and Android via Flutter." },
-    kpass: { desc: "A study support app for Keio students. Fetches data from the official learning platform 'K-LMS (Canvas)' API and displays it in an organized view. Features persistent login sessions and assignment tracking." },
-    mimishare: { desc: 'A headband rental service for Disneyland visitors. Far cheaper than buying one for a single visit. Simple flow: deposit-based reservation → borrow and return via QR code.' },
-    applinkgenerator: { desc: 'A WordPress plugin that generates and inserts App Store / Google Play links directly from the block editor. Streamlines writing app review articles.' },
-    pushfromgithub: { desc: 'A plugin that deploys (updates) your own WordPress themes and plugins linked to a GitHub repository with one click. Easy CI/CD for WordPress.' },
-    consoleinsight: { desc: 'A tool that visualizes Google Search Console data in a clear, intuitive way. A dashboard app to streamline SEO operations.' },
-    vibestep: { desc: 'A mobile app delivering interactive experiences synchronized to music. An entertainment product focused on unique UI/UX experiences.' },
-    lemonai: { desc: 'An AI platform exclusively for the Keio University engineering club "Lemon". Features a 24/7 AI mentor, a virtual clubroom dashboard, and an Idea Gacha (random idea generator) system. Restricted to club members via @keio.jp authentication and invite-only access. Responsible for frontend development & UI/UX in team development.' }
-  },
-  media: {
-    title: 'Media',
-    techlog: {
-      title: 'Techlog',
-      desc: 'A general-purpose media covering WordPress, SEO, and app development, along with entertainment and lifestyle topics.'
+    contact: {
+      title: 'The next idea', lead: 'If you want to make something interesting together, write to me. Work, or just a chat, by email or on X.',
+      biz: 'I also build websites for businesses. <a href="https://technophere.com/web-production/" target="_blank" rel="noopener noreferrer">About the service</a>'
     },
-    gamelab: {
-      title: 'Strategy Lab',
-      desc: "Technophere's flagship media — a collection of ~7 game strategy sites. Built on game knowledge accumulated since junior high, reaching hundreds of thousands of monthly page views."
-    },
-    author: 'Technophere'
-  },
-  services: {
-    title: 'B2B Services',
-    subtitle: 'Web development & custom projects for individuals and businesses',
-    web: {
-      title: 'Website Development',
-      desc: 'We build corporate sites, landing pages, and media sites using WordPress, handling everything from SEO optimization to page speed improvements.',
-      cta: 'Learn more'
-    },
-    other: {
-      title: 'Other & Flexible Requests',
-      desc: 'From writing product review articles to a wide variety of other projects beyond web development. Feel free to reach out for a consultation.',
-      cta: 'Consult us'
-    }
-  },
-  skills: {
-    title: 'Tech Stack',
-    chips: {
-      videoEditing: 'Video Editing',
-      dronePiloting: 'Drone Piloting'
-    }
-  },
-  contact: {
-    title: 'Contact',
-    subtitle: 'For inquiries, collaborations, or questions, feel free to reach out.',
-    emailLabel: 'Email',
-    emailAriaLabel: 'Send an email',
-    siteLabel: 'Official Site',
-    siteAriaLabel: 'Open Technophere official site'
-  },
-  footer: {
-    copy: '© 2026 Yuya Itonaga / Technophere',
-    cacheClear: 'Clear Cache & Reset'
-  },
-  typewriter: {
-    phrases: [
-      'AI Engineer · Content Creator',
-      'Full-Stack Dev · SEO · App Builder',
-      'Keio University · Head of Technophere'
-    ]
+    footer: { copy: '© 2026 Yuya Itonaga / Technophere' }
+  };
+
+  var ja = { text: {}, html: {}, aria: {}, alt: {}, meta: '' };
+  function get(obj, key) { return key.split('.').reduce(function (o, k) { return o && o[k] !== undefined ? o[k] : undefined; }, obj); }
+
+  function cacheJa() {
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { if (!(el.dataset.i18n in ja.text)) ja.text[el.dataset.i18n] = el.textContent; });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) { if (!(el.dataset.i18nHtml in ja.html)) ja.html[el.dataset.i18nHtml] = el.innerHTML; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { if (!(el.dataset.i18nAria in ja.aria)) ja.aria[el.dataset.i18nAria] = el.getAttribute('aria-label') || ''; });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function (el) { if (!(el.dataset.i18nAlt in ja.alt)) ja.alt[el.dataset.i18nAlt] = el.getAttribute('alt') || ''; });
+    var m = document.querySelector('meta[name="description"]'); if (m) ja.meta = m.getAttribute('content') || '';
   }
-};
 
-/* ---- JA DOM cache (初期HTML値を保存) ---- */
-var jaCache = {
-  text: {},   /* data-i18n key  → textContent */
-  html: {},   /* data-i18n-html key → innerHTML */
-  aria: {},   /* data-i18n-aria key → aria-label (配列: 同一キーが複数要素に使われる場合も想定) */
-  meta: ''    /* meta[name=description] content */
-};
+  function setLang(lang) {
+    var en = lang === 'en';
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { var v = en ? get(EN, el.dataset.i18n) : ja.text[el.dataset.i18n]; if (v !== undefined) el.textContent = v; });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) { var v = en ? get(EN, el.dataset.i18nHtml) : ja.html[el.dataset.i18nHtml]; if (v !== undefined) el.innerHTML = v; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { var v = en ? get(EN, el.dataset.i18nAria) : ja.aria[el.dataset.i18nAria]; if (v !== undefined) el.setAttribute('aria-label', v); });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function (el) { var v = en ? get(EN, el.dataset.i18nAlt) : ja.alt[el.dataset.i18nAlt]; if (v !== undefined) el.setAttribute('alt', v); });
+    var m = document.querySelector('meta[name="description"]'); if (m) m.setAttribute('content', en ? EN.meta.description : ja.meta);
+    var btn = document.getElementById('langToggle');
+    if (btn) { btn.querySelector('span').textContent = en ? 'JA' : 'EN'; btn.setAttribute('aria-label', en ? '日本語に切り替える' : 'Switch to English'); }
+    document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: lang } }));
+  }
 
-function cacheJaDOM() {
-  document.querySelectorAll('[data-i18n]').forEach(function (el) {
-    var key = el.dataset.i18n;
-    if (!(key in jaCache.text)) {
-      jaCache.text[key] = el.textContent;
-    }
+  document.addEventListener('DOMContentLoaded', function () {
+    cacheJa();
+    if (document.documentElement.getAttribute('data-lang-pending') === 'en') { setLang('en'); document.documentElement.removeAttribute('data-lang-pending'); }
+    var btn = document.getElementById('langToggle');
+    if (btn) btn.addEventListener('click', function () { setLang(document.documentElement.lang === 'en' ? 'ja' : 'en'); });
   });
-  document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-    var key = el.dataset.i18nHtml;
-    if (!(key in jaCache.html)) {
-      jaCache.html[key] = el.innerHTML;
-    }
-  });
-  document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
-    var key = el.dataset.i18nAria;
-    if (!(key in jaCache.aria)) {
-      jaCache.aria[key] = el.getAttribute('aria-label') || '';
-    }
-  });
-  var metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) jaCache.meta = metaDesc.getAttribute('content') || '';
-}
-
-/* ---- helpers ---- */
-function getNestedValue(obj, key) {
-  return key.split('.').reduce(function (o, k) {
-    return (o && o[k] !== undefined) ? o[k] : undefined;
-  }, obj);
-}
-
-/* ---- count-up lang update ---- */
-function updateCountUpLang(lang) {
-  document.querySelectorAll('.count-up').forEach(function (el) {
-    delete el.dataset.animated;
-    var rect = el.getBoundingClientRect();
-    var inView = rect.top < window.innerHeight && rect.bottom > 0;
-    if (inView && typeof window.i18nAnimateCount === 'function') {
-      el.dataset.animated = 'true';
-      window.i18nAnimateCount(el);
-    }
-  });
-}
-
-/* ---- main switch function ---- */
-function setLang(lang) {
-  document.documentElement.lang = lang;
-  localStorage.setItem('lang', lang);
-
-  if (lang === 'ja') {
-    /* JA: DOM キャッシュから復元 */
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      var cached = jaCache.text[el.dataset.i18n];
-      if (cached !== undefined) el.textContent = cached;
-    });
-    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-      var cached = jaCache.html[el.dataset.i18nHtml];
-      if (cached !== undefined) el.innerHTML = cached;
-    });
-    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
-      var cached = jaCache.aria[el.dataset.i18nAria];
-      if (cached !== undefined) el.setAttribute('aria-label', cached);
-    });
-    var metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc && jaCache.meta) metaDesc.setAttribute('content', jaCache.meta);
-
-    /* typewriter */
-    if (typeof window.updateTypewriterPhrases === 'function') {
-      window.updateTypewriterPhrases(jaPhrases);
-    } else {
-      window.i18nPhrases = jaPhrases;
-    }
-  } else {
-    /* EN: enTranslations を適用 */
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      var text = getNestedValue(enTranslations, el.dataset.i18n);
-      if (text !== undefined) el.textContent = text;
-    });
-    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-      var html = getNestedValue(enTranslations, el.dataset.i18nHtml);
-      if (html !== undefined) el.innerHTML = html;
-    });
-    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
-      var text = getNestedValue(enTranslations, el.dataset.i18nAria);
-      if (text !== undefined) el.setAttribute('aria-label', text);
-    });
-    var metaDescEN = document.querySelector('meta[name="description"]');
-    if (metaDescEN) metaDescEN.setAttribute('content', enTranslations.meta.description);
-
-    /* typewriter */
-    if (typeof window.updateTypewriterPhrases === 'function') {
-      window.updateTypewriterPhrases(enTranslations.typewriter.phrases);
-    } else {
-      window.i18nPhrases = enTranslations.typewriter.phrases;
-    }
-  }
-
-  /* lang toggle label */
-  var btn = document.getElementById('langToggle');
-  if (btn) {
-    btn.querySelector('.lang-toggle-label').textContent = lang === 'ja' ? 'EN' : 'JA';
-  }
-
-  /* count-up re-animation */
-  updateCountUpLang(lang);
-}
-
-/* ---- initialization ---- */
-document.addEventListener('DOMContentLoaded', function () {
-  /* 1. 初期DOM (JA) をキャッシュ */
-  cacheJaDOM();
-
-  /* 2. 保存済み言語があれば適用 */
-  var stored = localStorage.getItem('lang');
-  if (stored && stored !== 'ja') {
-    setLang(stored);
-  }
-
-  /* 3. 言語ボタンの初期ラベルとクリックイベント */
-  var btn = document.getElementById('langToggle');
-  if (btn) {
-    var currentLang = document.documentElement.lang || 'ja';
-    btn.querySelector('.lang-toggle-label').textContent = currentLang === 'ja' ? 'EN' : 'JA';
-
-    btn.addEventListener('click', function () {
-      var current = document.documentElement.lang || 'ja';
-      setLang(current === 'ja' ? 'en' : 'ja');
-    });
-  }
-});
+  window.setLang = setLang;
+})();
