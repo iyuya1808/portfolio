@@ -153,9 +153,13 @@ document.querySelectorAll('img[loading="lazy"]').forEach((img) => { if (!img.com
 window.addEventListener('load', () => {
   refresh();
   // 直リンク（#numbers など）は固定ヘッダーの分だけ下げて止める
-  if (location.hash && document.querySelector(location.hash)) {
-    if (lenis) lenis.scrollTo(document.querySelector(location.hash), { offset: location.hash === '#cover' ? 0 : -72, immediate: true });
-    else window.scrollTo(0, document.querySelector(location.hash).getBoundingClientRect().top + window.scrollY - 72);
+  if (location.hash && location.hash !== '#cover' && document.querySelector(location.hash)) {
+    // ブラウザ自身のフラグメント移動の後に走らせる
+    setTimeout(() => {
+      const el = document.querySelector(location.hash);
+      const y = el.getBoundingClientRect().top + window.scrollY - 72;
+      if (lenis) lenis.scrollTo(y, { immediate: true }); else window.scrollTo(0, y);
+    }, 150);
   }
 });
 
