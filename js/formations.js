@@ -64,7 +64,7 @@ export function bulb(out, L, P, o) {
     const z0 = (hash(i, 11) - 0.5) * 0.35;
     const x = n.x * cs + z0 * sn, z = -n.x * sn + z0 * cs;
     let col = P[NODE_KEYS[i]];
-    if (lit > 0) col = mixCol(col, P.spark, lit * INNER[i]);
+    if (lit > 0) col = mixCol(col, P.spark, clamp01((lit * INNER[i] - 0.3) / 0.35)); // 茶色を経由せず黄色へ
     const size = n.r * 2 * S * (1 + lit * INNER[i] * 0.35);
     setPoint(out, i, cx + x * S, cy + n.y * S, z * S, size, col, 1);
   }

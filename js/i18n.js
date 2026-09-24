@@ -48,7 +48,7 @@
       brawltech: { what: 'A strategy companion for Brawl Stars', desc: "Pulls live match records and brawler stats from Supercell's official API and third-party APIs, and pairs them with guides. Built in Flutter for iOS and Android at once, released in August 2025." },
       kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Reads courses, assignments and timetables from the university's K-LMS (Canvas) API and lays them out inside the app. Keeps you logged in for days and shows deadlines at a glance. Built in SwiftUI, released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
       mimishare: { what: 'Rent a Disney headband for just one day', desc: 'Cheaper than buying one for a single visit. Reserve with a deposit, borrow and return by QR code. Built alone in Next.js and Stripe, from catalog to checkout.', link: 'Open mimishare.technophere.com' },
-      more: 'Also',
+      more: 'More',
       alg: { desc: 'A WordPress plugin that generates App Store and Google Play links from the block editor. Published in the official WordPress.org directory.' },
       pfg: { desc: 'A WordPress plugin that deploys your own themes and plugins from a linked GitHub repository with one click in the admin.' },
       lemon: { desc: 'An AI platform for Lemon, the engineering club at Keio. A mentor that answers around the clock and an idea gacha. I built the frontend and UI in a team.' }

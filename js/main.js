@@ -85,6 +85,7 @@ function enter(section) {
   navLinks.forEach((a) => a.classList.toggle('is-current', a.getAttribute('href') === '#' + id));
   if (!scene) return;
   scene.setFormation(section.dataset.formation, Number(section.dataset.side));
+  if (id !== 'cover') scene.setParams({ rot: 0 }); // 結びの電球は正面を向く
   scene.setDim(window.innerWidth < 760 && id !== 'cover' && id !== 'contact' ? 0.55 : 1);
   skillLabels.classList.toggle('is-on', id === 'tools');
 }
@@ -149,7 +150,14 @@ const refresh = () => ScrollTrigger.refresh();
 document.fonts?.ready.then(refresh);
 document.addEventListener('langchange', () => setTimeout(refresh, 50));
 document.querySelectorAll('img[loading="lazy"]').forEach((img) => { if (!img.complete) img.addEventListener('load', refresh, { once: true }); });
-window.addEventListener('load', refresh);
+window.addEventListener('load', () => {
+  refresh();
+  // 直リンク（#numbers など）は固定ヘッダーの分だけ下げて止める
+  if (location.hash && document.querySelector(location.hash)) {
+    if (lenis) lenis.scrollTo(document.querySelector(location.hash), { offset: location.hash === '#cover' ? 0 : -72, immediate: true });
+    else window.scrollTo(0, document.querySelector(location.hash).getBoundingClientRect().top + window.scrollY - 72);
+  }
+});
 
 /* ---------- 動きを減らす／WebGL 無し: 数字の章に静止した折れ線 ---------- */
 function buildNumbersFallback() {
