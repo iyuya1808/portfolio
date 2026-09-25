@@ -3,8 +3,8 @@ import * as THREE from '../assets/vendor/three.module.min.js';
 import * as F from './formations.js';
 
 const PALETTE = {
-  light: { navy: '#1F2A8C', sky: '#1DA3E8', ink: '#12173F', spark: '#F5B82E', red: '#E30613', green: '#23AB39', green2: '#0A7A45', purple: '#7E308F', yellow: '#F8B62D', edge: '#12173F', edgeAlpha: 0.32, dustAlpha: 0.22, glow: 0.3, additive: false },
-  dark:  { navy: '#5563E8', sky: '#4FC1FF', ink: '#EEF1FA', spark: '#FFC94D', red: '#FF5A69', green: '#3ED069', green2: '#2CB57A', purple: '#C07BE0', yellow: '#FFC94D', edge: '#EEF1FA', edgeAlpha: 0.28, dustAlpha: 0.3, glow: 0.9, additive: true },
+  light: { navy: '#1F2A8C', sky: '#1DA3E8', ink: '#12173F', spark: '#F5B82E', red: '#E30613', green: '#23AB39', green2: '#0A7A45', purple: '#7E308F', yellow: '#F8B62D', edge: '#12173F', edgeAlpha: 0.55, edgeWidth: 2.5, dustAlpha: 0.15, glow: 0.3, additive: false },
+  dark:  { navy: '#5563E8', sky: '#4FC1FF', ink: '#EEF1FA', spark: '#FFC94D', red: '#FF5A69', green: '#3ED069', green2: '#2CB57A', purple: '#C07BE0', yellow: '#FFC94D', edge: '#EEF1FA', edgeAlpha: 0.4, edgeWidth: 2, dustAlpha: 0.22, glow: 0.9, additive: true },
 };
 function rgb(hex) { const c = new THREE.Color(hex); return [c.r, c.g, c.b]; }
 function toPalette(p) {
@@ -34,7 +34,7 @@ export function createScene(canvas, opts = {}) {
   const pos = new Float32Array(N * 3), size = new Float32Array(N), col = new Float32Array(N * 3), alpha = new Float32Array(N);
   const tgt = { n: N, pos: new Float32Array(N * 3), size: new Float32Array(N), col: new Float32Array(N * 3), alpha: new Float32Array(N) };
   for (let i = 0; i < N; i++) { // 最初は遠くに散らばっている
-    const u = F.hash(i, 31), v = F.hash(i, 32), r = 4 + 3 * F.hash(i, 33);
+    const u = F.hash(i, 31), v = F.hash(i, 32), r = 2.5 + 1.5 * F.hash(i, 33);
     const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1);
     pos[i * 3] = r * Math.sin(ph) * Math.cos(th); pos[i * 3 + 1] = r * Math.cos(ph); pos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th) - 2;
     alpha[i] = 0; size[i] = 0.02;
@@ -60,18 +60,44 @@ export function createScene(canvas, opts = {}) {
   points.frustumCulled = false;
   scene.add(points);
 
-  // 辺
+  // 辺（辺ごとに 4 頂点・2 三角形。頂点シェーダで画面上の太さを付ける）
   const egeo = new THREE.BufferGeometry();
-  const epos = new Float32Array(MAX_EDGES * 2 * 3), ealpha = new Float32Array(MAX_EDGES * 2);
-  egeo.setAttribute('position', new THREE.BufferAttribute(epos, 3));
+  const EV = MAX_EDGES * 4;
+  const eStart = new Float32Array(EV * 3), eEnd = new Float32Array(EV * 3), eSide = new Float32Array(EV), eT = new Float32Array(EV), ealpha = new Float32Array(EV);
+  const eIdx = new Uint16Array(MAX_EDGES * 6);
+  for (let s = 0; s < MAX_EDGES; s++) {
+    const b = s * 4;
+    eSide[b] = -1; eT[b] = 0; eSide[b + 1] = 1; eT[b + 1] = 0; eSide[b + 2] = 1; eT[b + 2] = 1; eSide[b + 3] = -1; eT[b + 3] = 1;
+    eIdx.set([b, b + 1, b + 2, b, b + 2, b + 3], s * 6);
+  }
+  egeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(EV * 3), 3));
+  egeo.setAttribute('aStart', new THREE.BufferAttribute(eStart, 3));
+  egeo.setAttribute('aEnd', new THREE.BufferAttribute(eEnd, 3));
+  egeo.setAttribute('aSide', new THREE.BufferAttribute(eSide, 1));
+  egeo.setAttribute('aT', new THREE.BufferAttribute(eT, 1));
   egeo.setAttribute('aAlpha', new THREE.BufferAttribute(ealpha, 1));
+  egeo.setIndex(new THREE.BufferAttribute(eIdx, 1));
   const edgeMat = new THREE.ShaderMaterial({
-    uniforms: { uColor: { value: new THREE.Color('#12173F') }, uAlpha: { value: 0.3 }, uDim: { value: 1 } },
-    vertexShader: `attribute float aAlpha; varying float vA; void main(){ vA = aAlpha; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    uniforms: { uColor: { value: new THREE.Color('#12173F') }, uAlpha: { value: 0.5 }, uDim: { value: 1 }, uRes: { value: new THREE.Vector2(1, 1) }, uWidth: { value: 2.5 } },
+    vertexShader: `
+      attribute vec3 aStart; attribute vec3 aEnd; attribute float aSide; attribute float aT; attribute float aAlpha;
+      uniform vec2 uRes; uniform float uWidth; varying float vA;
+      void main(){
+        vec4 s = projectionMatrix * modelViewMatrix * vec4(aStart, 1.0);
+        vec4 e = projectionMatrix * modelViewMatrix * vec4(aEnd, 1.0);
+        vec2 sn = s.xy / s.w * uRes * 0.5; vec2 en = e.xy / e.w * uRes * 0.5;
+        vec2 d = en - sn; float len = length(d);
+        vec2 dir = len > 0.0001 ? d / len : vec2(1.0, 0.0);
+        vec2 nrm = vec2(-dir.y, dir.x);
+        vec4 p = mix(s, e, aT);
+        vec2 pn = p.xy / p.w * uRes * 0.5 + nrm * aSide * uWidth * 0.5;
+        gl_Position = vec4(pn / (uRes * 0.5) * p.w, p.z, p.w);
+        vA = aAlpha;
+      }`,
     fragmentShader: `precision mediump float; uniform vec3 uColor; uniform float uAlpha; uniform float uDim; varying float vA; void main(){ gl_FragColor = vec4(uColor, vA * uAlpha * uDim); }`,
-    transparent: true, depthWrite: false, depthTest: false,
+    transparent: true, depthWrite: false, depthTest: false, side: THREE.DoubleSide,
   });
-  const lines = new THREE.LineSegments(egeo, edgeMat);
+  const lines = new THREE.Mesh(egeo, edgeMat);
   lines.frustumCulled = false;
   scene.add(lines);
   const slots = []; for (let s = 0; s < MAX_EDGES; s++) slots.push({ i: -1, j: -1, a: 0, t: 0 });
@@ -94,7 +120,7 @@ export function createScene(canvas, opts = {}) {
   const L = { side: 1, sideFactor: 0.55, scale: 1, halfW: 2, halfH: 2.18, time: 0, isMobile: isMobile(), mobileY: 1.0 };
   const skillLayout = F.layoutSkills();
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
-  let dim = 1, dimT = 1, running = true, lastT = performance.now();
+  let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
   let settled = 0;
 
   function resize() {
@@ -108,6 +134,7 @@ export function createScene(canvas, opts = {}) {
     L.isMobile = isMobile();
     L.scale = L.isMobile ? Math.min(0.72, L.halfW * 0.6) : Math.min(1.05, L.halfW * 0.42);
     pointMat.uniforms.uProj.value = (h / (2 * Math.tan((camera.fov * Math.PI) / 360))) * dpr;
+    edgeMat.uniforms.uRes.value.set(w, h);
   }
   window.addEventListener('resize', resize, { passive: true });
   resize();
@@ -124,6 +151,7 @@ export function createScene(canvas, opts = {}) {
     P = toPalette(p);
     edgeMat.uniforms.uColor.value.set(p.edge);
     edgeMat.uniforms.uAlpha.value = p.edgeAlpha;
+    edgeMat.uniforms.uWidth.value = p.edgeWidth;
     glowMat.color.set(p.spark);
     glowMat.blending = p.additive ? THREE.AdditiveBlending : THREE.NormalBlending;
     glowMat.needsUpdate = true;
@@ -148,7 +176,8 @@ export function createScene(canvas, opts = {}) {
     if (!running) return;
     requestAnimationFrame(frame);
     const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
-    L.time += dt;
+    L.time += dt; sinceSwitch += dt;
+    L.scroll = window.scrollY / window.innerHeight;
     mouse.x += (mouse.tx - mouse.x) * (1 - Math.exp(-dt * 4));
     mouse.y += (mouse.ty - mouse.y) * (1 - Math.exp(-dt * 4));
     dim += (dimT - dim) * (1 - Math.exp(-dt * 3));
@@ -156,15 +185,16 @@ export function createScene(canvas, opts = {}) {
 
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
-      const rot = mouse.x * 0.22 + Math.sin(L.time * 0.25) * 0.09 + (params.rot || 0);
+      const rot = mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
       edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot });
-    } else if (formation === 'path') edges = F.path(tgt, L, P, { progress: params.progress, events: params.events });
+    } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
     else if (formation === 'graph') edges = F.graph(tgt, L, P, { layout: skillLayout });
     else edges = F.field(tgt, L, P, { dim: 1 });
     assignEdges(edges);
 
-    const kp = 1 - Math.exp(-dt * 3.2), ka = 1 - Math.exp(-dt * 4.5);
+    const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2) : 3.2;
+    const kp = 1 - Math.exp(-dt * rate), ka = 1 - Math.exp(-dt * 4.5);
     let dist = 0;
     for (let i = 0; i < N; i++) {
       const i3 = i * 3;
@@ -178,15 +208,18 @@ export function createScene(canvas, opts = {}) {
     geo.attributes.aColor.needsUpdate = true; geo.attributes.aAlpha.needsUpdate = true;
 
     for (let s = 0; s < MAX_EDGES; s++) {
-      const sl = slots[s], b = s * 6;
+      const sl = slots[s];
       sl.a += (sl.t * settled - sl.a) * ka;
-      if (sl.i >= 0) {
-        epos[b] = pos[sl.i * 3]; epos[b + 1] = pos[sl.i * 3 + 1]; epos[b + 2] = pos[sl.i * 3 + 2];
-        epos[b + 3] = pos[sl.j * 3]; epos[b + 4] = pos[sl.j * 3 + 1]; epos[b + 5] = pos[sl.j * 3 + 2];
+      for (let v = 0; v < 4; v++) {
+        const b = (s * 4 + v) * 3;
+        if (sl.i >= 0) {
+          eStart[b] = pos[sl.i * 3]; eStart[b + 1] = pos[sl.i * 3 + 1]; eStart[b + 2] = pos[sl.i * 3 + 2];
+          eEnd[b] = pos[sl.j * 3]; eEnd[b + 1] = pos[sl.j * 3 + 1]; eEnd[b + 2] = pos[sl.j * 3 + 2];
+        }
+        ealpha[s * 4 + v] = sl.a;
       }
-      ealpha[s * 2] = ealpha[s * 2 + 1] = sl.a;
     }
-    egeo.attributes.position.needsUpdate = true; egeo.attributes.aAlpha.needsUpdate = true;
+    egeo.attributes.aStart.needsUpdate = true; egeo.attributes.aEnd.needsUpdate = true; egeo.attributes.aAlpha.needsUpdate = true;
 
     // 灯り
     const lit = formation === 'lit' ? params.lit : 0;
@@ -206,7 +239,8 @@ export function createScene(canvas, opts = {}) {
 
   const v = new THREE.Vector3();
   return {
-    setFormation(name, side) { formation = name; if (side != null) L.side = side; },
+    setFormation(name, side) { if (name !== formation) sinceSwitch = 0; formation = name; if (side != null) L.side = side; },
+    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile }; },
     setParams(o) { Object.assign(params, o); },
     setDim(d) { dimT = d; },
     setTheme,

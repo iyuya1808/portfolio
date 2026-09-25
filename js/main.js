@@ -102,7 +102,6 @@ chapters.forEach((section) => {
       const p = self.progress;
       if (section.id === 'numbers') scene.setParams({ reveal: Math.min(1, p / 0.55) });
       else if (section.id === 'contact') scene.setParams({ lit: Math.min(1, p / 0.6) });
-      else if (section.id === 'cover') scene.setParams({ rot: p * 0.6 });
     },
   });
 });
@@ -125,6 +124,17 @@ events.forEach((li, i) => {
     onLeaveBack: () => { li.classList.remove('is-lit'); const prev = events[i - 1]; setYear(prev ? prev.dataset.year : '2018'); if (scene) scene.setParams({ progress: Math.max(0, i - 1) / (events.length - 1) }); },
   });
 });
+
+/* 経歴の道: 出来事の行の位置を毎フレーム渡し、点が文章と 1:1 で動く */
+if (scene) {
+  const rows = Array.from(events);
+  gsap.ticker.add(() => {
+    if (scene.formation !== 'path') return;
+    const { halfH } = scene.layout(), h = window.innerHeight;
+    const rowYs = rows.map((li) => { const r = li.getBoundingClientRect(); return (0.5 - (r.top + r.height / 2) / h) * 2 * halfH; });
+    scene.setParams({ rowYs, rowLit: rows.map((li) => li.classList.contains('is-lit')) });
+  });
+}
 
 /* 使う道具: ノード位置に HTML のラベルを重ねる */
 if (scene) {
