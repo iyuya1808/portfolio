@@ -154,7 +154,7 @@ export function createScene(canvas, opts = {}) {
   const NB = F.N_MAIN + F.N_BASE;
   const soft = { ox: new Float32Array(NB), oy: new Float32Array(NB), vx: new Float32Array(NB), vy: new Float32Array(NB) };
   function stepSoft(edges, dt) {
-    const S = F.bulbScale(L), on = L.cursorOn || 0, R = 1.2 * S, maxPull = 0.7 * S;
+    const S = F.bulbScale(L), on = L.cursorOn || 0, R = 1.2 * S, maxPull = 0.3 * S;
     // カーソルに一番近い玉（本来の位置で測る）
     let g = -1, best = R;
     for (let i = 0; i < F.N_MAIN; i++) {
@@ -165,28 +165,32 @@ export function createScene(canvas, opts = {}) {
     const steps = 3, h = dt / steps;
     for (let s = 0; s < steps; s++) {
       const fx = new Float32Array(F.N_MAIN), fy = new Float32Array(F.N_MAIN);
-      for (let i = 0; i < F.N_MAIN; i++) { fx[i] = -5 * soft.ox[i] - 3.2 * soft.vx[i]; fy[i] = -5 * soft.oy[i] - 3.2 * soft.vy[i]; }
+      for (let i = 0; i < F.N_MAIN; i++) { fx[i] = -7 * soft.ox[i] - 4.5 * soft.vx[i]; fy[i] = -7 * soft.oy[i] - 4.5 * soft.vy[i]; }
       // 線はつながった玉のずれをそろえようとする（引かれた玉が隣を連れていく）
       for (const [i, j] of edges) {
-        const ex = (soft.ox[j] - soft.ox[i]) * 16, ey = (soft.oy[j] - soft.oy[i]) * 16;
+        const ex = (soft.ox[j] - soft.ox[i]) * 26, ey = (soft.oy[j] - soft.oy[i]) * 26;
         fx[i] += ex; fy[i] += ey; fx[j] -= ex; fy[j] -= ey;
       }
       if (grip > 0) {
         let wx = L.cursor.x - tgt.pos[g * 3], wy = L.cursor.y - tgt.pos[g * 3 + 1];
         const wl = Math.hypot(wx, wy); if (wl > maxPull) { wx *= maxPull / wl; wy *= maxPull / wl; }
-        fx[g] += (wx - soft.ox[g]) * 120 * grip; fy[g] += (wy - soft.oy[g]) * 120 * grip;
+        fx[g] += (wx - soft.ox[g]) * 80 * grip; fy[g] += (wy - soft.oy[g]) * 80 * grip;
       }
       for (let i = 0; i < F.N_MAIN; i++) {
         soft.vx[i] += fx[i] * h; soft.vy[i] += fy[i] * h;
         soft.ox[i] += soft.vx[i] * h; soft.oy[i] += soft.vy[i] * h;
       }
     }
-    // 台座は一番近い玉のずれに付いていく
-    for (let k = F.N_MAIN; k < NB; k++) {
-      let n = 0, bd = 1e9;
-      for (let i = 0; i < F.N_MAIN; i++) { const d = Math.hypot(tgt.pos[i * 3] - tgt.pos[k * 3], tgt.pos[i * 3 + 1] - tgt.pos[k * 3 + 1]); if (d < bd) { bd = d; n = i; } }
-      soft.ox[k] = soft.ox[n]; soft.oy[k] = soft.oy[n];
-    }
+    // 台座はひとかたまりで、台座の中心に近い 2 つの玉のずれの平均に付いていく
+    let bx = 0, by = 0;
+    for (let k = F.N_MAIN; k < NB; k++) { bx += tgt.pos[k * 3]; by += tgt.pos[k * 3 + 1]; }
+    bx /= F.N_BASE; by /= F.N_BASE;
+    const near = [];
+    for (let i = 0; i < F.N_MAIN; i++) near.push([Math.hypot(tgt.pos[i * 3] - bx, tgt.pos[i * 3 + 1] - by), i]);
+    near.sort((a, b) => a[0] - b[0]);
+    const n0 = near[0][1], n1 = near[1][1];
+    const box = (soft.ox[n0] + soft.ox[n1]) / 2, boy = (soft.oy[n0] + soft.oy[n1]) / 2;
+    for (let k = F.N_MAIN; k < NB; k++) { soft.ox[k] = box; soft.oy[k] = boy; }
     for (let i = 0; i < NB; i++) { tgt.pos[i * 3] += soft.ox[i]; tgt.pos[i * 3 + 1] += soft.oy[i]; }
   }
   let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
