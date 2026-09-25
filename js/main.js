@@ -1,10 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20260926b';
+import { createScene, supportsWebGL } from './scene.js?v=20260926a';
 import { SKILLS, PV_MONTHLY } from './data.js';
 import { SKILL_GROUP, SKILL_EDGES } from './formations.js';
-
-// 確認用: ?diag=1 のときだけ 1 コマごとの計測を送る（js/diag.js）
-const diag = new URLSearchParams(location.search).has('diag') ? await import('./diag.js?v=20260926b') : null;
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -37,7 +34,6 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hi
 /* ---------- 慣性スクロールと ScrollTrigger ---------- */
 let lenis = null;
 gsap.registerPlugin(ScrollTrigger);
-if (diag) gsap.ticker.add(diag.tickStart, false, true);
 // スマホのツールバーの出し入れ（高さだけの変化）で全トリガーを測り直さない
 ScrollTrigger.config({ ignoreMobileResize: true });
 if (!reduceMotion) {
@@ -245,8 +241,6 @@ if (scene) {
     }
   });
 }
-
-if (diag) gsap.ticker.add(diag.tickEnd);
 
 /* ---------- レイアウトが変わったら ScrollTrigger を測り直す ---------- */
 const refresh = () => ScrollTrigger.refresh();

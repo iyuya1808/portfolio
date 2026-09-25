@@ -267,7 +267,6 @@ export function createScene(canvas, opts = {}) {
   function frame(now) {
     if (!running) return;
     requestAnimationFrame(frame);
-    const diagT0 = window.__diag ? performance.now() : 0;
     const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
     L.time += dt; sinceSwitch += dt;
     L.scroll = window.scrollY / L.viewH;
@@ -362,7 +361,6 @@ export function createScene(canvas, opts = {}) {
     camera.position.x = mouse.x * 0.08; camera.position.y = -mouse.y * 0.06;
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
-    if (window.__diag) window.__diag.scene = performance.now() - diagT0;
   }
   requestAnimationFrame(frame);
   document.addEventListener('visibilitychange', () => {
