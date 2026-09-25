@@ -150,9 +150,45 @@ export function createScene(canvas, opts = {}) {
   const skillLayout = F.layoutSkills();
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, inside: false };
   let assembled = false, hot = -1; // 読み込みの組み上がりが終わるまでカーソルに反応させない
-  // 表紙の電球はひとかたまりのまま、カーソルのほうへ向き・寄る。ばねで少し行き過ぎてから止まる
-  const spring = { ry: [0, 0], rx: [0, 0], ox: [0, 0], oy: [0, 0] };
-  const stepSpring = (sp, target, dt) => { sp[1] += ((target - sp[0]) * 60 - sp[1] * 9) * dt; sp[0] += sp[1] * dt; return sp[0]; };
+  // 表紙の電球は、玉と線をばねでつないだ網として動かす。カーソルが近くの玉をつかむと、線がほかの玉を引き連れる
+  const NB = F.N_MAIN + F.N_BASE;
+  const soft = { ox: new Float32Array(NB), oy: new Float32Array(NB), vx: new Float32Array(NB), vy: new Float32Array(NB) };
+  function stepSoft(edges, dt) {
+    const S = F.bulbScale(L), on = L.cursorOn || 0, R = 1.2 * S, maxPull = 0.7 * S;
+    // カーソルに一番近い玉（本来の位置で測る）
+    let g = -1, best = R;
+    for (let i = 0; i < F.N_MAIN; i++) {
+      const d = Math.hypot(tgt.pos[i * 3] + soft.ox[i] - L.cursor.x, tgt.pos[i * 3 + 1] + soft.oy[i] - L.cursor.y);
+      if (d < best) { best = d; g = i; }
+    }
+    const grip = g >= 0 ? on * Math.min(1, (R - best) / (R * 0.6)) : 0;
+    const steps = 3, h = dt / steps;
+    for (let s = 0; s < steps; s++) {
+      const fx = new Float32Array(F.N_MAIN), fy = new Float32Array(F.N_MAIN);
+      for (let i = 0; i < F.N_MAIN; i++) { fx[i] = -5 * soft.ox[i] - 3.2 * soft.vx[i]; fy[i] = -5 * soft.oy[i] - 3.2 * soft.vy[i]; }
+      // 線はつながった玉のずれをそろえようとする（引かれた玉が隣を連れていく）
+      for (const [i, j] of edges) {
+        const ex = (soft.ox[j] - soft.ox[i]) * 16, ey = (soft.oy[j] - soft.oy[i]) * 16;
+        fx[i] += ex; fy[i] += ey; fx[j] -= ex; fy[j] -= ey;
+      }
+      if (grip > 0) {
+        let wx = L.cursor.x - tgt.pos[g * 3], wy = L.cursor.y - tgt.pos[g * 3 + 1];
+        const wl = Math.hypot(wx, wy); if (wl > maxPull) { wx *= maxPull / wl; wy *= maxPull / wl; }
+        fx[g] += (wx - soft.ox[g]) * 120 * grip; fy[g] += (wy - soft.oy[g]) * 120 * grip;
+      }
+      for (let i = 0; i < F.N_MAIN; i++) {
+        soft.vx[i] += fx[i] * h; soft.vy[i] += fy[i] * h;
+        soft.ox[i] += soft.vx[i] * h; soft.oy[i] += soft.vy[i] * h;
+      }
+    }
+    // 台座は一番近い玉のずれに付いていく
+    for (let k = F.N_MAIN; k < NB; k++) {
+      let n = 0, bd = 1e9;
+      for (let i = 0; i < F.N_MAIN; i++) { const d = Math.hypot(tgt.pos[i * 3] - tgt.pos[k * 3], tgt.pos[i * 3 + 1] - tgt.pos[k * 3 + 1]); if (d < bd) { bd = d; n = i; } }
+      soft.ox[k] = soft.ox[n]; soft.oy[k] = soft.oy[n];
+    }
+    for (let i = 0; i < NB; i++) { tgt.pos[i * 3] += soft.ox[i]; tgt.pos[i * 3 + 1] += soft.oy[i]; }
+  }
   let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
   let settled = 0;
   let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
@@ -251,19 +287,10 @@ export function createScene(canvas, opts = {}) {
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
       // タッチ端末では揺らさない（枡に固定して見せる）
-      let rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
-      let tilt = 0, ox = 0, oy = 0;
-      if (formation === 'bulb' && !L.isMobile) {
-        // カーソルと電球の中心の差（-1..1）。電球全体がそちらを向き、少し寄る
-        const S = F.bulbScale(L), bx = L.side * L.halfW * L.sideFactor;
-        const on = L.cursorOn || 0;
-        const nx = Math.max(-1, Math.min(1, (L.cursor.x - bx) / (L.halfW * 0.6))) * on;
-        const ny = Math.max(-1, Math.min(1, L.cursor.y / (L.halfH * 0.7))) * on;
-        rot = stepSpring(spring.ry, nx * 0.5, dt) + Math.sin(L.time * 0.25) * 0.03;
-        tilt = stepSpring(spring.rx, -ny * 0.35, dt);
-        ox = stepSpring(spring.ox, nx * 0.08 * S, dt); oy = stepSpring(spring.oy, ny * 0.06 * S, dt);
-      }
-      edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot, tilt, ox, oy, breath: (breath - 1) / 0.075 });
+      const rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
+      edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot, breath: (breath - 1) / 0.075 });
+      if (formation === 'bulb' && !L.isMobile) stepSoft(edges, dt);
+      else { soft.ox.fill(0); soft.oy.fill(0); soft.vx.fill(0); soft.vy.fill(0); }
     } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null, pathAmp: L.isMobile ? params.pathAmp : null });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
     else if (formation === 'graph') edges = F.graph(tgt, L, P, { layout: skillLayout });
@@ -275,7 +302,7 @@ export function createScene(canvas, opts = {}) {
     }
     assignEdges(edges);
 
-    // 表紙で組み上がった後は、ばねの動きをそのまま見せる（全点が同じ速さで追うので形は崩れない）
+    // 表紙で組み上がった後は、網のばねの動きをそのまま見せる
     const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2)
       : formation === 'bulb' && assembled && sinceSwitch > 1.5 && !L.isMobile ? 3.2 + (30 - 3.2) * (L.cursorOn || 0) : 3.2;
     const kp = 1 - Math.exp(-dt * rate), ka = 1 - Math.exp(-dt * 4.5);
