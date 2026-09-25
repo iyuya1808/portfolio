@@ -42,12 +42,18 @@ const INNER = LOGO_NODES.map((n) => {
   return t * t * (3 - 2 * t);
 });
 
-function setPoint(out, i, x, y, z, size, col, alpha) {
+function setPoint(out, i, x, y, z, size, col, alpha, glow = 0) {
   out.pos[i * 3] = x; out.pos[i * 3 + 1] = y; out.pos[i * 3 + 2] = z;
   out.size[i] = size;
   out.col[i * 3] = col[0]; out.col[i * 3 + 1] = col[1]; out.col[i * 3 + 2] = col[2];
   out.alpha[i] = alpha;
+  if (out.glow) out.glow[i] = glow; // 灯っている度合い（結びの電球だけ 0 以外）
 }
+const smooth01 = (t) => { t = clamp01(t); return t * t * (3 - 2 * t); };
+// 灯るときの役割: 中心に近い 4 個が芯（白熱）、次の 7 個が中（琥珀）、残りはガラス側
+const LIT_RANK = LOGO_NODES.map((_, i) => i).sort((a, b) => INNER[b] - INNER[a]);
+const LIT_ROLE = new Array(LOGO_NODES.length).fill('outer');
+LIT_RANK.forEach((i, k) => { LIT_ROLE[i] = k < 4 ? 'core' : k < 11 ? 'mid' : 'outer'; });
 function mixCol(a, b, t) { return [mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t)]; }
 
 // 形の中心。スマホでは文書内の枡（L.box）に置き、PC では空いた側の列に寄せる
@@ -62,16 +68,23 @@ export function bulbScale(L) {
 
 /* ---------- 0 / 5: 電球（lit で灯る）。平面に置き、回転はごくわずか ---------- */
 export function bulb(out, L, P, o) {
-  const S = bulbScale(L), lit = o.lit || 0, rot = o.rot || 0;
+  const S = bulbScale(L), lit = o.lit || 0, rot = o.rot || 0, breath = o.breath || 0;
   const { cx, cy } = center(L, L.mobileY);
   const cs = Math.cos(rot), sn = Math.sin(rot);
   const edges = [];
   for (let i = 0; i < N_MAIN; i++) {
     const n = LOGO_NODES[i];
-    let col = P[NODE_KEYS[i]];
-    if (lit > 0) col = mixCol(col, P.spark, clamp01((lit * INNER[i] - 0.3) / 0.35));
-    const size = n.r * 2 * S * (1 + lit * INNER[i] * 0.35);
-    setPoint(out, i, cx + n.x * cs * S, cy + n.y * S, -n.x * sn * S, size, col, 1);
+    let col = P[NODE_KEYS[i]], glow = 0;
+    if (lit > 0) {
+      // 芯 → 中 → 外の順に点く。境目は幅 0.12 の smoothstep で、濁った中間色を通らない
+      const on = smooth01((lit * 1.3 - (1 - INNER[i])) / 0.12);
+      const role = LIT_ROLE[i];
+      if (role === 'core') { col = mixCol(col, P.core, on); glow = on; }
+      else if (role === 'mid') { col = mixCol(col, P.spark, on); glow = on * 0.7; }
+      else col = mixCol(col, P.spark, 0.15 * lit);
+    }
+    const size = n.r * 2 * S * (1 + glow * 0.3) * (1 + glow * 0.04 * breath);
+    setPoint(out, i, cx + n.x * cs * S, cy + n.y * S, -n.x * sn * S, size, col, 1, glow);
   }
   for (let k = 0; k < N_BASE; k++) {
     const b = BASE[k];
@@ -86,7 +99,9 @@ export function bulb(out, L, P, o) {
     const th = u * Math.PI * 2 + L.time * 0.04 * (0.4 + hash(k, 4));
     const ph = Math.acos(2 * v - 1);
     const x = r * Math.sin(ph) * Math.cos(th), y = r * Math.cos(ph) * 0.85, z = r * Math.sin(ph) * Math.sin(th) * 0.5;
-    setPoint(out, i, cx + x, cy + 0.1 * S + y, z, (0.015 + 0.015 * hash(k, 5)) * S, P.ink, P.dustAlpha * (1 + lit * 0.6));
+    // 光の中に入った粉は琥珀色に、少し大きく明るく（光の中に舞う塵）
+    const near = clamp01((1.6 * S - Math.hypot(x, y)) / (0.6 * S)) * lit;
+    setPoint(out, i, cx + x, cy + 0.1 * S + y, z, (0.015 + 0.015 * hash(k, 5)) * S * (1 + 0.6 * near), mixCol(P.ink, P.spark, near), P.dustAlpha * (1 + lit * 0.6) * (1 + near), near * 0.5);
   }
   for (const e of LOGO_EDGES) edges.push([e[0], e[1], 0.9 + lit * 0.1]);
   return edges;
