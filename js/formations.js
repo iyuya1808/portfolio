@@ -69,7 +69,7 @@ export function bulbScale(L) {
 /* ---------- 0 / 5: 電球（lit で灯る）。平面に置き、回転はごくわずか ---------- */
 export function bulb(out, L, P, o) {
   const S = bulbScale(L), lit = o.lit || 0, rot = o.rot || 0, breath = o.breath || 0, tilt = o.tilt || 0;
-  const { cx, cy } = center(L, L.mobileY);
+  const c0 = center(L, L.mobileY), cx = c0.cx + (o.ox || 0), cy = c0.cy + (o.oy || 0);
   const cs = Math.cos(rot), sn = Math.sin(rot), ct = Math.cos(tilt), st = Math.sin(tilt);
   const edges = [];
   for (let i = 0; i < N_MAIN; i++) {
@@ -286,7 +286,7 @@ export function graph(out, L, P, o) {
 
 /* ---------- PC のカーソルへの反応。形の関数が書いた目標をずらす ---------- */
 // 距離は形の本来の位置（目標）から測るので、動いた点が影響を受け直して暴れることはない
-// mode: 'push'（表紙の電球が押されて弾む）/ 'graph'（道具の磁石と注目）/ 'moth'（灯りの粉がカーソルを回る）
+// mode: 'graph'（道具の磁石と注目）/ 'moth'（灯りの粉がカーソルを回る）
 // 道具では注目のノード番号を返す（なければ -1）
 const falloff = (d, R) => { const t = clamp01(1 - d / R); return t * t; };
 export function cursor(out, L, P, mode, edges) {
@@ -294,21 +294,6 @@ export function cursor(out, L, P, mode, edges) {
   if (on < 0.001 || !L.cursor) return -1;
   const S = mode === 'graph' ? L.scale : bulbScale(L), mx = L.cursor.x, my = L.cursor.y;
   const NH0 = N_MAIN + N_BASE;
-  if (mode === 'push') {
-    const R = 1.0 * S, push = 0.3 * S;
-    for (let i = 0; i < NH0; i++) {
-      const x = out.pos[i * 3], y = out.pos[i * 3 + 1], dx = x - mx, dy = y - my, d = Math.hypot(dx, dy) || 1e-4;
-      const f = falloff(d, R) * on * push;
-      out.pos[i * 3] = x + (dx / d) * f; out.pos[i * 3 + 1] = y + (dy / d) * f;
-    }
-    const Rd = 1.4 * S, swirl = 0.3 * S;
-    for (let i = NH0; i < out.n; i++) {
-      const x = out.pos[i * 3], y = out.pos[i * 3 + 1], dx = x - mx, dy = y - my, d = Math.hypot(dx, dy) || 1e-4;
-      const f = falloff(d, Rd) * on * swirl;
-      out.pos[i * 3] = x - (dy / d) * f; out.pos[i * 3 + 1] = y + (dx / d) * f;
-    }
-    return -1;
-  }
   if (mode === 'graph') {
     const n = SKILLS.length, R = 0.8 * S, pull = 0.1 * S;
     let hot = -1, best = 0.35 * S;

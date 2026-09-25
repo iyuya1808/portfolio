@@ -150,6 +150,9 @@ export function createScene(canvas, opts = {}) {
   const skillLayout = F.layoutSkills();
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, inside: false };
   let assembled = false, hot = -1; // 読み込みの組み上がりが終わるまでカーソルに反応させない
+  // 表紙の電球はひとかたまりのまま、カーソルのほうへ向き・寄る。ばねで少し行き過ぎてから止まる
+  const spring = { ry: [0, 0], rx: [0, 0], ox: [0, 0], oy: [0, 0] };
+  const stepSpring = (sp, target, dt) => { sp[1] += ((target - sp[0]) * 60 - sp[1] * 9) * dt; sp[0] += sp[1] * dt; return sp[0]; };
   let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
   let settled = 0;
   let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
@@ -248,22 +251,33 @@ export function createScene(canvas, opts = {}) {
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
       // タッチ端末では揺らさない（枡に固定して見せる）
-      const rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.14 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
-      const tilt = L.isMobile ? 0 : mouse.y * 0.08;
-      edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot, tilt, breath: (breath - 1) / 0.075 });
+      let rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
+      let tilt = 0, ox = 0, oy = 0;
+      if (formation === 'bulb' && !L.isMobile) {
+        // カーソルと電球の中心の差（-1..1）。電球全体がそちらを向き、少し寄る
+        const S = F.bulbScale(L), bx = L.side * L.halfW * L.sideFactor;
+        const on = L.cursorOn || 0;
+        const nx = Math.max(-1, Math.min(1, (L.cursor.x - bx) / (L.halfW * 0.6))) * on;
+        const ny = Math.max(-1, Math.min(1, L.cursor.y / (L.halfH * 0.7))) * on;
+        rot = stepSpring(spring.ry, nx * 0.5, dt) + Math.sin(L.time * 0.25) * 0.03;
+        tilt = stepSpring(spring.rx, -ny * 0.35, dt);
+        ox = stepSpring(spring.ox, nx * 0.08 * S, dt); oy = stepSpring(spring.oy, ny * 0.06 * S, dt);
+      }
+      edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot, tilt, ox, oy, breath: (breath - 1) / 0.075 });
     } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null, pathAmp: L.isMobile ? params.pathAmp : null });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
     else if (formation === 'graph') edges = F.graph(tgt, L, P, { layout: skillLayout });
     else edges = F.field(tgt, L, P, { dim: 1 });
     hot = -1;
     if (!L.isMobile) {
-      if (formation === 'bulb') F.cursor(tgt, L, P, 'push', edges);
-      else if (formation === 'lit') F.cursor(tgt, L, P, 'moth', edges);
+      if (formation === 'lit') F.cursor(tgt, L, P, 'moth', edges);
       else if (formation === 'graph') hot = F.cursor(tgt, L, P, 'graph', edges);
     }
     assignEdges(edges);
 
-    const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2) : 3.2;
+    // 表紙で組み上がった後は、ばねの動きをそのまま見せる（全点が同じ速さで追うので形は崩れない）
+    const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2)
+      : formation === 'bulb' && assembled && sinceSwitch > 1.5 && !L.isMobile ? 3.2 + (30 - 3.2) * (L.cursorOn || 0) : 3.2;
     const kp = 1 - Math.exp(-dt * rate), ka = 1 - Math.exp(-dt * 4.5);
     let dist = 0;
     for (let i = 0; i < N; i++) {
