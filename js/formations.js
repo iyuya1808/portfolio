@@ -98,7 +98,7 @@ export function path(out, L, P, o) {
   const n = rows ? rows.length : o.events || 15;
   // スマホは出来事の左に設けた細い列（pathX）を走らせる。PC は年号と出来事の間
   const cx = o.pathX != null ? o.pathX : L.isMobile ? -0.97 * L.halfW : -0.16 * L.halfW;
-  const amp = (L.isMobile ? 0.05 : 0.34) * S;
+  const amp = o.pathAmp != null ? o.pathAmp : (L.isMobile ? 0.05 : 0.34) * S;
   const gap = rows && n > 1 ? Math.max(0.3, (rows[0] - rows[n - 1]) / (n - 1)) : 0.62 * S;
   const yAt = (e) => {
     if (!rows) return (7 - e) * gap;
@@ -245,8 +245,9 @@ export function graph(out, L, P, o) {
   const { cx, cy } = center(L);
   const n = SKILLS.length;
   // レイアウトは ±1.05 / ±0.95 に正規化済み。枡があればその 82% に収める
-  const sx = L.box ? (L.box.hw * 0.82) / 1.05 : S * 1.05, sy = L.box ? (L.box.hh * 0.82) / 0.95 : S * 1.05;
-  const nodeS = L.box ? Math.min(S, Math.min(sx, sy) * 0.9) : S;
+  // 枡があるとき（スマホ）: 横はラベルの分だけ余白を残し、縦は枡いっぱいに使う
+  const sx = L.box ? (L.box.hw * 0.66) / 1.05 : S * 1.05, sy = L.box ? (L.box.hh * 0.9) / 0.95 : S * 1.05;
+  const nodeS = L.box ? Math.min(S, Math.max(0.4, Math.min(sx, sy) * 1.2)) : S;
   field(out, L, P, { dim: 0.55 });
   for (let i = 0; i < N_MAIN; i++) {
     if (i < n) {

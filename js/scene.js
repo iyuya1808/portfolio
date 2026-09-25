@@ -190,7 +190,7 @@ export function createScene(canvas, opts = {}) {
     if (formation === 'bulb' || formation === 'lit') {
       const rot = mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
       edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot });
-    } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null });
+    } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null, pathAmp: L.isMobile ? params.pathAmp : null });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
     else if (formation === 'graph') edges = F.graph(tgt, L, P, { layout: skillLayout });
     else edges = F.field(tgt, L, P, { dim: 1 });

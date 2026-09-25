@@ -129,16 +129,22 @@ events.forEach((li, i) => {
 
 /* 経歴の道: 出来事の行の位置を毎フレーム渡し、点が文章と 1:1 で動く */
 const eventsList = document.getElementById('events');
+const yearsCol = document.querySelector('.story__years');
 if (scene) {
   const rows = Array.from(events);
   gsap.ticker.add(() => {
     if (scene.formation !== 'path') return;
     const { halfH, halfW, isMobile: mobile } = scene.layout(), h = window.innerHeight, w = window.innerWidth;
     const rowYs = rows.map((li) => { const r = li.getBoundingClientRect(); return (0.5 - (r.top + r.height / 2) / h) * 2 * halfH; });
-    // スマホでは出来事の左に設けた列（ol の padding-left）の中心を道の x にする
-    const pad = mobile ? parseFloat(getComputedStyle(eventsList).paddingLeft) || 0 : 0;
-    const pathX = mobile ? ((eventsList.getBoundingClientRect().left + pad / 2) / w - 0.5) * 2 * halfW : null;
-    scene.setParams({ rowYs, rowLit: rows.map((li) => li.classList.contains('is-lit')), pathX });
+    // スマホでは年号の列と出来事の列の間（空けてある列）を道が蛇行する
+    let pathX = null, pathAmp = null;
+    if (mobile) {
+      const yr = yearsCol.getBoundingClientRect(), ev = eventsList.getBoundingClientRect();
+      const lane = ev.left - yr.right;
+      pathX = ((yr.right + lane / 2) / w - 0.5) * 2 * halfW;
+      pathAmp = (Math.max(4, lane / 2 - 12) / w) * 2 * halfW;
+    }
+    scene.setParams({ rowYs, rowLit: rows.map((li) => li.classList.contains('is-lit')), pathX, pathAmp });
   });
 }
 
@@ -178,15 +184,18 @@ if (scene) {
     return el;
   });
   const pts = labels.map(() => ({ x: 0, y: 0, w: 0, h: 0, a: 0 }));
+  const graphAnchor = document.querySelector('[data-anchor="graph"]');
   gsap.ticker.add(() => {
     if (!skillLabels.classList.contains('is-on')) return;
     for (let i = 0; i < labels.length; i++) {
       const p = scene.project(i), q = pts[i];
       q.x = p.x; q.y = p.y; q.a = p.alpha; q.w = labels[i].offsetWidth; q.h = labels[i].offsetHeight;
     }
-    // スマホは狭くてラベルが触れ合うので、重なった組を縦に押し分ける（位置から決まるので毎フレーム安定）
+    // スマホは狭いので、ラベルを枡の内側に収め、重なった組を縦に押し分ける（位置から決まるので毎フレーム安定）
     if (isMobile()) {
-      for (let it = 0; it < 2; it++) for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const box = graphAnchor.getBoundingClientRect();
+      if (box.width) for (const q of pts) q.x = Math.min(Math.max(q.x, box.left + q.w / 2 + 2), box.right - q.w / 2 - 2);
+      for (let it = 0; it < 6; it++) for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
         const a = pts[i], b = pts[j];
         const needX = (a.w + b.w) / 2 + 4, needY = (a.h + b.h) / 2 + 3;
         const dx = Math.abs(a.x - b.x), dy = b.y - a.y;

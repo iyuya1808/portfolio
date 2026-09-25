@@ -277,13 +277,13 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .contact { min-height: 0; padding-bottom: 72px; }
   .contact .col-l { margin-top: 8px; }
   .story__intro { padding-bottom: 6vh; }
-  /* 年号は上に留まる帯、道は出来事の左の細い列 */
-  .story__timeline { display: block; }
-  .story__years { position: sticky; top: 60px; z-index: 3; height: auto; padding: 6px 0 10px; text-align: right; background: linear-gradient(var(--paper) 78%, transparent); }
-  .story__year { font-size: clamp(52px, 16vw, 72px); margin-left: 0; }
-  .story__events { padding-left: 44px; }
-  html.no-scene .story__events { padding-left: 0; } /* 点群なしでは道の列も要らない */
-  .story__events li { grid-template-columns: 60px 1fr; gap: 12px; padding: 16px 0; }
+  /* PC と同じ 3 列: 左に留まる年号、真ん中にうねうねの道、右に出来事（時期は上に積む） */
+  .story__timeline { grid-template-columns: 56px 56px 1fr; column-gap: 8px; }
+  html.no-scene .story__timeline { grid-template-columns: 56px 1fr; } /* 点群なしでは道の列は要らない */
+  .story__years { grid-column: 1; top: 72px; }
+  .story__year { font-size: 38px; font-stretch: 62%; line-height: 1; margin-left: 0; }
+  .story__events { grid-column: -2 / -1; }
+  .story__events li { grid-template-columns: 1fr; gap: 2px; padding: 14px 0; }
   .story__events time { font-size: 13px; }
   .story__events p { font-size: 15px; }
   .stats { grid-template-columns: 1fr 1fr; gap: 24px 16px; margin-top: 8px; }
@@ -302,10 +302,17 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .lab { grid-column: span 6; }
   .lab__name { font-size: 14px; }
   .lab__what { font-size: 12.5px; }
+  /* 使う道具: PC と同じく本文の横にグラフ。一覧はその下に全幅 */
   .tools { min-height: 0; }
-  .tools__list { margin-top: 8px; }
-  .label { font-size: 10.5px; padding: 2px 6px; }
-  .label.is-hub { font-size: 11.5px; }
+  .tools .grid { grid-template-columns: 11fr 12fr; column-gap: 12px; }
+  .tools__text { grid-column: 1; }
+  .tools__text .lead { font-size: 16px; }
+  .tools__text p { font-size: 15px; }
+  .tools .anchor--graph { grid-column: 2; display: block; width: 100%; aspect-ratio: auto; align-self: stretch; margin: 0; min-height: 420px; }
+  html.no-scene .tools__text { grid-column: 1 / -1; }
+  .tools__list { grid-column: 1 / -1; margin-top: 28px; }
+  .label { font-size: 9.5px; padding: 2px 5px; }
+  .label.is-hub { font-size: 10.5px; }
   .foot { flex-direction: column; gap: 4px; }
 }
 @media (max-width: 420px) {
