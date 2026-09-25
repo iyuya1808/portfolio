@@ -83,6 +83,8 @@ h1, .cover__name, .work__name, .row__name, .stat__num, .story__year, time, .top_
 /* ---------- 背景の点群 ---------- */
 /* 高さはツールバーを畳んだときの画面（100lvh）で固定し、ツールバーの出し入れで描画領域を作り直さない（scene.js の resize） */
 .scene { position: fixed; inset: 0 0 auto 0; width: 100%; height: 100%; height: 100lvh; z-index: 0; pointer-events: none; }
+/* スマホ: 画面固定にせず、画面 3 枚分の板として文書に置き、文章と一緒にブラウザにスクロールさせる（scene.js の DOC_K・setDocTop） */
+.scene.is-doc { position: absolute; height: 300lvh; }
 html.no-scene .scene { display: none; }
 /* 枡: スマホで点群の形を置く空の箱（PC と点群なしでは出さない） */
 .anchor { display: none; }
@@ -245,6 +247,7 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
 .tools__list dd { font-size: 15px; color: var(--ink-2); }
 .labels { position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .6s var(--ease); }
 .labels.is-on { opacity: 1; }
+.labels.is-doc { position: absolute; inset: 0 0 auto 0; height: 300lvh; }
 .label {
   position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
   font-weight: 500; font-size: 13px; line-height: 1.4; padding: 3px 9px; white-space: nowrap;

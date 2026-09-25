@@ -199,17 +199,20 @@ export function field(out, L, P, o) {
   const W = L.halfW * 1.15, Hh = L.halfH * 1.15;
   for (let i = 0; i < N_MAIN; i++) {
     const a = (i / N_MAIN) * Math.PI * 2 + L.time * 0.06;
-    setPoint(out, i, Math.cos(a) * L.halfW * 0.82, Math.sin(a) * L.halfH * 0.78, -0.5, 0.05 * L.scale, i % 2 ? P.sky : P.navy, 0.18 * dim);
+    setPoint(out, i, Math.cos(a) * L.halfW * 0.82, Math.sin(a) * (L.vHalfH || L.halfH) * 0.78, -0.5, 0.05 * L.scale, i % 2 ? P.sky : P.navy, 0.18 * dim);
   }
   for (let k = 0; k < N_BASE; k++) setPoint(out, N_MAIN + k, 0, 0, -2, 0.01, P.ink, 0);
   for (let k = 0; k < NH; k++) {
     const i = N_MAIN + N_BASE + k;
-    if (hash(k, 19) > 0.35) { setPoint(out, i, 0, 0, -3, 0.01, P.ink, 0); continue; }
+    // スマホの板は画面 3 枚分の高さなので、同じ密度になるよう全部使う
+    if (hash(k, 19) > (L.doc ? 1 : 0.35)) { setPoint(out, i, 0, 0, -3, 0.01, P.ink, 0); continue; }
     const depth = hash(k, 16);
     const vx = (hash(k, 20) - 0.5) * 0.3, vy = (hash(k, 21) - 0.5) * 0.3;
     const wob = Math.sin(L.time * 0.6 + k) * 0.05;
     const x = wrap((hash(k, 14) - 0.5) * 2 * W + vx * L.time + wob, -W, W);
-    const y = wrap((hash(k, 15) - 0.5) * 2 * Hh + vy * L.time - wob - (L.scroll || 0) * L.halfH * (0.15 + 0.25 * depth), -Hh, Hh);
+    // PC はスクロールで奥行き差を付ける。スマホは板が文章と一緒に動くので、板を付け替えた分だけ戻して文書に留める
+    const drift = L.doc ? -(L.docShift || 0) : (L.scroll || 0) * L.halfH * (0.15 + 0.25 * depth);
+    const y = wrap((hash(k, 15) - 0.5) * 2 * Hh + vy * L.time - wob - drift, -Hh, Hh);
     setPoint(out, i, x, y, (depth - 0.5) * 2, (0.015 + 0.015 * hash(k, 17)) * L.scale, P.ink, 0.13 * dim);
   }
   return [];

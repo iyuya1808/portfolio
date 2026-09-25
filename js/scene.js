@@ -1,6 +1,6 @@
 // 画面奥に固定した 1 枚の WebGL キャンバス。点群が章ごとに形を変える。
 import * as THREE from '../assets/vendor/three.module.min.js';
-import * as F from './formations.js';
+import * as F from './formations.js?v=20260926c';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
@@ -17,6 +17,12 @@ function toPalette(p) {
 export function supportsWebGL() {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; }
 }
+
+// スマホではキャンバスを画面固定にせず、画面 DOC_K 枚分の高さの板として文書の中に置く（css の .scene.is-doc）。
+// 指のスクロール中は JS から見えるスクロール位置が 70〜90ms ずつ止まるため（iPhone 実機で計測）、
+// 画面に固定して JS で文章を追いかけると点群だけが止まっては跳ぶ。板ごとブラウザにスクロールさせれば文章と一緒に動く
+export const DOC_K = 3;
+const HALF_H0 = 6 * Math.tan((40 * Math.PI) / 360); // 画面 1 枚分の高さの半分（ワールド単位）
 
 export function createScene(canvas, opts = {}) {
   const isMobile = () => window.innerWidth < 760;
@@ -147,7 +153,7 @@ export function createScene(canvas, opts = {}) {
   let P = toPalette(PALETTE.light), theme = 'light';
   let formation = 'bulb';
   const params = { progress: 0, reveal: 0, lit: 0, events: 15, rot: 0 };
-  const L = { side: 1, sideFactor: 0.55, scale: 1, halfW: 2, halfH: 2.18, time: 0, isMobile: isMobile(), mobileY: 1.0 };
+  const L = { side: 1, sideFactor: 0.55, scale: 1, halfW: 2, halfH: 2.18, time: 0, isMobile: isMobile(), mobileY: 1.0, doc: false, docT: 0, docShift: 0, vHalfH: HALF_H0 };
   const skillLayout = F.layoutSkills();
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, inside: false };
   let assembled = false, hot = -1; // 読み込みの組み上がりが終わるまでカーソルに反応させない
@@ -194,7 +200,7 @@ export function createScene(canvas, opts = {}) {
     for (let k = F.N_MAIN; k < NB; k++) { soft.ox[k] = box; soft.oy[k] = boy; }
     for (let i = 0; i < NB; i++) { tgt.pos[i * 3] += soft.ox[i]; tgt.pos[i * 3 + 1] += soft.oy[i]; }
   }
-  let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
+  let dim = 1, dimT = 1, lastT = performance.now(), sinceSwitch = 9;
   let settled = 0;
   let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
 
@@ -202,15 +208,26 @@ export function createScene(canvas, opts = {}) {
   // スクロールの向きを変えるたびに描画領域を作り直して形が跳ねることがない。DOM の座標もこの高さで写す（main.js）
   let lastW = 0, lastH = 0;
   function resize() {
+    const doc = isMobile();
+    canvas.classList.toggle('is-doc', doc);
+    if (!doc && L.docT) { L.docT = 0; canvas.style.transform = ''; }
     const w = window.innerWidth, h = canvas.clientHeight || window.innerHeight;
-    if (w === lastW && h === lastH) return;
-    lastW = w; lastH = h; L.viewW = w; L.viewH = h;
-    const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : 2);
+    if (w === lastW && h === lastH && doc === L.doc) return;
+    lastW = w; lastH = h; L.viewW = w; L.viewH = h; L.doc = doc;
+    // 板の高さは画面 DOC_K 枚分。1 画面あたりのワールドの大きさは PC・以前のスマホと同じに保つ
+    L.vh = doc ? h / DOC_K : h;
+    L.halfH = HALF_H0 * (h / L.vh);
+    // 板は縦に長いので、遠くから狭い画角で見て遠近のゆがみを小さくする（板を付け替えたときに奥の点がずれない）
+    const dist = doc ? 60 : 6;
+    camera.position.z = dist;
+    camera.fov = (2 * Math.atan(L.halfH / dist) * 180) / Math.PI;
+    let dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : 2);
+    dpr = Math.min(dpr, 4096 / h); // 描画領域の縦が端末の上限を超えないように
     renderer.setPixelRatio(dpr);
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
-    L.halfH = 6 * Math.tan((camera.fov * Math.PI) / 360);
     L.halfW = L.halfH * camera.aspect;
+    L.docShift = (L.docT * 2 * L.halfH) / h;
     L.isMobile = isMobile();
     L.scale = L.isMobile ? Math.min(0.72, L.halfW * 0.6) : Math.min(1.05, L.halfW * 0.42);
     pointMat.uniforms.uProj.value = (h / (2 * Math.tan((camera.fov * Math.PI) / 360))) * dpr;
@@ -264,9 +281,22 @@ export function createScene(canvas, opts = {}) {
     }
   }
 
-  function frame(now) {
-    if (!running) return;
-    requestAnimationFrame(frame);
+  // スマホ: 板を文書の上から T px の位置へ付け替える。中の点も同じだけ逆にずらすので、見た目は動かない
+  let skipOrigin = false;
+  function setDocTop(T) {
+    const d = T - L.docT;
+    if (!d) return;
+    L.docT = T;
+    canvas.style.transform = `translate3d(0, ${T}px, 0)`;
+    const dw = (d * 2 * L.halfH) / L.viewH; // 板が下へ d px 動く = 板の中では上（ワールドの +y）へ
+    for (let i = 0; i < N; i++) pos[i * 3 + 1] += dw;
+    L.docShift = (T * 2 * L.halfH) / L.viewH;
+    skipOrigin = true; // 枡や行の位置も同じだけ変わるので、次のコマで二重にずらさない
+  }
+
+  // main.js が gsap.ticker で呼ぶ（枡の位置と板の付け替えを済ませた同じコマで描く）
+  function frame() {
+    const now = performance.now();
     const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
     L.time += dt; sinceSwitch += dt;
     L.scroll = window.scrollY / L.viewH;
@@ -288,11 +318,11 @@ export function createScene(canvas, opts = {}) {
     let ox = 0, oy = 0;
     if (L.box) { ox = L.box.cx; oy = L.box.cy; }
     else if (formation === 'path' && params.rowYs && params.rowYs.length) oy = params.rowYs[0];
-    if (originFor === formation) {
+    if (originFor === formation && !skipOrigin) {
       const dx = ox - prevOx, dy = oy - prevOy;
       if (dx || dy) for (let i = 0; i < N; i++) { pos[i * 3] += dx; pos[i * 3 + 1] += dy; }
     }
-    prevOx = ox; prevOy = oy; originFor = formation;
+    prevOx = ox; prevOy = oy; originFor = formation; skipOrigin = false;
 
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
@@ -362,15 +392,13 @@ export function createScene(canvas, opts = {}) {
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   }
-  requestAnimationFrame(frame);
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) running = false; else if (!running) { running = true; lastT = performance.now(); requestAnimationFrame(frame); }
-  });
 
   const v = new THREE.Vector3();
   return {
     setFormation(name, side) { if (name !== formation) sinceSwitch = 0; formation = name; if (side != null) L.side = side; },
-    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile, viewW: L.viewW, viewH: L.viewH }; },
+    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile, viewW: L.viewW, viewH: L.viewH, vh: L.vh, doc: L.doc, docT: L.docT }; },
+    tick: frame,
+    setDocTop,
     setParams(o) { Object.assign(params, o); },
     setDim(d) { dimT = d; },
     setTheme,

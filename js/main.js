@@ -1,7 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20260926a';
+import { createScene, supportsWebGL } from './scene.js?v=20260926c';
 import { SKILLS, PV_MONTHLY } from './data.js';
-import { SKILL_GROUP, SKILL_EDGES } from './formations.js';
+import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20260926c';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -37,10 +37,7 @@ gsap.registerPlugin(ScrollTrigger);
 // スマホのツールバーの出し入れ（高さだけの変化）で全トリガーを測り直さない
 ScrollTrigger.config({ ignoreMobileResize: true });
 if (!reduceMotion) {
-  // 確認用: ?sync=1 のときだけスマホの指のスクロールも Lenis が動かし、文章と点群を同じコマで動かす
-  // （ブラウザが別の流れでスクロールするのと描き直しがずれるのが、スマホでガクガクする原因かを実機で見分ける）
-  const syncTouch = new URLSearchParams(location.search).has('sync');
-  lenis = new Lenis({ lerp: 0.11, smoothWheel: true, syncTouch });
+  lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -67,14 +64,34 @@ window.addEventListener('scroll', () => top.classList.toggle('is-scrolled', wind
 
 /* ---------- 点群 ---------- */
 let scene = null;
+const sceneEl = document.getElementById('scene');
 if (useScene) {
-  scene = createScene(document.getElementById('scene'));
+  scene = createScene(sceneEl);
   scene.setTheme(html.getAttribute('data-theme'));
   new MutationObserver(() => scene.setTheme(html.getAttribute('data-theme'))).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
 } else {
   html.classList.add('no-scene');
   document.getElementById('coverFallback').hidden = false;
   buildNumbersFallback();
+}
+
+/* スマホ: 点群の板（画面 3 枚分の高さ）が画面を覆い続けるよう、端が近づいたら付け替える（scene.js の setDocTop）
+   付け替えは板の位置と中身を同じコマで動かすので、ここで読むスクロール位置が少し古くても見た目はずれない */
+const skillLabelsEl = document.getElementById('skillLabels');
+const footEl = document.querySelector('.foot');
+if (scene) {
+  gsap.ticker.add(() => {
+    const { doc, viewH: H, vh, docT } = scene.layout();
+    skillLabelsEl.classList.toggle('is-doc', doc);
+    if (!doc) { skillLabelsEl.style.transform = ''; return; }
+    const y = window.scrollY, top = y - docT; // 画面の上端の、板の中での位置
+    const margin = 0.45 * vh;
+    if (top < margin || top + vh > H - margin) {
+      const end = footEl.getBoundingClientRect().bottom + y; // 板が文書の下にはみ出してページを伸ばさない
+      scene.setDocTop(Math.round(Math.max(0, Math.min(end - H, y - (H - vh) / 2))));
+    }
+    skillLabelsEl.style.transform = sceneEl.style.transform;
+  });
 }
 
 /* ---------- 章ごとの形 ---------- */
@@ -146,7 +163,8 @@ if (scene) {
   gsap.ticker.add(() => {
     if (scene.formation !== 'path') return;
     const { halfH, halfW, isMobile: mobile, viewH: h, viewW: w } = scene.layout(); // キャンバスの大きさで写す（scene.js の resize）
-    const rowYs = rows.map((li) => { const r = li.getBoundingClientRect(); return (0.5 - (r.top + r.height / 2) / h) * 2 * halfH; });
+    const ct = sceneEl.getBoundingClientRect().top; // キャンバスの上端からの位置で写す（スマホは文書の中の板）
+    const rowYs = rows.map((li) => { const r = li.getBoundingClientRect(); return (0.5 - (r.top - ct + r.height / 2) / h) * 2 * halfH; });
     // スマホでは年号の列と出来事の列の間（空けてある列）を道が蛇行する
     let pathX = null, pathAmp = null;
     if (mobile) {
@@ -167,24 +185,27 @@ if (scene) {
   const anchors = Array.from(document.querySelectorAll('.anchor[data-anchor]'));
   const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
   gsap.ticker.add(() => {
-    const { halfH, halfW, isMobile: mobile, viewH: h, viewW: w } = scene.layout();
+    const { halfH, halfW, isMobile: mobile, viewH: h, viewW: w, vh } = scene.layout();
     if (!mobile) { scene.setParams({ boxes: null }); return; }
     const boxes = {};
+    const ct = sceneEl.getBoundingClientRect().top; // 同じコマで読んだ枡との差なので、スクロール位置が古くてもずれない
     for (const el of anchors) {
       const r = el.getBoundingClientRect();
       if (!r.width) continue;
       boxes[el.dataset.anchor] = {
         cx: ((r.left + r.width / 2) / w - 0.5) * 2 * halfW,
-        cy: (0.5 - (r.top + r.height / 2) / h) * 2 * halfH,
+        cy: (0.5 - (r.top - ct + r.height / 2) / h) * 2 * halfH,
         hw: (r.width / w) * halfW,
         hh: (r.height / h) * halfH,
       };
       // 枡が見えてきた分だけチャートを伸ばし、電球を灯す
-      if (el.dataset.anchor === 'chart') scene.setParams({ reveal: clamp01((0.9 * h - r.top) / (0.5 * h)) });
-      if (el.dataset.anchor === 'lit') scene.setParams({ lit: clamp01((0.85 * h - r.top) / (0.45 * h)) });
+      if (el.dataset.anchor === 'chart') scene.setParams({ reveal: clamp01((0.9 * vh - r.top) / (0.5 * vh)) });
+      if (el.dataset.anchor === 'lit') scene.setParams({ lit: clamp01((0.85 * vh - r.top) / (0.45 * vh)) });
     }
     scene.setParams({ boxes });
   });
+  // 位置を渡し終えた同じコマで点群を描く
+  gsap.ticker.add(scene.tick);
 }
 
 /* 使う道具: ノード位置に HTML のラベルを重ねる */
