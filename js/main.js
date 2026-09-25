@@ -1,7 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
 import { createScene, supportsWebGL } from './scene.js';
 import { SKILLS, PV_MONTHLY } from './data.js';
-import { SKILL_GROUP } from './formations.js';
+import { SKILL_GROUP, SKILL_EDGES } from './formations.js';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -196,8 +196,17 @@ if (scene) {
   // oy: 押し分けで決まる縦のずれ（目標）、sy: 実際に使うずれ（時間でならす）
   const pts = labels.map(() => ({ x: 0, y: 0, w: 0, h: 0, a: 0, oy: 0, sy: 0, shown: false }));
   const graphAnchor = document.querySelector('[data-anchor="graph"]');
+  let lastHot = -1;
   gsap.ticker.add((time, dtMs) => {
     if (!skillLabels.classList.contains('is-on')) return;
+    // PC: カーソルが近づいたノードとつながった道具のラベルを目立たせる
+    const hot = scene.hoverSkill();
+    if (hot !== lastHot) {
+      lastHot = hot;
+      const near = new Set(hot < 0 ? [] : [hot]);
+      for (const [i, j] of SKILL_EDGES) { if (i === hot) near.add(j); if (j === hot) near.add(i); }
+      labels.forEach((el, i) => el.classList.toggle('is-hot', near.has(i)));
+    }
     for (let i = 0; i < labels.length; i++) {
       const p = scene.project(i), q = pts[i];
       q.x = p.x; q.y = p.y; q.a = p.alpha; q.w = labels[i].offsetWidth; q.h = labels[i].offsetHeight; q.oy = 0;

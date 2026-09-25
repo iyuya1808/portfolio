@@ -68,9 +68,9 @@ export function bulbScale(L) {
 
 /* ---------- 0 / 5: 電球（lit で灯る）。平面に置き、回転はごくわずか ---------- */
 export function bulb(out, L, P, o) {
-  const S = bulbScale(L), lit = o.lit || 0, rot = o.rot || 0, breath = o.breath || 0;
+  const S = bulbScale(L), lit = o.lit || 0, rot = o.rot || 0, breath = o.breath || 0, tilt = o.tilt || 0;
   const { cx, cy } = center(L, L.mobileY);
-  const cs = Math.cos(rot), sn = Math.sin(rot);
+  const cs = Math.cos(rot), sn = Math.sin(rot), ct = Math.cos(tilt), st = Math.sin(tilt);
   const edges = [];
   for (let i = 0; i < N_MAIN; i++) {
     const n = LOGO_NODES[i];
@@ -85,11 +85,11 @@ export function bulb(out, L, P, o) {
     }
     const size = n.r * 2 * S * (1 + glow * 0.3) * (1 + glow * 0.04 * breath);
     // 折れ点は描かず、辺の端点としてだけ置く
-    setPoint(out, i, cx + n.x * cs * S, cy + n.y * S, -n.x * sn * S, n.joint ? 0.01 : size, col, n.joint ? 0 : 1, n.joint ? 0 : glow);
+    setPoint(out, i, cx + n.x * cs * S, cy + n.y * ct * S, (-n.x * sn + n.y * st) * S, n.joint ? 0.01 : size, col, n.joint ? 0 : 1, n.joint ? 0 : glow);
   }
   for (let k = 0; k < N_BASE; k++) {
     const b = BASE[k];
-    setPoint(out, N_MAIN + k, cx + b.x * cs * S, cy + b.y * S, -b.x * sn * S, b.r * 2 * S * 0.9, P.navy, 1);
+    setPoint(out, N_MAIN + k, cx + b.x * cs * S, cy + b.y * ct * S, (-b.x * sn + b.y * st) * S, b.r * 2 * S * 0.9, P.navy, 1);
   }
   const NH = out.n - N_MAIN - N_BASE;
   for (let k = 0; k < NH; k++) {
@@ -282,4 +282,76 @@ export function graph(out, L, P, o) {
     }
   }
   return SKILL_EDGES.map(([i, j]) => [i, j, 0.6]);
+}
+
+/* ---------- PC のカーソルへの反応。形の関数が書いた目標をずらす ---------- */
+// 距離は形の本来の位置（目標）から測るので、動いた点が影響を受け直して暴れることはない
+// mode: 'push'（表紙の電球が押されて弾む）/ 'graph'（道具の磁石と注目）/ 'moth'（灯りの粉がカーソルを回る）
+// 道具では注目のノード番号を返す（なければ -1）
+const falloff = (d, R) => { const t = clamp01(1 - d / R); return t * t; };
+export function cursor(out, L, P, mode, edges) {
+  const on = L.cursorOn || 0;
+  if (on < 0.001 || !L.cursor) return -1;
+  const S = mode === 'graph' ? L.scale : bulbScale(L), mx = L.cursor.x, my = L.cursor.y;
+  const NH0 = N_MAIN + N_BASE;
+  if (mode === 'push') {
+    const R = 1.0 * S, push = 0.3 * S;
+    for (let i = 0; i < NH0; i++) {
+      const x = out.pos[i * 3], y = out.pos[i * 3 + 1], dx = x - mx, dy = y - my, d = Math.hypot(dx, dy) || 1e-4;
+      const f = falloff(d, R) * on * push;
+      out.pos[i * 3] = x + (dx / d) * f; out.pos[i * 3 + 1] = y + (dy / d) * f;
+    }
+    const Rd = 1.4 * S, swirl = 0.3 * S;
+    for (let i = NH0; i < out.n; i++) {
+      const x = out.pos[i * 3], y = out.pos[i * 3 + 1], dx = x - mx, dy = y - my, d = Math.hypot(dx, dy) || 1e-4;
+      const f = falloff(d, Rd) * on * swirl;
+      out.pos[i * 3] = x - (dy / d) * f; out.pos[i * 3 + 1] = y + (dx / d) * f;
+    }
+    return -1;
+  }
+  if (mode === 'graph') {
+    const n = SKILLS.length, R = 0.8 * S, pull = 0.1 * S;
+    let hot = -1, best = 0.35 * S;
+    for (let i = 0; i < n; i++) {
+      const d = Math.hypot(out.pos[i * 3] - mx, out.pos[i * 3 + 1] - my);
+      if (d < best) { best = d; hot = i; }
+    }
+    for (let i = 0; i < n; i++) {
+      const x = out.pos[i * 3], y = out.pos[i * 3 + 1], dx = mx - x, dy = my - y, d = Math.hypot(dx, dy) || 1e-4;
+      const f = Math.min(d * 0.5, falloff(d, R) * on * pull);
+      out.pos[i * 3] = x + (dx / d) * f; out.pos[i * 3 + 1] = y + (dy / d) * f;
+    }
+    if (hot >= 0 && on > 0.5) {
+      const near = new Set([hot]);
+      for (const [i, j] of SKILL_EDGES) { if (i === hot) near.add(j); if (j === hot) near.add(i); }
+      for (let i = 0; i < n; i++) {
+        if (near.has(i)) out.size[i] *= 1.3; else out.alpha[i] *= 0.45;
+      }
+      for (const e of edges) e[2] = e[0] === hot || e[1] === hot ? 1 : 0.25 * e[2];
+    } else hot = -1;
+    return hot;
+  }
+  if (mode === 'moth') {
+    const R = 2.4 * S;
+    for (let i = NH0; i < out.n; i++) {
+      const k = i - NH0;
+      if (hash(k, 18) > 0.5 || hash(k, 23) >= 0.4) continue; // 見えている粉の約 4 割だけ
+      const x = out.pos[i * 3], y = out.pos[i * 3 + 1], z = out.pos[i * 3 + 2];
+      const f = smooth01((R - Math.hypot(x - mx, y - my)) / (R * 0.5)) * on;
+      if (f <= 0) continue;
+      const r = (0.15 + 0.3 * hash(k, 24)) * S;
+      const w = (0.6 + 0.8 * hash(k, 25)) * (hash(k, 26) < 0.5 ? -1 : 1);
+      const a = hash(k, 27) * Math.PI * 2 + L.time * w;
+      out.pos[i * 3] = mix(x, mx + Math.cos(a) * r, f);
+      out.pos[i * 3 + 1] = mix(y, my + Math.sin(a) * r * 0.8, f);
+      out.pos[i * 3 + 2] = mix(z, 0.3 + Math.sin(a * 1.7) * 0.15, f);
+      const c = mixCol([out.col[i * 3], out.col[i * 3 + 1], out.col[i * 3 + 2]], P.spark, f);
+      out.col[i * 3] = c[0]; out.col[i * 3 + 1] = c[1]; out.col[i * 3 + 2] = c[2];
+      out.size[i] *= 1 + 0.3 * f;
+      out.alpha[i] = mix(out.alpha[i], Math.min(1, P.dustAlpha * 3), f);
+      if (out.glow) out.glow[i] = Math.max(out.glow[i], 0.35 * f);
+    }
+    return -1;
+  }
+  return -1;
 }

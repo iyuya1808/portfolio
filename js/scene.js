@@ -148,7 +148,8 @@ export function createScene(canvas, opts = {}) {
   const params = { progress: 0, reveal: 0, lit: 0, events: 15, rot: 0 };
   const L = { side: 1, sideFactor: 0.55, scale: 1, halfW: 2, halfH: 2.18, time: 0, isMobile: isMobile(), mobileY: 1.0 };
   const skillLayout = F.layoutSkills();
-  const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+  const mouse = { x: 0, y: 0, tx: 0, ty: 0, inside: false };
+  let assembled = false, hot = -1; // 読み込みの組み上がりが終わるまでカーソルに反応させない
   let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
   let settled = 0;
   let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
@@ -174,7 +175,9 @@ export function createScene(canvas, opts = {}) {
     if (e.pointerType && e.pointerType !== 'mouse') return;
     mouse.tx = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.ty = (e.clientY / window.innerHeight) * 2 - 1;
+    mouse.inside = true;
   }, { passive: true });
+  document.documentElement.addEventListener('mouseleave', () => { mouse.inside = false; });
 
   function setTheme(t) {
     theme = t === 'dark' ? 'dark' : 'light';
@@ -220,6 +223,10 @@ export function createScene(canvas, opts = {}) {
     L.scroll = window.scrollY / window.innerHeight;
     mouse.x += (mouse.tx - mouse.x) * (1 - Math.exp(-dt * 4));
     mouse.y += (mouse.ty - mouse.y) * (1 - Math.exp(-dt * 4));
+    // PC のカーソル位置（z=0 の平面上）。反応の強さは出入りでなめらかに変える
+    L.cursor = { x: mouse.tx * L.halfW, y: -mouse.ty * L.halfH };
+    const onT = mouse.inside && assembled && !L.isMobile ? 1 : 0;
+    L.cursorOn = (L.cursorOn || 0) + (onT - (L.cursorOn || 0)) * (1 - Math.exp(-dt * 5));
     dim += (dimT - dim) * (1 - Math.exp(-dt * 3));
     pointMat.uniforms.uDim.value = dim; edgeMat.uniforms.uDim.value = dim; haloMat.uniforms.uDim.value = dim;
     // 灯りの息づき（点滅ではなく、ゆっくり呼吸する程度）
@@ -241,12 +248,19 @@ export function createScene(canvas, opts = {}) {
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
       // タッチ端末では揺らさない（枡に固定して見せる）
-      const rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
-      edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot, breath: (breath - 1) / 0.075 });
+      const rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.14 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
+      const tilt = L.isMobile ? 0 : mouse.y * 0.08;
+      edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot, tilt, breath: (breath - 1) / 0.075 });
     } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null, pathAmp: L.isMobile ? params.pathAmp : null });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
     else if (formation === 'graph') edges = F.graph(tgt, L, P, { layout: skillLayout });
     else edges = F.field(tgt, L, P, { dim: 1 });
+    hot = -1;
+    if (!L.isMobile) {
+      if (formation === 'bulb') F.cursor(tgt, L, P, 'push', edges);
+      else if (formation === 'lit') F.cursor(tgt, L, P, 'moth', edges);
+      else if (formation === 'graph') hot = F.cursor(tgt, L, P, 'graph', edges);
+    }
     assignEdges(edges);
 
     const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2) : 3.2;
@@ -260,6 +274,7 @@ export function createScene(canvas, opts = {}) {
       if (i < F.N_MAIN) dist += Math.abs(tgt.pos[i3] - pos[i3]) + Math.abs(tgt.pos[i3 + 1] - pos[i3 + 1]);
     }
     settled = Math.max(0, 1 - dist / F.N_MAIN / 0.25); // 点が目標に着くまで辺は薄い
+    if (settled > 0.95) assembled = true;
     geo.attributes.position.needsUpdate = true; geo.attributes.aSize.needsUpdate = true;
     geo.attributes.aColor.needsUpdate = true; geo.attributes.aAlpha.needsUpdate = true; geo.attributes.aGlow.needsUpdate = true;
 
@@ -311,5 +326,7 @@ export function createScene(canvas, opts = {}) {
       return { x: ((v.x + 1) / 2) * window.innerWidth, y: ((1 - v.y) / 2) * window.innerHeight, alpha: alpha[i] };
     },
     get formation() { return formation; },
+    // 道具の図でカーソルが注目しているノード（なければ -1）
+    hoverSkill() { return hot; },
   };
 }

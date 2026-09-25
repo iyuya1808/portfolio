@@ -250,6 +250,7 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-s); color: var(--ink);
   transition: opacity .3s;
 }
+.label.is-hot { z-index: 1; border-color: var(--gc, var(--navy)); }
 .label.is-hub { font-weight: 700; font-size: 14px; border-color: var(--gc, var(--navy)); color: var(--gc, var(--navy)); }
 .label:not(.is-hub)::before { content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: var(--gc); margin-right: .45em; vertical-align: .08em; }
 [data-g="ai"] { --gc: var(--g-ai); } [data-g="app"] { --gc: var(--g-app); } [data-g="web"] { --gc: var(--g-web); }
