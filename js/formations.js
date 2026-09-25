@@ -90,8 +90,9 @@ export function bulb(out, L, P, o) {
 export function path(out, L, P, o) {
   const S = L.scale, rows = o.rowYs, lit = o.rowLit || [];
   const n = rows ? rows.length : o.events || 15;
-  const cx = L.isMobile ? 0 : -0.16 * L.halfW;
-  const amp = 0.34 * S;
+  // モバイルは文章の上に重ねず、左端の余白を細く走らせる
+  const cx = L.isMobile ? -0.97 * L.halfW : -0.16 * L.halfW;
+  const amp = (L.isMobile ? 0.06 : 0.34) * S;
   const gap = rows && n > 1 ? Math.max(0.3, (rows[0] - rows[n - 1]) / (n - 1)) : 0.62 * S;
   const yAt = (e) => {
     if (!rows) return (7 - e) * gap;
