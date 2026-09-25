@@ -1,5 +1,5 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js';
+import { createScene, supportsWebGL } from './scene.js?v=20260925t';
 import { SKILLS, PV_MONTHLY } from './data.js';
 import { SKILL_GROUP, SKILL_EDGES } from './formations.js';
 
@@ -34,6 +34,8 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hi
 /* ---------- 慣性スクロールと ScrollTrigger ---------- */
 let lenis = null;
 gsap.registerPlugin(ScrollTrigger);
+// スマホのツールバーの出し入れ（高さだけの変化）で全トリガーを測り直さない
+ScrollTrigger.config({ ignoreMobileResize: true });
 if (!reduceMotion) {
   lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
@@ -140,7 +142,7 @@ if (scene) {
   const rows = Array.from(events);
   gsap.ticker.add(() => {
     if (scene.formation !== 'path') return;
-    const { halfH, halfW, isMobile: mobile } = scene.layout(), h = window.innerHeight, w = window.innerWidth;
+    const { halfH, halfW, isMobile: mobile, viewH: h, viewW: w } = scene.layout(); // キャンバスの大きさで写す（scene.js の resize）
     const rowYs = rows.map((li) => { const r = li.getBoundingClientRect(); return (0.5 - (r.top + r.height / 2) / h) * 2 * halfH; });
     // スマホでは年号の列と出来事の列の間（空けてある列）を道が蛇行する
     let pathX = null, pathAmp = null;
@@ -162,9 +164,8 @@ if (scene) {
   const anchors = Array.from(document.querySelectorAll('.anchor[data-anchor]'));
   const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
   gsap.ticker.add(() => {
-    const { halfH, halfW, isMobile: mobile } = scene.layout();
+    const { halfH, halfW, isMobile: mobile, viewH: h, viewW: w } = scene.layout();
     if (!mobile) { scene.setParams({ boxes: null }); return; }
-    const h = window.innerHeight, w = window.innerWidth;
     const boxes = {};
     for (const el of anchors) {
       const r = el.getBoundingClientRect();

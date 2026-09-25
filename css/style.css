@@ -81,7 +81,8 @@ h1, .cover__name, .work__name, .row__name, .stat__num, .story__year, time, .top_
 }
 
 /* ---------- 背景の点群 ---------- */
-.scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+/* 高さはツールバーを畳んだときの画面（100lvh）で固定し、ツールバーの出し入れで描画領域を作り直さない（scene.js の resize） */
+.scene { position: fixed; inset: 0 0 auto 0; width: 100%; height: 100%; height: 100lvh; z-index: 0; pointer-events: none; }
 html.no-scene .scene { display: none; }
 /* 枡: スマホで点群の形を置く空の箱（PC と点群なしでは出さない） */
 .anchor { display: none; }
@@ -285,6 +286,8 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
 }
 @media (max-width: 759px) {
   .top { height: 60px; }
+  /* 毎コマ描き直すキャンバスの上でぼかしを計算し直すと重いので、スマホは不透明に近い地にする */
+  .top.is-scrolled { background: rgba(var(--paper-rgb), .96); backdrop-filter: none; -webkit-backdrop-filter: none; }
   .top__nav { display: none; }
   .top__menu { display: flex; }
   .col-l, .col-r { grid-column: 1 / -1; }

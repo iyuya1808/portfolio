@@ -24,7 +24,8 @@ export function createScene(canvas, opts = {}) {
   const N = F.N_MAIN + F.N_BASE + helpers;
   const MAX_EDGES = 140;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+  // スマホは画面いっぱいの透過キャンバスに MSAA をかけると GPU が追いつかない（点も辺もシェーダで縁を作るので要らない）
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile(), powerPreference: 'high-performance' });
   renderer.setClearColor(0x000000, 0);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
@@ -197,8 +198,13 @@ export function createScene(canvas, opts = {}) {
   let settled = 0;
   let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
 
+  // キャンバスの高さは CSS の 100lvh（ツールバーを畳んだときの高さ）。スマホのツールバーの出し入れでは変わらないので、
+  // スクロールの向きを変えるたびに描画領域を作り直して形が跳ねることがない。DOM の座標もこの高さで写す（main.js）
+  let lastW = 0, lastH = 0;
   function resize() {
-    const w = window.innerWidth, h = window.innerHeight;
+    const w = window.innerWidth, h = canvas.clientHeight || window.innerHeight;
+    if (w === lastW && h === lastH) return;
+    lastW = w; lastH = h; L.viewW = w; L.viewH = h;
     const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : 2);
     renderer.setPixelRatio(dpr);
     renderer.setSize(w, h, false);
@@ -263,7 +269,7 @@ export function createScene(canvas, opts = {}) {
     requestAnimationFrame(frame);
     const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
     L.time += dt; sinceSwitch += dt;
-    L.scroll = window.scrollY / window.innerHeight;
+    L.scroll = window.scrollY / L.viewH;
     mouse.x += (mouse.tx - mouse.x) * (1 - Math.exp(-dt * 4));
     mouse.y += (mouse.ty - mouse.y) * (1 - Math.exp(-dt * 4));
     // PC のカーソル位置（z=0 の平面上）。反応の強さは出入りでなめらかに変える
@@ -310,11 +316,12 @@ export function createScene(canvas, opts = {}) {
     const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2)
       : formation === 'bulb' && assembled && sinceSwitch > 1.5 && !L.isMobile ? 3.2 + (30 - 3.2) * (L.cursorOn || 0) : 3.2;
     const kp = 1 - Math.exp(-dt * rate), ka = 1 - Math.exp(-dt * 4.5);
-    let dist = 0;
+    let dist = 0, maxGlow = 0;
     for (let i = 0; i < N; i++) {
       const i3 = i * 3;
       pos[i3] += (tgt.pos[i3] - pos[i3]) * kp; pos[i3 + 1] += (tgt.pos[i3 + 1] - pos[i3 + 1]) * kp; pos[i3 + 2] += (tgt.pos[i3 + 2] - pos[i3 + 2]) * kp;
       size[i] += (tgt.size[i] - size[i]) * ka; alpha[i] += (tgt.alpha[i] - alpha[i]) * ka; glowA[i] += (tgt.glow[i] - glowA[i]) * ka;
+      if (glowA[i] > maxGlow) maxGlow = glowA[i];
       col[i3] += (tgt.col[i3] - col[i3]) * ka; col[i3 + 1] += (tgt.col[i3 + 1] - col[i3 + 1]) * ka; col[i3 + 2] += (tgt.col[i3 + 2] - col[i3 + 2]) * ka;
       if (i < F.N_MAIN) dist += Math.abs(tgt.pos[i3] - pos[i3]) + Math.abs(tgt.pos[i3 + 1] - pos[i3 + 1]);
     }
@@ -346,7 +353,10 @@ export function createScene(canvas, opts = {}) {
       sp.position.set(c.x, c.y + 0.15 * gs, 0.2 + k * 0.01);
       sp.scale.set(GLOW_R[k] * 2 * gs, GLOW_R[k] * 2 * gs, 1);
       sp.material.opacity += (lit * ga[k] * breath * dim - sp.material.opacity) * ka;
+      // 透明でも描けば画面より大きい板の全画素を塗るので、灯っていないときは描かない
+      sp.visible = sp.material.opacity > 0.002;
     });
+    halo.visible = maxGlow > 0.002;
 
     camera.position.x = mouse.x * 0.08; camera.position.y = -mouse.y * 0.06;
     camera.lookAt(0, 0, 0);
@@ -360,7 +370,7 @@ export function createScene(canvas, opts = {}) {
   const v = new THREE.Vector3();
   return {
     setFormation(name, side) { if (name !== formation) sinceSwitch = 0; formation = name; if (side != null) L.side = side; },
-    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile }; },
+    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile, viewW: L.viewW, viewH: L.viewH }; },
     setParams(o) { Object.assign(params, o); },
     setDim(d) { dimT = d; },
     setTheme,
@@ -368,7 +378,7 @@ export function createScene(canvas, opts = {}) {
     // 主要ノード i の画面座標（px）
     project(i) {
       v.set(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]).project(camera);
-      return { x: ((v.x + 1) / 2) * window.innerWidth, y: ((1 - v.y) / 2) * window.innerHeight, alpha: alpha[i] };
+      return { x: ((v.x + 1) / 2) * L.viewW, y: ((1 - v.y) / 2) * L.viewH, alpha: alpha[i] };
     },
     get formation() { return formation; },
     // 道具の図でカーソルが注目しているノード（なければ -1）
