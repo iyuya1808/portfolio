@@ -50,13 +50,19 @@ function setPoint(out, i, x, y, z, size, col, alpha) {
 }
 function mixCol(a, b, t) { return [mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t)]; }
 
+// 形の中心。スマホでは文書内の枡（L.box）に置き、PC では空いた側の列に寄せる
 function center(L, mobileY) {
+  if (L.box) return { cx: L.box.cx, cy: L.box.cy };
   return { cx: L.isMobile ? 0 : L.side * L.halfW * (L.sideFactor || 0.5), cy: L.isMobile ? (mobileY == null ? 0 : mobileY) : 0 };
+}
+// ロゴの範囲は x ±0.72、y −1.0〜1.09。枡に収まる倍率
+export function bulbScale(L) {
+  return L.box ? Math.min(L.box.hw / 0.8, L.box.hh / 1.15) : L.scale;
 }
 
 /* ---------- 0 / 5: 電球（lit で灯る）。平面に置き、回転はごくわずか ---------- */
 export function bulb(out, L, P, o) {
-  const S = L.scale, lit = o.lit || 0, rot = o.rot || 0;
+  const S = bulbScale(L), lit = o.lit || 0, rot = o.rot || 0;
   const { cx, cy } = center(L, L.mobileY);
   const cs = Math.cos(rot), sn = Math.sin(rot);
   const edges = [];
@@ -90,9 +96,9 @@ export function bulb(out, L, P, o) {
 export function path(out, L, P, o) {
   const S = L.scale, rows = o.rowYs, lit = o.rowLit || [];
   const n = rows ? rows.length : o.events || 15;
-  // モバイルは文章の上に重ねず、左端の余白を細く走らせる
-  const cx = L.isMobile ? -0.97 * L.halfW : -0.16 * L.halfW;
-  const amp = (L.isMobile ? 0.06 : 0.34) * S;
+  // スマホは出来事の左に設けた細い列（pathX）を走らせる。PC は年号と出来事の間
+  const cx = o.pathX != null ? o.pathX : L.isMobile ? -0.97 * L.halfW : -0.16 * L.halfW;
+  const amp = (L.isMobile ? 0.05 : 0.34) * S;
   const gap = rows && n > 1 ? Math.max(0.3, (rows[0] - rows[n - 1]) / (n - 1)) : 0.62 * S;
   const yAt = (e) => {
     if (!rows) return (7 - e) * gap;
@@ -116,7 +122,8 @@ export function path(out, L, P, o) {
       setPoint(out, i, x, y, 0, 0.05 * S, P.ink, Math.max(0, 0.25 - (e - n) * 0.04));
     }
   }
-  const NH = out.n - N_MAIN, e0 = -5, e1 = n + 6;
+  // 導入部への延長。スマホは列が文章の左を通るので短くする
+  const NH = out.n - N_MAIN, e0 = o.pathX != null ? -1.2 : -5, e1 = n + 6;
   for (let k = 0; k < NH; k++) {
     const i = N_MAIN + k;
     const ef = e0 + (k / (NH - 1)) * (e1 - e0);
@@ -137,7 +144,8 @@ const PV_CUM = (() => { const c = []; let s = 0; for (const v of PV_MONTHLY) { s
 export function chart(out, L, P, o) {
   const S = L.scale, M = PV_MONTHLY.length, reveal = clamp01(o.reveal || 0) * (M - 1) + 0.5;
   const { cx, cy } = center(L, -L.mobileY);
-  const W = L.isMobile ? L.halfW * 1.7 : L.halfW * 0.86, H = 1.6 * S;
+  const W = L.box ? L.box.hw * 2 * 0.92 : L.isMobile ? L.halfW * 1.7 : L.halfW * 0.86;
+  const H = L.box ? L.box.hh * 2 * 0.8 : 1.6 * S;
   const base = cy - H / 2;
   const colX = (m) => cx - W / 2 + (W * m) / (M - 1);
   const fac = (m) => clamp01(reveal - m);
@@ -236,12 +244,15 @@ export function graph(out, L, P, o) {
   const S = L.scale, lay = o.layout;
   const { cx, cy } = center(L);
   const n = SKILLS.length;
+  // レイアウトは ±1.05 / ±0.95 に正規化済み。枡があればその 82% に収める
+  const sx = L.box ? (L.box.hw * 0.82) / 1.05 : S * 1.05, sy = L.box ? (L.box.hh * 0.82) / 0.95 : S * 1.05;
+  const nodeS = L.box ? Math.min(S, Math.min(sx, sy) * 0.9) : S;
   field(out, L, P, { dim: 0.55 });
   for (let i = 0; i < N_MAIN; i++) {
     if (i < n) {
       const s = SKILLS[i];
-      const size = (s.hub ? 0.15 : 0.06 + 0.05 * s.w) * S;
-      setPoint(out, i, cx + lay.px[i] * S * 1.05, cy + lay.py[i] * S * 1.05, (hash(i, 22) - 0.5) * 0.2, size, s.hub ? P.navy : P.sky, 1);
+      const size = (s.hub ? 0.15 : 0.06 + 0.05 * s.w) * nodeS;
+      setPoint(out, i, cx + lay.px[i] * sx, cy + lay.py[i] * sy, (hash(i, 22) - 0.5) * 0.2, size, s.hub ? P.navy : P.sky, 1);
     } else {
       setPoint(out, i, cx, cy, -1, 0.01, P.ink, 0);
     }

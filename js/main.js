@@ -63,6 +63,7 @@ window.addEventListener('scroll', () => top.classList.toggle('is-scrolled', wind
 let scene = null;
 if (useScene) {
   scene = createScene(document.getElementById('scene'));
+  window.__scene = scene; // 動作確認用
   scene.setTheme(html.getAttribute('data-theme'));
   new MutationObserver(() => scene.setTheme(html.getAttribute('data-theme'))).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
 } else {
@@ -86,9 +87,11 @@ function enter(section) {
   if (!scene) return;
   scene.setFormation(section.dataset.formation, Number(section.dataset.side));
   if (id !== 'cover') scene.setParams({ rot: 0 }); // 結びの電球は正面を向く
-  scene.setDim(window.innerWidth < 760 && id !== 'cover' && id !== 'contact' ? 0.55 : 1);
+  // スマホでは形を文書内の枡に置くので暗くしない。文章の裏を漂う「場」だけ少し薄く
+  scene.setDim(isMobile() && section.dataset.formation === 'field' ? 0.7 : 1);
   skillLabels.classList.toggle('is-on', id === 'tools');
 }
+const isMobile = () => window.innerWidth < 760;
 
 chapters.forEach((section) => {
   ScrollTrigger.create({
@@ -98,7 +101,7 @@ chapters.forEach((section) => {
     onEnter: () => enter(section),
     onEnterBack: () => enter(section),
     onUpdate: (self) => {
-      if (!scene) return;
+      if (!scene || isMobile()) return; // スマホは枡の位置から計算する（下の ticker）
       const p = self.progress;
       if (section.id === 'numbers') scene.setParams({ reveal: Math.min(1, p / 0.55) });
       else if (section.id === 'contact') scene.setParams({ lit: Math.min(1, p / 0.6) });
@@ -126,13 +129,43 @@ events.forEach((li, i) => {
 });
 
 /* 経歴の道: 出来事の行の位置を毎フレーム渡し、点が文章と 1:1 で動く */
+const eventsList = document.getElementById('events');
 if (scene) {
   const rows = Array.from(events);
   gsap.ticker.add(() => {
     if (scene.formation !== 'path') return;
-    const { halfH } = scene.layout(), h = window.innerHeight;
+    const { halfH, halfW, isMobile: mobile } = scene.layout(), h = window.innerHeight, w = window.innerWidth;
     const rowYs = rows.map((li) => { const r = li.getBoundingClientRect(); return (0.5 - (r.top + r.height / 2) / h) * 2 * halfH; });
-    scene.setParams({ rowYs, rowLit: rows.map((li) => li.classList.contains('is-lit')) });
+    // スマホでは出来事の左に設けた列（ol の padding-left）の中心を道の x にする
+    const pad = mobile ? parseFloat(getComputedStyle(eventsList).paddingLeft) || 0 : 0;
+    const pathX = mobile ? ((eventsList.getBoundingClientRect().left + pad / 2) / w - 0.5) * 2 * halfW : null;
+    scene.setParams({ rowYs, rowLit: rows.map((li) => li.classList.contains('is-lit')), pathX });
+  });
+}
+
+/* スマホ: PC で点群が占めていた列の代わりに、文書内の枡（.anchor）の矩形へ形を収める */
+if (scene) {
+  const anchors = Array.from(document.querySelectorAll('.anchor[data-anchor]'));
+  const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  gsap.ticker.add(() => {
+    const { halfH, halfW, isMobile: mobile } = scene.layout();
+    if (!mobile) { scene.setParams({ boxes: null }); return; }
+    const h = window.innerHeight, w = window.innerWidth;
+    const boxes = {};
+    for (const el of anchors) {
+      const r = el.getBoundingClientRect();
+      if (!r.width) continue;
+      boxes[el.dataset.anchor] = {
+        cx: ((r.left + r.width / 2) / w - 0.5) * 2 * halfW,
+        cy: (0.5 - (r.top + r.height / 2) / h) * 2 * halfH,
+        hw: (r.width / w) * halfW,
+        hh: (r.height / h) * halfH,
+      };
+      // 枡が見えてきた分だけチャートを伸ばし、電球を灯す
+      if (el.dataset.anchor === 'chart') scene.setParams({ reveal: clamp01((0.9 * h - r.top) / (0.5 * h)) });
+      if (el.dataset.anchor === 'lit') scene.setParams({ lit: clamp01((0.85 * h - r.top) / (0.45 * h)) });
+    }
+    scene.setParams({ boxes });
   });
 }
 
@@ -145,12 +178,28 @@ if (scene) {
     skillLabels.appendChild(el);
     return el;
   });
+  const pts = labels.map(() => ({ x: 0, y: 0, w: 0, h: 0, a: 0 }));
   gsap.ticker.add(() => {
     if (!skillLabels.classList.contains('is-on')) return;
     for (let i = 0; i < labels.length; i++) {
-      const p = scene.project(i);
-      labels[i].style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px) translate(-50%, -50%)`;
-      labels[i].style.opacity = Math.min(1, p.alpha * 1.2).toFixed(2);
+      const p = scene.project(i), q = pts[i];
+      q.x = p.x; q.y = p.y; q.a = p.alpha; q.w = labels[i].offsetWidth; q.h = labels[i].offsetHeight;
+    }
+    // スマホは狭くてラベルが触れ合うので、重なった組を縦に押し分ける（位置から決まるので毎フレーム安定）
+    if (isMobile()) {
+      for (let it = 0; it < 2; it++) for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+        const a = pts[i], b = pts[j];
+        const needX = (a.w + b.w) / 2 + 4, needY = (a.h + b.h) / 2 + 3;
+        const dx = Math.abs(a.x - b.x), dy = b.y - a.y;
+        if (dx >= needX || Math.abs(dy) >= needY) continue;
+        const push = (needY - Math.abs(dy)) / 2, s = dy >= 0 ? 1 : -1;
+        a.y -= push * s; b.y += push * s;
+      }
+    }
+    for (let i = 0; i < labels.length; i++) {
+      const q = pts[i];
+      labels[i].style.transform = `translate(${q.x.toFixed(1)}px, ${q.y.toFixed(1)}px) translate(-50%, -50%)`;
+      labels[i].style.opacity = Math.min(1, q.a * 1.2).toFixed(2);
     }
   });
 }

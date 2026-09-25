@@ -183,11 +183,14 @@ export function createScene(canvas, opts = {}) {
     dim += (dimT - dim) * (1 - Math.exp(-dt * 3));
     pointMat.uniforms.uDim.value = dim; edgeMat.uniforms.uDim.value = dim;
 
+    // スマホでは文書内の枡（main.js が毎フレーム渡す）に形を置く
+    L.box = (L.isMobile && params.boxes && params.boxes[formation]) || null;
+
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
       const rot = mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
       edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot });
-    } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events });
+    } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
     else if (formation === 'graph') edges = F.graph(tgt, L, P, { layout: skillLayout });
     else edges = F.field(tgt, L, P, { dim: 1 });
@@ -223,9 +226,10 @@ export function createScene(canvas, opts = {}) {
 
     // 灯り
     const lit = formation === 'lit' ? params.lit : 0;
-    const c = L.isMobile ? { x: 0, y: L.mobileY } : { x: L.side * L.halfW * L.sideFactor, y: 0 };
-    glow.position.set(c.x, c.y + 0.15 * L.scale, 0.2);
-    glow.scale.set(2.8 * L.scale, 2.8 * L.scale, 1);
+    const c = L.box ? { x: L.box.cx, y: L.box.cy } : L.isMobile ? { x: 0, y: L.mobileY } : { x: L.side * L.halfW * L.sideFactor, y: 0 };
+    const gs = F.bulbScale(L);
+    glow.position.set(c.x, c.y + 0.15 * gs, 0.2);
+    glow.scale.set(2.8 * gs, 2.8 * gs, 1);
     glowMat.opacity += (lit * PALETTE[theme].glow * dim - glowMat.opacity) * ka;
 
     camera.position.x = mouse.x * 0.08; camera.position.y = -mouse.y * 0.06;

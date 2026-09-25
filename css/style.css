@@ -70,6 +70,9 @@ h1, .cover__name, .work__name, .row__name, .stat__num, .story__year, time, .top_
 /* ---------- 背景の点群 ---------- */
 .scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 html.no-scene .scene { display: none; }
+/* 枡: スマホで点群の形を置く空の箱（PC と点群なしでは出さない） */
+.anchor { display: none; }
+html.no-scene .anchor { display: none !important; }
 .bulb-svg { width: min(100%, 380px); color: var(--ink); margin: 0 0 0 auto; }
 html.no-scene .cover__fallback[hidden] { display: block; }
 
@@ -260,18 +263,30 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
 @media (max-width: 759px) {
   .top { height: 60px; }
   .top__nav { display: none; }
-  .top__name { display: none; }
   .top__menu { display: flex; }
   .col-l, .col-r { grid-column: 1 / -1; }
   .chapter { padding: 14vh 0; }
-  .cover { padding: 100px 0 104px; align-content: end; }
-  .contact { min-height: 100svh; align-content: end; padding-bottom: 96px; }
-  .cover__name { font-size: clamp(60px, 19vw, 96px); margin-bottom: 28px; }
+  /* 枡。PC で点群が占めていた列の代わりに、文章の上に形を置く */
+  .anchor { display: block; width: min(100%, 320px); margin: 0 auto; aspect-ratio: 1 / 1.05; }
+  .anchor--chart { width: 100%; aspect-ratio: 16 / 10; margin: 4px 0 24px; }
+  .anchor--graph { width: 100%; aspect-ratio: 1 / 1.3; margin: 4px 0 20px; }
+  .cover { padding: 84px 0 72px; }
+  .cover__name { font-size: clamp(56px, 17vw, 88px); margin: 24px 0 24px -0.04em; }
   .cover__fallback { margin-top: 32px; }
+  .contact { min-height: 0; padding-bottom: 72px; }
+  .contact .col-l { margin-top: 8px; }
   .story__intro { padding-bottom: 6vh; }
-  .story__years { display: none; }
-  .story__events li { grid-template-columns: 72px 1fr; padding: 16px 0; }
-  .stats { grid-template-columns: 1fr; gap: 28px; }
+  /* 年号は上に留まる帯、道は出来事の左の細い列 */
+  .story__timeline { display: block; }
+  .story__years { position: sticky; top: 60px; z-index: 3; height: auto; padding: 6px 0 10px; text-align: right; background: linear-gradient(var(--paper) 78%, transparent); }
+  .story__year { font-size: clamp(52px, 16vw, 72px); margin-left: 0; }
+  .story__events { padding-left: 44px; }
+  .story__events li { grid-template-columns: 60px 1fr; gap: 12px; padding: 16px 0; }
+  .story__events time { font-size: 13px; }
+  .story__events p { font-size: 15px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 24px 16px; margin-top: 8px; }
+  .stat__num { font-size: clamp(26px, 7.2vw, 64px); }
+  .stat small { font-size: 12px; }
   .work { margin-top: 64px; }
   .work--app .work__screens { order: 2; }
   .work--app .work__text { order: 1; }
@@ -283,15 +298,20 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .row__links { grid-column: 1; }
   .labs { row-gap: 24px; column-gap: 16px; }
   .lab { grid-column: span 6; }
-  .lab__name { font-size: 15px; }
-  .lab__what { font-size: 13px; }
+  .lab__name { font-size: 14px; }
+  .lab__what { font-size: 12.5px; }
   .tools { min-height: 0; }
-  .labels { display: none; }
+  .tools__list { margin-top: 8px; }
+  .label { font-size: 10.5px; padding: 2px 6px; }
+  .label.is-hub { font-size: 11.5px; }
   .foot { flex-direction: column; gap: 4px; }
 }
 @media (max-width: 420px) {
-  .lab { grid-column: span 12; }
   .work__stores img { height: 36px; }
+}
+@media (max-width: 359px) {
+  .lab { grid-column: span 12; }
+  .top__name { display: none; }
 }
 
 /* ---------- 動きを減らす ---------- */
