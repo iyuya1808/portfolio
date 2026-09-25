@@ -4,8 +4,8 @@ import * as F from './formations.js';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
-  light: { navy: '#1F2A8C', sky: '#1DA3E8', ink: '#12173F', spark: '#F5B82E', core: '#FFD66E', red: '#E30613', green: '#23AB39', green2: '#0A7A45', purple: '#7E308F', yellow: '#F8B62D', edge: '#12173F', edgeAlpha: 0.55, edgeWidth: 2.5, dustAlpha: 0.15, halo: '#F0A62B', haloAlpha: 0.28, haloSize: 2.6, glowA: [0.10, 0.22, 0.30], additive: false },
-  dark:  { navy: '#5563E8', sky: '#4FC1FF', ink: '#EEF1FA', spark: '#FFC94D', core: '#FFF1C9', red: '#FF5A69', green: '#3ED069', green2: '#2CB57A', purple: '#C07BE0', yellow: '#FFC94D', edge: '#EEF1FA', edgeAlpha: 0.4, edgeWidth: 2, dustAlpha: 0.22, halo: '#FFC94D', haloAlpha: 0.55, haloSize: 3.4, glowA: [0.18, 0.45, 0.60], additive: true },
+  light: { navy: '#1F2A8C', sky: '#1DA3E8', ink: '#12173F', spark: '#F5B82E', core: '#F28C1E', red: '#E30613', green: '#23AB39', green2: '#0A7A45', purple: '#7E308F', yellow: '#F8B62D', edge: '#12173F', edgeAlpha: 0.55, edgeWidth: 2.5, dustAlpha: 0.15, halo: '#F0A62B', haloAlpha: 0.28, haloSize: 2.6, hot: 0.35, glowA: [0.10, 0.22, 0.30], additive: false },
+  dark:  { navy: '#5563E8', sky: '#4FC1FF', ink: '#EEF1FA', spark: '#FFC94D', core: '#FFF1C9', red: '#FF5A69', green: '#3ED069', green2: '#2CB57A', purple: '#C07BE0', yellow: '#FFC94D', edge: '#EEF1FA', edgeAlpha: 0.4, edgeWidth: 2, dustAlpha: 0.22, halo: '#FFC94D', haloAlpha: 0.55, haloSize: 3.4, hot: 1.0, glowA: [0.18, 0.45, 0.60], additive: true },
 };
 function rgb(hex) { const c = new THREE.Color(hex); return [c.r, c.g, c.b]; }
 function toPalette(p) {
@@ -46,19 +46,19 @@ export function createScene(canvas, opts = {}) {
   geo.setAttribute('aAlpha', new THREE.BufferAttribute(alpha, 1));
   geo.setAttribute('aGlow', new THREE.BufferAttribute(glowA, 1));
   const pointMat = new THREE.ShaderMaterial({
-    uniforms: { uProj: { value: 1000 }, uDim: { value: 1 } },
+    uniforms: { uProj: { value: 1000 }, uDim: { value: 1 }, uHot: { value: 0.35 } },
     vertexShader: `
       attribute float aSize; attribute vec3 aColor; attribute float aAlpha; attribute float aGlow;
       uniform float uProj; varying vec3 vColor; varying float vAlpha; varying float vGlow;
       void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv;
         gl_PointSize = max(1.0, aSize * uProj / -mv.z); vColor = aColor; vAlpha = aAlpha; vGlow = aGlow; }`,
     fragmentShader: `
-      precision mediump float; uniform float uDim; varying vec3 vColor; varying float vAlpha; varying float vGlow;
+      precision mediump float; uniform float uDim; uniform float uHot; varying vec3 vColor; varying float vAlpha; varying float vGlow;
       void main(){ float d = length(gl_PointCoord - 0.5);
         // 灯っている点は縁を少し柔らかく、中心を白く熱く
         float a = 1.0 - smoothstep(mix(0.40, 0.34, vGlow), 0.5, d);
         if (a <= 0.001) discard;
-        vec3 c = mix(vColor, vec3(1.0, 0.97, 0.88), vGlow * (1.0 - smoothstep(0.0, 0.3, d)));
+        vec3 c = mix(vColor, vec3(1.0, 0.97, 0.88), uHot * vGlow * (1.0 - smoothstep(0.0, 0.3, d)));
         gl_FragColor = vec4(c, a * vAlpha * uDim); }`,
     transparent: true, depthWrite: false, depthTest: false,
   });
@@ -186,7 +186,8 @@ export function createScene(canvas, opts = {}) {
     edgeMat.uniforms.uSpark.value.set(p.spark);
     haloMat.uniforms.uColor.value.set(p.halo);
     haloMat.uniforms.uHalo.value = p.haloAlpha;
-    haloMat.uniforms.uSize.value = p.haloSize; // 白い紙の上ではハローを小さめにして、点の輪郭を残す
+    haloMat.uniforms.uSize.value = p.haloSize;
+    pointMat.uniforms.uHot.value = p.hot; // 白い紙の上ではハローを小さめにして、点の輪郭を残す
     haloMat.blending = p.additive ? THREE.AdditiveBlending : THREE.NormalBlending;
     haloMat.needsUpdate = true;
     glows.forEach((sp, k) => {
