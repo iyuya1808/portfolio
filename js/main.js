@@ -193,31 +193,37 @@ if (scene) {
     skillLabels.appendChild(el);
     return el;
   });
-  const pts = labels.map(() => ({ x: 0, y: 0, w: 0, h: 0, a: 0 }));
+  // oy: 押し分けで決まる縦のずれ（目標）、sy: 実際に使うずれ（時間でならす）
+  const pts = labels.map(() => ({ x: 0, y: 0, w: 0, h: 0, a: 0, oy: 0, sy: 0, shown: false }));
   const graphAnchor = document.querySelector('[data-anchor="graph"]');
-  gsap.ticker.add(() => {
+  gsap.ticker.add((time, dtMs) => {
     if (!skillLabels.classList.contains('is-on')) return;
     for (let i = 0; i < labels.length; i++) {
       const p = scene.project(i), q = pts[i];
-      q.x = p.x; q.y = p.y; q.a = p.alpha; q.w = labels[i].offsetWidth; q.h = labels[i].offsetHeight;
+      q.x = p.x; q.y = p.y; q.a = p.alpha; q.w = labels[i].offsetWidth; q.h = labels[i].offsetHeight; q.oy = 0;
     }
     // スマホは狭いので、ラベルを枡の内側に収める
     if (isMobile()) {
       const box = graphAnchor.getBoundingClientRect();
       if (box.width) for (const q of pts) q.x = Math.min(Math.max(q.x, box.left + q.w / 2 + 2), box.right - q.w / 2 - 2);
     }
-    // 重なった組を縦に押し分ける（位置から決まるので毎フレーム安定）
+    // 重なった組を縦に押し分ける。横の重なり具合に応じて段階的に効かせ、組み上がり中に急に跳ねないようにする
     for (let it = 0; it < 6; it++) for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
       const a = pts[i], b = pts[j];
       const needX = (a.w + b.w) / 2 + 4, needY = (a.h + b.h) / 2 + 3;
-      const dx = Math.abs(a.x - b.x), dy = b.y - a.y;
+      const dx = Math.abs(a.x - b.x), dy = (b.y + b.oy) - (a.y + a.oy);
       if (dx >= needX || Math.abs(dy) >= needY) continue;
-      const push = (needY - Math.abs(dy)) / 2, s = dy >= 0 ? 1 : -1;
-      a.y -= push * s; b.y += push * s;
+      const w = Math.min(1, (needX - dx) / 16);
+      const push = (needY - Math.abs(dy)) / 2 * w, s = dy >= 0 ? 1 : -1;
+      a.oy -= push * s; b.oy += push * s;
     }
+    // ずれだけを時間でならす（点への追従はそのままなので、スクロールには遅れない）
+    const k = 1 - Math.exp(-(dtMs || 16) / 90);
     for (let i = 0; i < labels.length; i++) {
       const q = pts[i];
-      labels[i].style.transform = `translate(${q.x.toFixed(1)}px, ${q.y.toFixed(1)}px) translate(-50%, -50%)`;
+      if (q.a < 0.02) { q.shown = false; q.sy = q.oy; } else if (!q.shown) { q.shown = true; q.sy = q.oy; } else q.sy += (q.oy - q.sy) * k;
+      const y = q.y + q.sy;
+      labels[i].style.transform = `translate(${q.x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
       labels[i].style.opacity = Math.min(1, q.a * 1.2).toFixed(2);
     }
   });
