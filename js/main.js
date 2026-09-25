@@ -1,5 +1,5 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20260925t';
+import { createScene, supportsWebGL } from './scene.js?v=20260926a';
 import { SKILLS, PV_MONTHLY } from './data.js';
 import { SKILL_GROUP, SKILL_EDGES } from './formations.js';
 
@@ -37,7 +37,10 @@ gsap.registerPlugin(ScrollTrigger);
 // スマホのツールバーの出し入れ（高さだけの変化）で全トリガーを測り直さない
 ScrollTrigger.config({ ignoreMobileResize: true });
 if (!reduceMotion) {
-  lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+  // 確認用: ?sync=1 のときだけスマホの指のスクロールも Lenis が動かし、文章と点群を同じコマで動かす
+  // （ブラウザが別の流れでスクロールするのと描き直しがずれるのが、スマホでガクガクする原因かを実機で見分ける）
+  const syncTouch = new URLSearchParams(location.search).has('sync');
+  lenis = new Lenis({ lerp: 0.11, smoothWheel: true, syncTouch });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
