@@ -122,6 +122,7 @@ export function createScene(canvas, opts = {}) {
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
   let dim = 1, dimT = 1, running = true, lastT = performance.now(), sinceSwitch = 9;
   let settled = 0;
+  let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
 
   function resize() {
     const w = window.innerWidth, h = window.innerHeight;
@@ -186,9 +187,20 @@ export function createScene(canvas, opts = {}) {
     // スマホでは文書内の枡（main.js が毎フレーム渡す）に形を置く
     L.box = (L.isMobile && params.boxes && params.boxes[formation]) || null;
 
+    // 枡や出来事の行に付いた形は、スクロールで動いた分をその場で追従させる（減衰は形の変化にだけ効く）
+    let ox = 0, oy = 0;
+    if (L.box) { ox = L.box.cx; oy = L.box.cy; }
+    else if (formation === 'path' && params.rowYs && params.rowYs.length) oy = params.rowYs[0];
+    if (originFor === formation) {
+      const dx = ox - prevOx, dy = oy - prevOy;
+      if (dx || dy) for (let i = 0; i < N; i++) { pos[i * 3] += dx; pos[i * 3 + 1] += dy; }
+    }
+    prevOx = ox; prevOy = oy; originFor = formation;
+
     let edges;
     if (formation === 'bulb' || formation === 'lit') {
-      const rot = mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
+      // タッチ端末では揺らさない（枡に固定して見せる）
+      const rot = L.isMobile ? (params.rot || 0) : mouse.x * 0.07 + Math.sin(L.time * 0.25) * 0.03 + (params.rot || 0);
       edges = F.bulb(tgt, L, P, { lit: formation === 'lit' ? params.lit : 0, rot });
     } else if (formation === 'path') edges = F.path(tgt, L, P, { rowYs: params.rowYs, rowLit: params.rowLit, events: params.events, pathX: L.isMobile ? params.pathX : null, pathAmp: L.isMobile ? params.pathAmp : null });
     else if (formation === 'chart') edges = F.chart(tgt, L, P, { reveal: params.reveal });
