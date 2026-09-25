@@ -7,7 +7,7 @@
     meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech, KPass and ZeroShot, and WordPress plugins.' },
     nav: { top: 'Back to top', chapters: 'Chapters', theme: 'Dark mode', menu: 'Menu', story: 'Beginnings', numbers: 'Numbers', works: 'Work', media: 'Media', tools: 'Tools', contact: 'Contact' },
     cover: {
-      statement: 'I started writing game guides in junior high. Today I run media read 19 million times and build apps that live in the App Store.',
+      statement: 'Write it, build it, ship it.<br>I make media with 19 million page views and apps that live in the App Store.',
       role: 'Third-year, Faculty of Science and Technology, Keio University / Head of Technophere',
       cue: 'Scroll'
     },
