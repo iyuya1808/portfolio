@@ -35,7 +35,7 @@
 文体はです・ます調。見出し・一覧・短い補足は体言止めを混ぜる。
 
 
-大きく見せる3件: BrawlTech（App Store / Google Play）、KPass（App Store、評価 4.4・173件は取得時点）、ZeroShot（App Store、2026年9月公開）。
+大きく見せる3件: BrawlTech（2.0 で全面改修。スクショは AppDevelopment/brawlstars/store/app_store/final/iphone の 01・02）、KPass（SwiftUI＋Kotlin Multiplatform、App Store / Google Play、評価 4.4・173件は取得時点）、ZeroShot（App Store、2026年9月公開）。
 「ほかにも」: Mimishare、App Link Generator（WordPress.org / GitHub）、Push from GitHub（GitHub）、Lemon AI。
 App Store のスクリーンショットは iTunes Lookup API の `screenshotUrls` から取得し `assets/images/works/` に保存。
 
@@ -54,3 +54,11 @@ App Store のスクリーンショットは iTunes Lookup API の `screenshotUrl
 - 経歴: `#events` の `li` を足す（`data-year` は年号スタンプ用）。点群の道は自動で追従する。
 - 道具: `js/data.js` の `SKILLS`（`hub` が分類、`to` がつながり）。
 - 数字: `js/data.js` の `PV_MONTHLY` に月を足し、`index.html` の 4 つの値を更新する。
+
+## はじまり（年表）
+
+2026年10月1日に株式会社Technophere として法人化。年表の 2026.10 と、はじまりの本文 2 段落目に書いている。
+
+## 使う道具
+
+図のノードとラベル、一覧の点は分類ごとに色分けする（AI 紫、アプリ 空色、Web 緑、基盤 紺、数字 赤。ロゴの点の色）。

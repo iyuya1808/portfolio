@@ -219,6 +219,9 @@ export function field(out, L, P, o) {
 export const SKILL_INDEX = Object.fromEntries(SKILLS.map((s, i) => [s.id, i]));
 export const SKILL_EDGES = [];
 SKILLS.forEach((s, i) => (s.to || []).forEach((t) => SKILL_EDGES.push([i, SKILL_INDEX[t]])));
+// 分類（hub）ごとの色。道具は最初のつながり先をたどって属する分類を決める（Tailwind → Next.js → Web）
+export const SKILL_GROUP = SKILLS.map((s) => { let t = s; while (!t.hub) t = SKILLS[SKILL_INDEX[t.to[0]]]; return t.id; });
+const GROUP_COLOR = { ai: 'purple', app: 'sky', web: 'green2', infra: 'navy', growth: 'red' };
 
 export function layoutSkills() {
   const n = SKILLS.length;
@@ -273,7 +276,7 @@ export function graph(out, L, P, o) {
     if (i < n) {
       const s = SKILLS[i];
       const size = (s.hub ? 0.15 : 0.06 + 0.05 * s.w) * nodeS;
-      setPoint(out, i, cx + lay.px[i] * sx, cy + lay.py[i] * sy, (hash(i, 22) - 0.5) * 0.2, size, s.hub ? P.navy : P.sky, 1);
+      setPoint(out, i, cx + lay.px[i] * sx, cy + lay.py[i] * sy, (hash(i, 22) - 0.5) * 0.2, size, P[GROUP_COLOR[SKILL_GROUP[i]]], 1);
     } else {
       setPoint(out, i, cx, cy, -1, 0.01, P.ink, 0);
     }

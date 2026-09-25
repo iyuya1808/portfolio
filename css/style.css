@@ -15,6 +15,12 @@
   --line: rgba(18, 23, 63, 0.14);
   --line-2: rgba(18, 23, 63, 0.08);
   --stamp: rgba(18, 23, 63, 0.10);
+  /* 使う道具の分類色（ロゴの点の色から） */
+  --g-ai: #7E308F;
+  --g-app: #0E86C8;
+  --g-web: #0A7A45;
+  --g-infra: #1F2A8C;
+  --g-growth: #D1101F;
   --r-s: 6px;
   --r-m: 14px;
   --gutter: clamp(16px, 4vw, 40px);
@@ -35,6 +41,11 @@
   --line: rgba(238, 241, 250, 0.16);
   --line-2: rgba(238, 241, 250, 0.09);
   --stamp: rgba(238, 241, 250, 0.13);
+  --g-ai: #C07BE0;
+  --g-app: #4FC1FF;
+  --g-web: #3ED069;
+  --g-infra: #6B78F0;
+  --g-growth: #FF5A69;
   color-scheme: dark;
 }
 
@@ -239,7 +250,12 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-s); color: var(--ink);
   transition: opacity .3s;
 }
-.label.is-hub { font-weight: 700; font-size: 14px; border-color: var(--navy); color: var(--navy); }
+.label.is-hub { font-weight: 700; font-size: 14px; border-color: var(--gc, var(--navy)); color: var(--gc, var(--navy)); }
+.label:not(.is-hub)::before { content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: var(--gc); margin-right: .45em; vertical-align: .08em; }
+[data-g="ai"] { --gc: var(--g-ai); } [data-g="app"] { --gc: var(--g-app); } [data-g="web"] { --gc: var(--g-web); }
+[data-g="infra"] { --gc: var(--g-infra); } [data-g="growth"] { --gc: var(--g-growth); }
+.tools__list div:not([data-g]) { --gc: var(--ink-3); }
+.tools__list dt::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--gc); margin-right: 8px; vertical-align: .1em; }
 
 /* ---------- 次のアイデアへ ---------- */
 .contact { min-height: 92svh; display: grid; align-content: center; }

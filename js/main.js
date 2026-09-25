@@ -1,6 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
 import { createScene, supportsWebGL } from './scene.js';
 import { SKILLS, PV_MONTHLY } from './data.js';
+import { SKILL_GROUP } from './formations.js';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -184,9 +185,10 @@ if (scene) {
 
 /* 使う道具: ノード位置に HTML のラベルを重ねる */
 if (scene) {
-  const labels = SKILLS.map((s) => {
+  const labels = SKILLS.map((s, i) => {
     const el = document.createElement('span');
     el.className = 'label' + (s.hub ? ' is-hub' : '');
+    el.dataset.g = SKILL_GROUP[i];
     el.textContent = s.label;
     skillLabels.appendChild(el);
     return el;
@@ -199,18 +201,19 @@ if (scene) {
       const p = scene.project(i), q = pts[i];
       q.x = p.x; q.y = p.y; q.a = p.alpha; q.w = labels[i].offsetWidth; q.h = labels[i].offsetHeight;
     }
-    // スマホは狭いので、ラベルを枡の内側に収め、重なった組を縦に押し分ける（位置から決まるので毎フレーム安定）
+    // スマホは狭いので、ラベルを枡の内側に収める
     if (isMobile()) {
       const box = graphAnchor.getBoundingClientRect();
       if (box.width) for (const q of pts) q.x = Math.min(Math.max(q.x, box.left + q.w / 2 + 2), box.right - q.w / 2 - 2);
-      for (let it = 0; it < 6; it++) for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
-        const a = pts[i], b = pts[j];
-        const needX = (a.w + b.w) / 2 + 4, needY = (a.h + b.h) / 2 + 3;
-        const dx = Math.abs(a.x - b.x), dy = b.y - a.y;
-        if (dx >= needX || Math.abs(dy) >= needY) continue;
-        const push = (needY - Math.abs(dy)) / 2, s = dy >= 0 ? 1 : -1;
-        a.y -= push * s; b.y += push * s;
-      }
+    }
+    // 重なった組を縦に押し分ける（位置から決まるので毎フレーム安定）
+    for (let it = 0; it < 6; it++) for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const a = pts[i], b = pts[j];
+      const needX = (a.w + b.w) / 2 + 4, needY = (a.h + b.h) / 2 + 3;
+      const dx = Math.abs(a.x - b.x), dy = b.y - a.y;
+      if (dx >= needX || Math.abs(dy) >= needY) continue;
+      const push = (needY - Math.abs(dy)) / 2, s = dy >= 0 ? 1 : -1;
+      a.y -= push * s; b.y += push * s;
     }
     for (let i = 0; i < labels.length; i++) {
       const q = pts[i];

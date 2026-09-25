@@ -10,6 +10,7 @@ export const GSC_28D = { clicks: 100669, impressions: 3093611, position: 6.4, as
 export const SKILLS = [
   { id: "ai",      label: "AI",             hub: true,  w: 1.0 },
   { id: "claude",  label: "Claude Code",    hub: false, w: 0.9, to: ["ai"] },
+  { id: "codex",   label: "Codex",          hub: false, w: 0.8, to: ["ai"] },
   { id: "cursor",  label: "Cursor",         hub: false, w: 0.7, to: ["ai"] },
   { id: "antig",   label: "Antigravity",    hub: false, w: 0.7, to: ["ai"] },
   { id: "gemini",  label: "Gemini CLI",     hub: false, w: 0.5, to: ["ai"] },
@@ -17,7 +18,7 @@ export const SKILLS = [
   { id: "app",     label: "App",            hub: true,  w: 1.0, to: ["ai"] },
   { id: "swift",   label: "Swift / SwiftUI",hub: false, w: 0.9, to: ["app"] },
   { id: "flutter", label: "Flutter",        hub: false, w: 0.9, to: ["app", "firebase"] },
-  { id: "kotlin",  label: "Kotlin",         hub: false, w: 0.5, to: ["app"] },
+  { id: "kotlin",  label: "Kotlin / KMP",   hub: false, w: 0.6, to: ["app"] },
   { id: "web",     label: "Web",            hub: true,  w: 1.0, to: ["ai"] },
   { id: "wp",      label: "WordPress",      hub: false, w: 0.9, to: ["web", "php", "seo"] },
   { id: "php",     label: "PHP",            hub: false, w: 0.6, to: ["web"] },

@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260925l">
+  <link rel="stylesheet" href="css/style.css?v=20260925m">
   <script>
     (function () {
       var stored = null; try { stored = localStorage.getItem('theme'); } catch (e) {}
@@ -98,7 +98,7 @@
         <div class="col-r story__intro">
           <h2 data-i18n="story.title">はじまり</h2>
           <p data-i18n="story.p1">最初の読者は、同じゲームで困っている誰か。2021年に Gamerch で攻略サイトの運営を始め、翌年には攻略大百科の専属ライターとして100本以上の記事を書きました。</p>
-          <p data-i18n="story.p2">2023年8月、高校3年でテクノフィアを立ち上げました。ゲーム攻略メディアを軸に、SEOと解析で読者を増やし、いまは自分のアプリやプラグインもつくっています。設計から実装、ストア公開、リリース後の改善まで、すべて自分の手で。AIは開発の中心にありますが、最後にコードを読むのは自分の目です。</p>
+          <p data-i18n="story.p2">2023年8月、高校3年でテクノフィアを立ち上げました。2026年10月には、株式会社Technophere として法人化。ゲーム攻略メディアを軸に、SEOと解析で読者を増やし、いまは自分のアプリやプラグインもつくっています。設計から実装、ストア公開、リリース後の改善まで、すべて自分の手で。AIは開発の中心にありますが、最後にコードを読むのは自分の目です。</p>
           <figure class="story__photo">
             <img src="assets/images/profile-yuya.webp" alt="矢上キャンパスのラウンジに座る Yuya Itonaga" width="1200" height="675" loading="lazy" data-i18n-alt="story.photoAlt">
           </figure>
@@ -123,6 +123,7 @@
           <li data-year="2026"><time>2026.04</time><p data-i18n="tl.2026_04">Life is Tech にて DXメンターとして活動開始</p></li>
           <li data-year="2026"><time>2026.07</time><p data-i18n="tl.2026_07a">Life is Tech にて中高生向け iPhone アプリ開発メンターとして活動開始（研修100時間以上）</p></li>
           <li data-year="2026" class="is-key"><time>2026.07</time><p data-i18n="tl.2026_07b">Google AI 学生アンバサダーに就任</p></li>
+          <li data-year="2026" class="is-key"><time>2026.10</time><p data-i18n="tl.2026_10">株式会社Technophere 設立（法人化）</p></li>
           <li data-year="Now" class="is-now"><time data-i18n="tl.nowYear">現在</time><p data-i18n="tl.now">慶應義塾大学 理工学部 システムデザイン工学科 3年</p></li>
         </ol>
       </div>
@@ -172,16 +173,16 @@
         <div class="work__text col-l">
           <h3 class="work__name">BrawlTech</h3>
           <p class="work__what" data-i18n="works.brawltech.what">ブロスタの戦略サポートアプリ</p>
-          <p data-i18n="works.brawltech.desc">Supercell 公式 API と外部 API からリアルタイムの戦績とキャラ統計を取得し、攻略情報とあわせて表示します。Flutter で iOS と Android に同時対応し、2025年8月に公開しました。</p>
-          <ul class="work__stack" aria-label="使った技術"><li>Flutter</li><li>Firebase</li><li>Supercell API</li></ul>
+          <p data-i18n="works.brawltech.desc">2.0 で全面的に作り直しました。ブロスタ攻略Lab に集まる実際の対戦データから、開催中のマップで勝っているキャラをひと目で表示。マップ別の勝率ランキング、ガチバトルの BAN/PICK 補助、全キャラ図鑑と比較、戦績分析と育成計画まで、ひとつのアプリにまとめています。Flutter で iOS と Android に対応し、データは WordPress の API と Cloud Functions から配信しています。</p>
+          <ul class="work__stack" aria-label="使った技術"><li>Flutter</li><li>Riverpod</li><li>Firebase</li><li>WordPress REST API</li></ul>
           <div class="work__stores">
             <a href="https://apps.apple.com/jp/app/brawltech-%E3%83%96%E3%83%AD%E3%83%86%E3%82%AF/id6749449425" target="_blank" rel="noopener noreferrer" aria-label="App Store で BrawlTech を見る"><img src="assets/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
             <a href="https://play.google.com/store/apps/details?id=com.technophere.brawltech" target="_blank" rel="noopener noreferrer" aria-label="Google Play で BrawlTech を見る"><img src="assets/images/google-play-badge.png" alt="Get it on Google Play" width="135" height="40"></a>
           </div>
         </div>
         <div class="work__screens col-r">
-          <figure class="phone"><img src="assets/images/works/brawltech-00.webp" alt="BrawlTech のホーム画面" width="640" height="1390" loading="lazy"></figure>
-          <figure class="phone"><img src="assets/images/works/brawltech-01.webp" alt="BrawlTech のキャラ統計画面" width="640" height="1390" loading="lazy"></figure>
+          <figure class="phone"><img src="assets/images/works/brawltech-00.webp" alt="BrawlTech のホーム画面。開催中のマップで勝っているキャラを表示" width="640" height="1390" loading="lazy"></figure>
+          <figure class="phone"><img src="assets/images/works/brawltech-01.webp" alt="BrawlTech のマップ詳細画面。マップ別の勝率ランキング" width="640" height="1390" loading="lazy"></figure>
         </div>
       </article>
 
@@ -189,10 +190,11 @@
         <div class="work__text col-r">
           <h3 class="work__name">KPass</h3>
           <p class="work__what" data-i18n="works.kpass.what">慶應生の授業と課題をひとつにするアプリ</p>
-          <p data-i18n="works.kpass.desc">大学の学習支援システム K-LMS（Canvas）の API から授業・課題・時間割を取り込み、アプリの中で整理して表示します。ログインを数日保持し、課題の締切もひと目で確認できます。SwiftUI で開発し、2025年12月に公開。App Store の評価は 4.4（173件）です。</p>
-          <ul class="work__stack" aria-label="使った技術"><li>SwiftUI</li><li>Kotlin</li><li>Firebase</li><li>Canvas API</li></ul>
+          <p data-i18n="works.kpass.desc">大学の学習支援システム K-LMS（Canvas）の API から授業・課題・時間割を取り込み、アプリの中で整理して表示します。ログインを数日保持し、課題の締切もひと目で確認できます。SwiftUI と Kotlin Multiplatform で iOS と Android に対応し、2025年12月に公開。App Store の評価は 4.4（173件）です。</p>
+          <ul class="work__stack" aria-label="使った技術"><li>SwiftUI</li><li>Kotlin Multiplatform</li><li>Firebase</li><li>Canvas API</li></ul>
           <div class="work__stores">
             <a href="https://apps.apple.com/jp/app/kpass-%E3%82%B1%E3%83%BC%E3%83%91%E3%82%B9-klms%E9%80%A3%E6%90%BA%E3%81%AE%E6%8E%88%E6%A5%AD-%E8%AA%B2%E9%A1%8C-%E6%99%82%E9%96%93%E5%89%B2/id6754703817" target="_blank" rel="noopener noreferrer" aria-label="App Store で KPass を見る"><img src="assets/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
+            <a href="https://play.google.com/store/apps/details?id=com.technophere.kpass" target="_blank" rel="noopener noreferrer" aria-label="Google Play で KPass を見る"><img src="assets/images/google-play-badge.png" alt="Get it on Google Play" width="135" height="40"></a>
           </div>
         </div>
         <div class="work__screens col-l">
@@ -277,18 +279,18 @@
       <div class="grid">
         <div class="tools__text col-l">
           <h2 data-i18n="tools.title">使う道具</h2>
-          <p class="lead" data-i18n="tools.p1">AI が開発の中心です。Claude Code、Cursor、Antigravity を並べて使い、プロジェクトごとに向いているモデルを選びます。速くつくり、コードは自分の目で確かめる。それが基本の進め方です。</p>
+          <p class="lead" data-i18n="tools.p1">AI が開発の中心です。Claude Code、Codex、Cursor、Antigravity を並べて使い、プロジェクトごとに向いているモデルを選びます。速くつくり、コードは自分の目で確かめる。それが基本の進め方です。</p>
         </div>
         <div class="anchor anchor--graph col-r" data-anchor="graph" aria-hidden="true"></div>
         <div class="tools__more col-l">
           <p data-i18n="tools.p2">アプリは Swift と Flutter、Web は WordPress と Next.js。数字は Search Console と Analytics で毎日確認しています。</p>
         </div>
         <dl class="tools__list col-l">
-            <div><dt>AI</dt><dd>Claude Code, Cursor, Antigravity, Gemini CLI, GitHub Copilot</dd></div>
-            <div><dt data-i18n="tools.app">アプリ</dt><dd>Swift / SwiftUI, Flutter, Kotlin</dd></div>
-            <div><dt>Web</dt><dd>WordPress, PHP, Next.js / React, Tailwind CSS, Ruby on Rails</dd></div>
-            <div><dt data-i18n="tools.infra">基盤</dt><dd>Firebase, Git / GitHub</dd></div>
-            <div><dt data-i18n="tools.growth">数字</dt><dd>SEO, Search Console, Google Analytics</dd></div>
+            <div data-g="ai"><dt>AI</dt><dd>Claude Code, Codex (ChatGPT), Cursor, Antigravity, Gemini CLI, GitHub Copilot</dd></div>
+            <div data-g="app"><dt data-i18n="tools.app">アプリ</dt><dd>Swift / SwiftUI, Flutter, Kotlin Multiplatform</dd></div>
+            <div data-g="web"><dt>Web</dt><dd>WordPress, PHP, Next.js / React, Tailwind CSS, Ruby on Rails</dd></div>
+            <div data-g="infra"><dt data-i18n="tools.infra">基盤</dt><dd>Firebase, Git / GitHub</dd></div>
+            <div data-g="growth"><dt data-i18n="tools.growth">数字</dt><dd>SEO, Search Console, Google Analytics</dd></div>
             <div><dt data-i18n="tools.other">ほか</dt><dd data-i18n="tools.otherValue">動画編集、ドローン操縦</dd></div>
         </dl>
       </div>
@@ -324,7 +326,7 @@
   <script src="assets/vendor/gsap.min.js"></script>
   <script src="assets/vendor/ScrollTrigger.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="js/i18n.js?v=20260925l"></script>
-  <script type="module" src="js/main.js?v=20260925l"></script>
+  <script src="js/i18n.js?v=20260925m"></script>
+  <script type="module" src="js/main.js?v=20260925m"></script>
 </body>
 </html>

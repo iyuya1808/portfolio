@@ -14,7 +14,7 @@
     story: {
       title: 'Beginnings',
       p1: 'My first readers were people stuck on the same game as me. In 2021 I began running strategy sites on Gamerch, and the next year I wrote more than 100 articles as a contract writer for Gamepedia.',
-      p2: 'In August 2023, in my last year of high school, I founded Technophere. Game-guide media is the core; SEO and analytics grew the readership, and now I ship my own apps and plugins too. Design, implementation, store release, post-launch iteration: I do all of it myself. AI sits at the center of how I build, and the last eyes on the code are mine.',
+      p2: 'In August 2023, in my last year of high school, I founded Technophere; in October 2026 it becomes a company, Technophere Inc. Game-guide media is the core; SEO and analytics grew the readership, and now I ship my own apps and plugins too. Design, implementation, store release, post-launch iteration: I do all of it myself. AI sits at the center of how I build, and the last eyes on the code are mine.',
       photoAlt: 'Yuya Itonaga sitting in the lounge at Yagami Campus'
     },
     tl: {
@@ -32,6 +32,7 @@
       '2026_04': 'Started as a DX mentor at Life is Tech!',
       '2026_07a': 'Started as an iPhone app development mentor for teens at Life is Tech! (100+ hours of training)',
       '2026_07b': 'Appointed Google AI Student Ambassador',
+      '2026_10': 'Incorporated as Technophere Inc.',
       nowYear: 'Now',
       now: 'Third-year, Department of System Design Engineering, Keio University'
     },
@@ -45,8 +46,8 @@
     },
     works: {
       title: 'Work', lead: 'Apps in the stores, and services and plugins I have published.',
-      brawltech: { what: 'A strategy companion for Brawl Stars', desc: "Pulls live match records and brawler stats from Supercell's official API and third-party APIs, and pairs them with guides. Built in Flutter for iOS and Android at once, released in August 2025." },
-      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Reads courses, assignments and timetables from the university's K-LMS (Canvas) API and lays them out inside the app. Keeps you logged in for days and shows deadlines at a glance. Built in SwiftUI, released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
+      brawltech: { what: 'A strategy companion for Brawl Stars', desc: "Rebuilt from the ground up in 2.0. From real match data collected by Brawl Stars Lab, it shows which brawlers are winning on the maps live right now. Win-rate rankings per map, a ban/pick helper for ranked, a full brawler encyclopedia with comparison, match analysis and upgrade planning, all in one app. Built in Flutter for iOS and Android, with data served from a WordPress API and Cloud Functions." },
+      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Reads courses, assignments and timetables from the university's K-LMS (Canvas) API and lays them out inside the app. Keeps you logged in for days and shows deadlines at a glance. Built in SwiftUI and Kotlin Multiplatform for iOS and Android, released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
       zeroshot: { what: 'A camera that shoots portrait and landscape at once', desc: 'One tap of the shutter saves both a portrait and a landscape frame. From the frames around the shot, it picks the one with the least blur and no closed eyes, on the device, and saves it to your library. Tighter crops and other lenses are kept too, so you can choose again after the fact. Built in SwiftUI and AVFoundation, released in September 2026.', alt0: 'ZeroShot camera screen, capturing portrait and landscape at once', alt1: 'ZeroShot candidates screen, with the best shot picked automatically' },
       mimishare: { desc: 'Rent a Disney headband for just the day of your visit. Reserve with a deposit, borrow and return by QR code. Built alone in Next.js and Stripe, from catalog to checkout.' },
       more: 'More',
@@ -65,7 +66,7 @@
       }
     },
     tools: {
-      title: 'Tools', p1: 'AI sits at the center of my workflow. I run Claude Code, Cursor and Antigravity side by side and pick the model that fits each project. Build fast, then read the code with my own eyes.',
+      title: 'Tools', p1: 'AI sits at the center of my workflow. I run Claude Code, Codex, Cursor and Antigravity side by side and pick the model that fits each project. Build fast, then read the code with my own eyes.',
       p2: 'Apps in Swift and Flutter, the web in WordPress and Next.js. I check the numbers in Search Console and Analytics every day.',
       app: 'Apps', infra: 'Infra', growth: 'Growth', other: 'Also', otherValue: 'Video editing, drone piloting'
     },
