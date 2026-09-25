@@ -10,13 +10,13 @@
 | story | はじまり | 経歴の道（年ごとに点が灯る） |
 | numbers | 数字 | 累計PVの面グラフ（月次実データの積み上げ。右肩上がり） |
 | works | つくったもの | 散らばった場 |
-| media | 育てているメディア | 散らばった場 |
+| media | 運営しているメディア | 散らばった場 |
 | tools | 使う道具 | スキルの力学グラフ（ラベル付き） |
 | contact | 次のアイデアへ | 電球が灯る |
 
 ## 表紙
 
-- 一文: 中学生でゲーム攻略を書き始めた。いまは、累計1,900万回読まれたメディアと、ストアに並ぶアプリをつくっている。
+- 一文: 中学生でゲーム攻略を書き始めました。いまは、累計1,900万回読まれたメディアと、ストアに並ぶアプリをつくっています。
 - 肩書: 慶應義塾大学 理工学部 3年 ／ テクノフィア代表
 
 ## 数字（2026-09-24 時点）
@@ -32,11 +32,14 @@
 
 ## つくったもの
 
-BrawlTech（App Store / Google Play）、KPass（App Store、評価 4.4・173件は取得時点）、Mimishare、
-App Link Generator（WordPress.org / GitHub）、Push from GitHub（GitHub）、Lemon AI。
+文体はです・ます調。見出し・一覧・短い補足は体言止めを混ぜる。
+
+
+大きく見せる3件: BrawlTech（App Store / Google Play）、KPass（App Store、評価 4.4・173件は取得時点）、ZeroShot（App Store、2026年9月公開）。
+「ほかにも」: Mimishare、App Link Generator（WordPress.org / GitHub）、Push from GitHub（GitHub）、Lemon AI。
 App Store のスクリーンショットは iTunes Lookup API の `screenshotUrls` から取得し `assets/images/works/` に保存。
 
-## 育てているメディア
+## 運営しているメディア
 
 攻略Lab（ブロスタ・ツムツム・MSFS・eFootball・クラロワ・Cities: Skylines・NTE）、テクログ、App Gallery。
 サムネイルは各サイトの実画面を Playwright で撮影し、上部 1280×560 を切り出して `assets/images/media/` に保存。

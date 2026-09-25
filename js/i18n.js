@@ -4,7 +4,7 @@
    ============================================================ */
 (function () {
   var EN = {
-    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech and KPass, and WordPress plugins.' },
+    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech, KPass and ZeroShot, and WordPress plugins.' },
     nav: { top: 'Back to top', chapters: 'Chapters', theme: 'Dark mode', menu: 'Menu', story: 'Beginnings', numbers: 'Numbers', works: 'Work', media: 'Media', tools: 'Tools', contact: 'Contact' },
     cover: {
       statement: 'I started writing game guides in junior high. Today I run media read 19 million times and build apps that live in the App Store.',
@@ -47,14 +47,15 @@
       title: 'Work', lead: 'Apps in the stores, and services and plugins I have published.',
       brawltech: { what: 'A strategy companion for Brawl Stars', desc: "Pulls live match records and brawler stats from Supercell's official API and third-party APIs, and pairs them with guides. Built in Flutter for iOS and Android at once, released in August 2025." },
       kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Reads courses, assignments and timetables from the university's K-LMS (Canvas) API and lays them out inside the app. Keeps you logged in for days and shows deadlines at a glance. Built in SwiftUI, released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
-      mimishare: { what: 'Rent a Disney headband for just one day', desc: 'Cheaper than buying one for a single visit. Reserve with a deposit, borrow and return by QR code. Built alone in Next.js and Stripe, from catalog to checkout.', link: 'Open mimishare.technophere.com' },
+      zeroshot: { what: 'A camera that shoots portrait and landscape at once', desc: 'One tap of the shutter saves both a portrait and a landscape frame. From the frames around the shot, it picks the one with the least blur and no closed eyes, on the device, and saves it to your library. Tighter crops and other lenses are kept too, so you can choose again after the fact. Built in SwiftUI and AVFoundation, released in September 2026.', alt0: 'ZeroShot camera screen, capturing portrait and landscape at once', alt1: 'ZeroShot candidates screen, with the best shot picked automatically' },
+      mimishare: { desc: 'Rent a Disney headband for just the day of your visit. Reserve with a deposit, borrow and return by QR code. Built alone in Next.js and Stripe, from catalog to checkout.' },
       more: 'More',
       alg: { desc: 'A WordPress plugin that generates App Store and Google Play links from the block editor. Published in the official WordPress.org directory.' },
       pfg: { desc: 'A WordPress plugin that deploys your own themes and plugins from a linked GitHub repository with one click in the admin.' },
       lemon: { desc: 'An AI platform for Lemon, the engineering club at Keio. A mentor that answers around the clock and an idea gacha. I built the frontend and UI in a team.' }
     },
     media: {
-      title: 'Media I grow', lead: 'One WordPress site per game, with encyclopedias and rankings updated automatically from official APIs and game data. The core of Technophere.',
+      title: 'Media I run', lead: 'One WordPress site per game, with encyclopedias and rankings updated automatically from official APIs and game data. The core of Technophere.',
       hubLink: 'Open game.technophere.com',
       labs: {
         brawlstars: 'Brawler tier list and win rates by map and mode', tsumtsum: 'Gacha news and Tsum rankings', msfs: 'Aircraft encyclopedia, add-ons and airport data',
