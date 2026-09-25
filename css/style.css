@@ -273,6 +273,7 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .cover { padding: 84px 0 72px; }
   .cover__name { font-size: clamp(56px, 17vw, 88px); margin: 24px 0 24px -0.04em; }
   .cover__fallback { margin-top: 32px; }
+  .cover__fallback .bulb-svg { width: min(100%, 220px); margin: 0 auto; }
   .contact { min-height: 0; padding-bottom: 72px; }
   .contact .col-l { margin-top: 8px; }
   .story__intro { padding-bottom: 6vh; }
@@ -281,6 +282,7 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .story__years { position: sticky; top: 60px; z-index: 3; height: auto; padding: 6px 0 10px; text-align: right; background: linear-gradient(var(--paper) 78%, transparent); }
   .story__year { font-size: clamp(52px, 16vw, 72px); margin-left: 0; }
   .story__events { padding-left: 44px; }
+  html.no-scene .story__events { padding-left: 0; } /* 点群なしでは道の列も要らない */
   .story__events li { grid-template-columns: 60px 1fr; gap: 12px; padding: 16px 0; }
   .story__events time { font-size: 13px; }
   .story__events p { font-size: 15px; }

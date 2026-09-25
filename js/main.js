@@ -63,7 +63,6 @@ window.addEventListener('scroll', () => top.classList.toggle('is-scrolled', wind
 let scene = null;
 if (useScene) {
   scene = createScene(document.getElementById('scene'));
-  window.__scene = scene; // 動作確認用
   scene.setTheme(html.getAttribute('data-theme'));
   new MutationObserver(() => scene.setTheme(html.getAttribute('data-theme'))).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
 } else {
