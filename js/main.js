@@ -102,7 +102,11 @@ chapters.forEach((section) => {
     onUpdate: (self) => {
       if (!scene || isMobile()) return; // スマホは枡の位置から計算する（下の ticker）
       const p = self.progress;
-      if (section.id === 'numbers') scene.setParams({ reveal: Math.min(1, p / 0.55) });
+      if (section.id === 'numbers') {
+        // 章の上端が画面の 6 割から 1.5 割まで上がる間に左から描き上がる（見出しが上に来る頃には満ちている）
+        const h = window.innerHeight, top = section.getBoundingClientRect().top;
+        scene.setParams({ reveal: Math.min(1, Math.max(0, (0.6 * h - top) / (0.45 * h))) });
+      }
       else if (section.id === 'contact') scene.setParams({ lit: Math.min(1, p / 0.6) });
     },
   });
@@ -237,9 +241,10 @@ window.addEventListener('load', () => {
 /* ---------- 動きを減らす／WebGL 無し: 数字の章に静止した折れ線 ---------- */
 function buildNumbersFallback() {
   const box = document.getElementById('numbersFallback');
-  const W = 600, H = 260, max = Math.max(...PV_MONTHLY), n = PV_MONTHLY.length;
-  const pts = PV_MONTHLY.map((v, i) => `${(i / (n - 1)) * W},${H - 20 - (v / max) * (H - 40)}`);
-  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="月次ページビューの推移">
+  const cum = []; let sum = 0; for (const v of PV_MONTHLY) { sum += v; cum.push(sum); }
+  const W = 600, H = 260, max = sum, n = cum.length;
+  const pts = cum.map((v, i) => `${(i / (n - 1)) * W},${H - 20 - (v / max) * (H - 40)}`);
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="累計ページビューの推移">
     <polyline points="${pts.join(' ')}" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".7"/>
     <line x1="0" y1="${H - 20}" x2="${W}" y2="${H - 20}" stroke="currentColor" stroke-width="1" opacity=".25"/>
   </svg>`;

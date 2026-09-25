@@ -136,26 +136,29 @@ export function path(out, L, P, o) {
   return edges;
 }
 
-/* ---------- 2: 月次PVの面グラフ ---------- */
-const PV_MAX = Math.max(...PV_MONTHLY);
-const PV_ARGMAX = PV_MONTHLY.indexOf(PV_MAX);
-const PV_CUM = (() => { const c = []; let s = 0; for (const v of PV_MONTHLY) { s += v; c.push(s); } return c.map((v) => v / s); })();
+/* ---------- 2: 累計PVの面グラフ（月次を積み上げるので右肩上がり。終点が累計値） ---------- */
+const PV_CUMV = (() => { const c = []; let s = 0; for (const v of PV_MONTHLY) { s += v; c.push(s); } return c; })();
+const PV_CUM_MAX = PV_CUMV[PV_CUMV.length - 1];
+const PV_LAST = PV_MONTHLY.length - 1;
+// 面の下を粉で埋めるため、各月の高さに比例した累積分布
+const AREA_CDF = (() => { const c = []; let s = 0; for (const v of PV_CUMV) { s += v; c.push(s); } return c.map((v) => v / s); })();
 
 export function chart(out, L, P, o) {
-  const S = L.scale, M = PV_MONTHLY.length, reveal = clamp01(o.reveal || 0) * (M - 1) + 0.5;
+  // reveal 0→1 で左から右へ描き上がる（1 で最後の月まで満ちる）。まだ描いていない所は見せない
+  const S = L.scale, M = PV_MONTHLY.length, reveal = clamp01(o.reveal || 0) * (M + 0.5);
   const { cx, cy } = center(L, -L.mobileY);
-  const W = L.box ? L.box.hw * 2 * 0.92 : L.isMobile ? L.halfW * 1.7 : L.halfW * 0.86;
+  const W = L.box ? L.box.hw * 2 * 0.92 : L.isMobile ? L.halfW * 1.7 : L.halfW * 0.76; // 右端（累計の点）が画面の縁にかからない幅
   const H = L.box ? L.box.hh * 2 * 0.8 : 1.6 * S;
   const base = cy - H / 2;
   const colX = (m) => cx - W / 2 + (W * m) / (M - 1);
   const fac = (m) => clamp01(reveal - m);
-  const top = (m) => base + (H * PV_MONTHLY[m] / PV_MAX) * fac(m);
+  const top = (m) => base + (H * PV_CUMV[m] / PV_CUM_MAX) * fac(m);
   const edges = [];
   for (let i = 0; i < N_MAIN; i++) {
     const m = Math.round((i * (M - 1)) / (N_MAIN - 1));
-    const f = fac(m), peak = m === PV_ARGMAX;
-    setPoint(out, i, colX(m), top(m), 0, (peak ? 0.14 : 0.06) * S, peak ? P.spark : P.sky, 0.3 + 0.7 * f);
-    if (i > 0) edges.push([i - 1, i, 0.35 + 0.4 * f]);
+    const f = fac(m), peak = m === PV_LAST;
+    setPoint(out, i, colX(m), top(m), 0, (peak ? 0.14 : 0.06) * S, peak ? P.spark : P.sky, f);
+    if (i > 0) edges.push([i - 1, i, 0.75 * Math.min(f, fac(Math.round(((i - 1) * (M - 1)) / (N_MAIN - 1))))]);
   }
   for (let k = 0; k < N_BASE; k++) {
     setPoint(out, N_MAIN + k, cx - W / 2 + (W * k) / (N_BASE - 1), base, 0, 0.02 * S, P.ink, 0.4);
@@ -164,11 +167,11 @@ export function chart(out, L, P, o) {
   for (let k = 0; k < NH; k++) {
     const i = N_MAIN + N_BASE + k;
     const u = hash(k, 9);
-    let m = 0; while (m < M - 1 && PV_CUM[m] < u) m++;
+    let m = 0; while (m < M - 1 && AREA_CDF[m] < u) m++;
     const f = fac(m);
     const x = colX(m) + (hash(k, 10) - 0.5) * (W / (M - 1)) * 0.95;
     const y = base + (top(m) - base) * hash(k, 12);
-    setPoint(out, i, x, y, (hash(k, 13) - 0.5) * 0.4, 0.022 * S, P.navy, 0.06 + 0.3 * f);
+    setPoint(out, i, x, y, (hash(k, 13) - 0.5) * 0.4, 0.022 * S, P.navy, 0.36 * f);
   }
   return edges;
 }
