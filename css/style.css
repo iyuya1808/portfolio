@@ -14,6 +14,7 @@
   --spark: #F5B82E;
   --line: rgba(18, 23, 63, 0.14);
   --line-2: rgba(18, 23, 63, 0.08);
+  --stamp: rgba(18, 23, 63, 0.10);
   --r-s: 6px;
   --r-m: 14px;
   --gutter: clamp(16px, 4vw, 40px);
@@ -33,6 +34,7 @@
   --spark: #FFC94D;
   --line: rgba(238, 241, 250, 0.16);
   --line-2: rgba(238, 241, 250, 0.09);
+  --stamp: rgba(238, 241, 250, 0.13);
   color-scheme: dark;
 }
 
@@ -220,6 +222,7 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
 
 /* ---------- 使う道具 ---------- */
 .tools { min-height: 90svh; }
+.tools__more { margin-top: 0; } /* 2 段落目。リード文の下の余白（18px）がそのまま間隔になる */
 .tools__list { margin-top: 32px; }
 .tools__list div { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
 .tools__list div:last-child { border-bottom: 1px solid var(--line); }
@@ -314,6 +317,26 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .label { font-size: 9.5px; padding: 2px 5px; }
   .label.is-hub { font-size: 10.5px; }
   .foot { flex-direction: column; gap: 4px; }
+}
+/* 480px 未満: 列を縮めて PC をなぞらず、幅を取らない形で PC の要素を残す */
+@media (max-width: 479px) {
+  /* はじまり: 年号は薄い大きな判子として右上に留まり、出来事は幅いっぱい。道は左の細い列 */
+  .story__timeline { grid-template-columns: 44px 1fr; column-gap: 10px; }
+  .story__years { grid-column: 2; grid-row: 1; justify-self: end; text-align: right; top: 64px; z-index: 0; }
+  .story__year { font-size: clamp(72px, 24vw, 96px); color: var(--stamp); }
+  .story__events { grid-column: 2; grid-row: 1; position: relative; z-index: 1; }
+  html.no-scene .story__timeline { grid-template-columns: 1fr; }
+  html.no-scene .story__years, html.no-scene .story__events { grid-column: 1; }
+  /* 使う道具: 見出しとリードの直下に全幅のグラフ。本文と一覧はその下 */
+  .tools .grid { grid-template-columns: 1fr; column-gap: 0; }
+  .tools__text, .tools__more, .tools__list { grid-column: 1; }
+  .tools__text .lead { font-size: clamp(17px, 1.5vw, 19px); }
+  .tools__text p, .tools__more p { font-size: 16px; }
+  .tools .anchor--graph { grid-column: 1; width: 100%; min-height: 0; aspect-ratio: 1 / 1.25; margin: 8px 0 20px; align-self: auto; }
+  .tools__more { margin-top: 0; }
+  .tools__list { margin-top: 24px; }
+  .label { font-size: 10.5px; padding: 2px 6px; }
+  .label.is-hub { font-size: 11.5px; }
 }
 @media (max-width: 420px) {
   .work__stores img { height: 36px; }

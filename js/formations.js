@@ -245,8 +245,9 @@ export function graph(out, L, P, o) {
   const { cx, cy } = center(L);
   const n = SKILLS.length;
   // レイアウトは ±1.05 / ±0.95 に正規化済み。枡があればその 82% に収める
-  // 枡があるとき（スマホ）: 横はラベルの分だけ余白を残し、縦は枡いっぱいに使う
-  const sx = L.box ? (L.box.hw * 0.66) / 1.05 : S * 1.05, sy = L.box ? (L.box.hh * 0.9) / 0.95 : S * 1.05;
+  // 枡があるとき（スマホ）: 全幅の枡なら均等に、縦長の枡ならラベルの分だけ横に余白を残す
+  const wide = L.box && L.box.hw > L.box.hh * 0.7;
+  const sx = L.box ? (L.box.hw * (wide ? 0.84 : 0.66)) / 1.05 : S * 1.05, sy = L.box ? (L.box.hh * (wide ? 0.84 : 0.9)) / 0.95 : S * 1.05;
   const nodeS = L.box ? Math.min(S, Math.max(0.4, Math.min(sx, sy) * 1.2)) : S;
   field(out, L, P, { dim: 0.55 });
   for (let i = 0; i < N_MAIN; i++) {

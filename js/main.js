@@ -130,6 +130,7 @@ events.forEach((li, i) => {
 /* 経歴の道: 出来事の行の位置を毎フレーム渡し、点が文章と 1:1 で動く */
 const eventsList = document.getElementById('events');
 const yearsCol = document.querySelector('.story__years');
+const timelineEl = document.getElementById('timeline');
 if (scene) {
   const rows = Array.from(events);
   gsap.ticker.add(() => {
@@ -140,9 +141,12 @@ if (scene) {
     let pathX = null, pathAmp = null;
     if (mobile) {
       const yr = yearsCol.getBoundingClientRect(), ev = eventsList.getBoundingClientRect();
-      const lane = ev.left - yr.right;
-      pathX = ((yr.right + lane / 2) / w - 0.5) * 2 * halfW;
-      pathAmp = (Math.max(4, lane / 2 - 12) / w) * 2 * halfW;
+      // 年号が出来事と同じ列にある（狭い画面）ときは、タイムラインの左端から出来事までが道の列
+      const tl = timelineEl.getBoundingClientRect();
+      const laneL = yr.right <= ev.left ? yr.right : tl.left + (parseFloat(getComputedStyle(timelineEl).paddingLeft) || 0);
+      const lane = ev.left - laneL;
+      pathX = ((laneL + lane / 2) / w - 0.5) * 2 * halfW;
+      pathAmp = (Math.max(4, lane / 2 - 10) / w) * 2 * halfW;
     }
     scene.setParams({ rowYs, rowLit: rows.map((li) => li.classList.contains('is-lit')), pathX, pathAmp });
   });
