@@ -4,8 +4,8 @@ import * as F from './formations.js';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
-  light: { navy: '#1F2A8C', sky: '#1DA3E8', ink: '#12173F', spark: '#F5B82E', core: '#F28C1E', red: '#E30613', green: '#23AB39', green2: '#0A7A45', purple: '#7E308F', yellow: '#F8B62D', edge: '#12173F', edgeAlpha: 0.55, edgeWidth: 2.5, dustAlpha: 0.15, halo: '#F0A62B', haloAlpha: 0.28, haloSize: 2.6, hot: 0.35, glowA: [0.10, 0.22, 0.30], additive: false },
-  dark:  { navy: '#5563E8', sky: '#4FC1FF', ink: '#EEF1FA', spark: '#FFC94D', core: '#FFF1C9', red: '#FF5A69', green: '#3ED069', green2: '#2CB57A', purple: '#C07BE0', yellow: '#FFC94D', edge: '#EEF1FA', edgeAlpha: 0.4, edgeWidth: 2, dustAlpha: 0.22, halo: '#FFC94D', haloAlpha: 0.55, haloSize: 3.4, hot: 1.0, glowA: [0.18, 0.45, 0.60], additive: true },
+  light: { navy: '#1F2A8C', sky: '#1DA3E8', ink: '#12173F', spark: '#F5B82E', core: '#F28C1E', red: '#E30613', green: '#23AB39', green2: '#0A7A45', purple: '#7E308F', yellow: '#F8B62D', edge: '#12173F', edgeAlpha: 0.55, edgeWidth: 2.5, dustAlpha: 0.15, halo: '#F0A62B', haloAlpha: 0.20, haloSize: 2.6, hot: 0.35, glowA: [0.06, 0.13, 0.18], additive: false },
+  dark:  { navy: '#5563E8', sky: '#4FC1FF', ink: '#EEF1FA', spark: '#FFC94D', core: '#FFF1C9', red: '#FF5A69', green: '#3ED069', green2: '#2CB57A', purple: '#C07BE0', yellow: '#FFC94D', edge: '#EEF1FA', edgeAlpha: 0.4, edgeWidth: 2, dustAlpha: 0.22, halo: '#FFC94D', haloAlpha: 0.38, haloSize: 3.4, hot: 1.0, glowA: [0.10, 0.26, 0.36], additive: true },
 };
 function rgb(hex) { const c = new THREE.Color(hex); return [c.r, c.g, c.b]; }
 function toPalette(p) {
@@ -122,7 +122,7 @@ export function createScene(canvas, opts = {}) {
       }`,
     // 両端が灯っている辺はフィラメントの線として琥珀色に光る
     fragmentShader: `precision mediump float; uniform vec3 uColor; uniform vec3 uSpark; uniform float uAlpha; uniform float uDim; varying float vA; varying float vG;
-      void main(){ gl_FragColor = vec4(mix(uColor, uSpark, vG), vA * (uAlpha + 0.35 * vG) * uDim); }`,
+      void main(){ gl_FragColor = vec4(mix(uColor, uSpark, vG), vA * (uAlpha + 0.25 * vG) * uDim); }`,
     transparent: true, depthWrite: false, depthTest: false, side: THREE.DoubleSide,
   });
   const lines = new THREE.Mesh(egeo, edgeMat);
