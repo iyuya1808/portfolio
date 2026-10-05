@@ -1,6 +1,6 @@
 // 画面奥に固定した 1 枚の WebGL キャンバス。点群が章ごとに形を変える。
 import * as THREE from '../assets/vendor/three.module.min.js';
-import * as F from './formations.js?v=20260926c';
+import * as F from './formations.js?v=20261005a';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
@@ -18,10 +18,10 @@ export function supportsWebGL() {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; }
 }
 
-// スマホではキャンバスを画面固定にせず、画面 DOC_K 枚分の高さの板として文書の中に置く（css の .scene.is-doc）。
+// スマホではキャンバスを画面固定にせず、いま読んでいる章の中に置く（mount、css の .scene.is-in）。
 // 指のスクロール中は JS から見えるスクロール位置が 70〜90ms ずつ止まるため（iPhone 実機で計測）、
-// 画面に固定して JS で文章を追いかけると点群だけが止まっては跳ぶ。板ごとブラウザにスクロールさせれば文章と一緒に動く
-export const DOC_K = 3;
+// 点群の位置をスクロール位置から決めると止まっては跳ぶ。章の中に置けば、形は章と一緒にブラウザが動かす。
+// 9/26 の「画面 3 枚分の板を付け替える」方式は、付け替えのたびに文書の長さが変わり、点群も一瞬ずれたのでやめた
 const HALF_H0 = 6 * Math.tan((40 * Math.PI) / 360); // 画面 1 枚分の高さの半分（ワールド単位）
 
 export function createScene(canvas, opts = {}) {
@@ -153,7 +153,7 @@ export function createScene(canvas, opts = {}) {
   let P = toPalette(PALETTE.light), theme = 'light';
   let formation = 'bulb';
   const params = { progress: 0, reveal: 0, lit: 0, events: 15, rot: 0 };
-  const L = { side: 1, sideFactor: 0.55, scale: 1, halfW: 2, halfH: 2.18, time: 0, isMobile: isMobile(), mobileY: 1.0, doc: false, docT: 0, docShift: 0, vHalfH: HALF_H0 };
+  const L = { side: 1, sideFactor: 0.55, scale: 1, halfW: 2, halfH: 2.18, time: 0, isMobile: isMobile(), mobileY: 1.0, vHalfH: HALF_H0 };
   const skillLayout = F.layoutSkills();
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, inside: false };
   let assembled = false, hot = -1; // 読み込みの組み上がりが終わるまでカーソルに反応させない
@@ -204,21 +204,22 @@ export function createScene(canvas, opts = {}) {
   let settled = 0;
   let prevOx = 0, prevOy = 0, originFor = null; // 形の基準点（枡の中心・行の位置）の前フレームの値
 
-  // キャンバスの高さは CSS の 100lvh（ツールバーを畳んだときの高さ）。スマホのツールバーの出し入れでは変わらないので、
-  // スクロールの向きを変えるたびに描画領域を作り直して形が跳ねることがない。DOM の座標もこの高さで写す（main.js）
-  let lastW = 0, lastH = 0;
+  // PC のキャンバスの高さは CSS の 100lvh（ツールバーを畳んだときの高さ）。スマホのツールバーの出し入れでは変わらないので、
+  // スクロールの向きを変えるたびに描画領域を作り直して形が跳ねることがない。DOM の座標もキャンバスの大きさで写す（main.js）
+  // スマホは章の高さのキャンバス。1 画面あたりのワールドの大きさは PC と同じに保つので、画面の高さ（100lvh）を別に測る
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;left:0;top:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none';
+  document.body.appendChild(probe);
+  let lastW = 0, lastH = 0, lastIn = false;
   function resize() {
-    const doc = isMobile();
-    canvas.classList.toggle('is-doc', doc);
-    if (!doc && L.docT) { L.docT = 0; canvas.style.transform = ''; }
-    const w = window.innerWidth, h = canvas.clientHeight || window.innerHeight;
-    if (w === lastW && h === lastH && doc === L.doc) return;
-    lastW = w; lastH = h; L.viewW = w; L.viewH = h; L.doc = doc;
-    // 板の高さは画面 DOC_K 枚分。1 画面あたりのワールドの大きさは PC・以前のスマホと同じに保つ
-    L.vh = doc ? h / DOC_K : h;
+    const inSec = canvas.classList.contains('is-in');
+    const w = canvas.clientWidth || window.innerWidth, h = canvas.clientHeight || window.innerHeight;
+    if (w === lastW && h === lastH && inSec === lastIn) return;
+    lastW = w; lastH = h; lastIn = inSec; L.viewW = w; L.viewH = h;
+    L.vh = inSec ? probe.clientHeight || window.innerHeight : h;
     L.halfH = HALF_H0 * (h / L.vh);
-    // 板は縦に長いので、遠くから狭い画角で見て遠近のゆがみを小さくする（板を付け替えたときに奥の点がずれない）
-    const dist = doc ? 60 : 6;
+    // 章のキャンバスは縦に長いので、遠くから狭い画角で見て遠近のゆがみを小さくする（章を移ったときに奥の点がずれない）
+    const dist = inSec ? 60 : 6;
     camera.position.z = dist;
     camera.fov = (2 * Math.atan(L.halfH / dist) * 180) / Math.PI;
     let dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : 2);
@@ -227,7 +228,6 @@ export function createScene(canvas, opts = {}) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
     L.halfW = L.halfH * camera.aspect;
-    L.docShift = (L.docT * 2 * L.halfH) / h;
     L.isMobile = isMobile();
     L.scale = L.isMobile ? Math.min(0.72, L.halfW * 0.6) : Math.min(1.05, L.halfW * 0.42);
     pointMat.uniforms.uProj.value = (h / (2 * Math.tan((camera.fov * Math.PI) / 360))) * dpr;
@@ -235,6 +235,8 @@ export function createScene(canvas, opts = {}) {
     edgeMat.uniforms.uRes.value.set(w, h);
   }
   window.addEventListener('resize', resize, { passive: true });
+  // 章の高さが変わったとき（言語の切り替え・画像の読み込み）も描画領域を合わせる
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas);
   resize();
 
   window.addEventListener('pointermove', (e) => {
@@ -281,17 +283,24 @@ export function createScene(canvas, opts = {}) {
     }
   }
 
-  // スマホ: 板を文書の上から T px の位置へ付け替える。中の点も同じだけ逆にずらすので、見た目は動かない
+  // スマホ: キャンバスを章（parent）の中へ移す。null なら PC の画面固定に戻す。
+  // 中の点は移った分だけずらすので、章をまたぐ形の変化も文書の上の同じ場所から始まる。移すのは章が変わるときだけ
   let skipOrigin = false;
-  function setDocTop(T) {
-    const d = T - L.docT;
-    if (!d) return;
-    L.docT = T;
-    canvas.style.transform = `translate3d(0, ${T}px, 0)`;
-    const dw = (d * 2 * L.halfH) / L.viewH; // 板が下へ d px 動く = 板の中では上（ワールドの +y）へ
-    for (let i = 0; i < N; i++) pos[i * 3 + 1] += dw;
-    L.docShift = (T * 2 * L.halfH) / L.viewH;
-    skipOrigin = true; // 枡や行の位置も同じだけ変わるので、次のコマで二重にずらさない
+  const home = { parent: canvas.parentNode, next: canvas.nextSibling };
+  function mount(parent) {
+    const inSec = !!parent;
+    if (inSec ? canvas.parentNode === parent : !canvas.classList.contains('is-in')) return;
+    const before = canvas.getBoundingClientRect();
+    if (inSec) parent.insertBefore(canvas, parent.firstChild);
+    else home.parent.insertBefore(canvas, home.next);
+    canvas.classList.toggle('is-in', inSec);
+    resize();
+    const after = canvas.getBoundingClientRect();
+    // 1 px あたりのワールドの大きさはどのキャンバスでも同じ（2 * HALF_H0 / 画面の高さ）
+    const k = (2 * L.halfH) / L.viewH;
+    const dw = ((after.top + after.height / 2) - (before.top + before.height / 2)) * k;
+    if (dw) for (let i = 0; i < N; i++) pos[i * 3 + 1] += dw;
+    skipOrigin = true; // 枡や行の位置もキャンバスの中では変わるので、次のコマで二重にずらさない
   }
 
   // main.js が gsap.ticker で呼ぶ（枡の位置と板の付け替えを済ませた同じコマで描く）
@@ -396,9 +405,9 @@ export function createScene(canvas, opts = {}) {
   const v = new THREE.Vector3();
   return {
     setFormation(name, side) { if (name !== formation) sinceSwitch = 0; formation = name; if (side != null) L.side = side; },
-    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile, viewW: L.viewW, viewH: L.viewH, vh: L.vh, doc: L.doc, docT: L.docT }; },
+    layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile, viewW: L.viewW, viewH: L.viewH, vh: L.vh }; },
     tick: frame,
-    setDocTop,
+    mount,
     setParams(o) { Object.assign(params, o); },
     setDim(d) { dimT = d; },
     setTheme,

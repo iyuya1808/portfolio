@@ -1,7 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20260926c';
+import { createScene, supportsWebGL } from './scene.js?v=20261005a';
 import { SKILLS, PV_MONTHLY } from './data.js';
-import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20260926c';
+import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261005a';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -36,7 +36,9 @@ let lenis = null;
 gsap.registerPlugin(ScrollTrigger);
 // スマホのツールバーの出し入れ（高さだけの変化）で全トリガーを測り直さない
 ScrollTrigger.config({ ignoreMobileResize: true });
-if (!reduceMotion) {
+// 指で触る端末はブラウザ本来のスクロールのまま（慣性スクロールはホイール用）
+const touchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+if (!reduceMotion && !touchOnly) {
   lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
@@ -48,7 +50,7 @@ function scrollToHash(hash) {
   if (!el) return;
   const offset = hash === '#cover' ? 0 : -72;
   if (lenis) lenis.scrollTo(el, { offset, duration: 1.4 });
-  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: 'auto' });
+  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: reduceMotion ? 'auto' : 'smooth' });
 }
 document.querySelectorAll('a[data-scroll]').forEach((a) => {
   a.addEventListener('click', (e) => {
@@ -75,24 +77,22 @@ if (useScene) {
   buildNumbersFallback();
 }
 
-/* スマホ: 点群の板（画面 3 枚分の高さ）が画面を覆い続けるよう、端が近づいたら付け替える（scene.js の setDocTop）
-   付け替えは板の位置と中身を同じコマで動かすので、ここで読むスクロール位置が少し古くても見た目はずれない */
+/* スマホ: キャンバスは今の章の中に置き、章と一緒にブラウザにスクロールさせる（scene.js の mount）。
+   作品・メディアの章（場）は背が高いので移さず、点群を消す。道具のラベルは道具の章に置き、キャンバスと同じ座標で重ねる */
 const skillLabelsEl = document.getElementById('skillLabels');
-const footEl = document.querySelector('.foot');
-if (scene) {
-  gsap.ticker.add(() => {
-    const { doc, viewH: H, vh, docT } = scene.layout();
-    skillLabelsEl.classList.toggle('is-doc', doc);
-    if (!doc) { skillLabelsEl.style.transform = ''; return; }
-    const y = window.scrollY, top = y - docT; // 画面の上端の、板の中での位置
-    const margin = 0.45 * vh;
-    if (top < margin || top + vh > H - margin) {
-      const end = footEl.getBoundingClientRect().bottom + y; // 板が文書の下にはみ出してページを伸ばさない
-      scene.setDocTop(Math.round(Math.max(0, Math.min(end - H, y - (H - vh) / 2))));
-    }
-    skillLabelsEl.style.transform = sceneEl.style.transform;
-  });
+const toolsEl = document.getElementById('tools');
+const labelsHome = { parent: skillLabelsEl.parentNode, next: skillLabelsEl.nextSibling };
+function placeScene() {
+  if (!scene) return;
+  const mobile = isMobile();
+  if (!mobile) scene.mount(null);
+  else if (current && current.dataset.formation !== 'field') scene.mount(current);
+  if (mobile && skillLabelsEl.parentNode !== toolsEl) toolsEl.appendChild(skillLabelsEl);
+  if (!mobile && skillLabelsEl.parentNode === toolsEl) labelsHome.parent.insertBefore(skillLabelsEl, labelsHome.next);
+  skillLabelsEl.classList.toggle('is-in', mobile);
 }
+let wasMobile = null;
+window.addEventListener('resize', () => { if (isMobile() !== wasMobile) { wasMobile = isMobile(); placeScene(); } }, { passive: true });
 
 /* ---------- 章ごとの形 ---------- */
 const events = document.querySelectorAll('#events li');
@@ -107,13 +107,16 @@ function enter(section) {
   const id = section.id;
   navLinks.forEach((a) => a.classList.toggle('is-current', a.getAttribute('href') === '#' + id));
   if (!scene) return;
+  placeScene();
   scene.setFormation(section.dataset.formation, Number(section.dataset.side));
   if (id !== 'cover') scene.setParams({ rot: 0 }); // 結びの電球は正面を向く
-  // スマホでは形を文書内の枡に置くので暗くしない。文章の裏を漂う「場」だけ少し薄く
-  scene.setDim(isMobile() && section.dataset.formation === 'field' ? 0.7 : 1);
+  // スマホでは形を文書内の枡に置くので暗くしない。文章の裏を漂う「場」は出さない
+  scene.setDim(isMobile() && section.dataset.formation === 'field' ? 0 : 1);
   skillLabels.classList.toggle('is-on', id === 'tools');
 }
 const isMobile = () => window.innerWidth < 760;
+wasMobile = isMobile();
+placeScene();
 
 chapters.forEach((section) => {
   ScrollTrigger.create({
