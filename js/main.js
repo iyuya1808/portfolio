@@ -1,7 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20261005a';
+import { createScene, supportsWebGL } from './scene.js?v=20261005b';
 import { SKILLS, PV_MONTHLY } from './data.js';
-import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261005a';
+import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261005b';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -49,8 +49,26 @@ function scrollToHash(hash) {
   const el = document.querySelector(hash);
   if (!el) return;
   const offset = hash === '#cover' ? 0 : -72;
+  const y = el.getBoundingClientRect().top + window.scrollY + offset;
   if (lenis) lenis.scrollTo(el, { offset, duration: 1.4 });
-  else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: reduceMotion ? 'auto' : 'smooth' });
+  else if (reduceMotion) window.scrollTo(0, y);
+  else glideTo(y, 1.4);
+}
+// 指で触る端末: ブラウザの smooth は一瞬で着くので、PC（Lenis）と同じ長さで動かす。指が触れたらやめる
+let glide = 0;
+function glideTo(y, dur) {
+  cancelAnimationFrame(glide);
+  const y0 = window.scrollY, dy = Math.min(y, document.documentElement.scrollHeight - window.innerHeight) - y0, t0 = performance.now();
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const stop = () => { cancelAnimationFrame(glide); window.removeEventListener('touchstart', stop); window.removeEventListener('wheel', stop); };
+  window.addEventListener('touchstart', stop, { passive: true });
+  window.addEventListener('wheel', stop, { passive: true });
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / (dur * 1000));
+    window.scrollTo(0, y0 + dy * ease(t));
+    if (t < 1) glide = requestAnimationFrame(step); else stop();
+  };
+  glide = requestAnimationFrame(step);
 }
 document.querySelectorAll('a[data-scroll]').forEach((a) => {
   a.addEventListener('click', (e) => {
@@ -202,7 +220,11 @@ if (scene) {
         hh: (r.height / h) * halfH,
       };
       // 枡が見えてきた分だけチャートを伸ばし、電球を灯す
-      if (el.dataset.anchor === 'chart') scene.setParams({ reveal: clamp01((0.9 * vh - r.top) / (0.5 * vh)) });
+      if (el.dataset.anchor === 'chart') {
+        const rv = clamp01((0.9 * vh - r.top) / (0.5 * vh));
+        scene.setParams({ reveal: rv });
+        el.classList.toggle('is-drawn', rv > 0.9);
+      }
       if (el.dataset.anchor === 'lit') scene.setParams({ lit: clamp01((0.85 * vh - r.top) / (0.45 * vh)) });
     }
     scene.setParams({ boxes });
@@ -267,10 +289,22 @@ if (scene) {
 }
 
 /* ---------- レイアウトが変わったら ScrollTrigger を測り直す ---------- */
-const refresh = () => ScrollTrigger.refresh();
+// 測り直しはスクロールが止まってからにする。iPhone ではスクロール中の refresh が指の慣性スクロールを止める
+// （作品の章で画像を 1 枚読むたびに測り直していて、思うようにスクロールできなかった）
+let refreshT = 0, lastScroll = 0;
+window.addEventListener('scroll', () => { lastScroll = performance.now(); }, { passive: true });
+function refresh() {
+  clearTimeout(refreshT);
+  const wait = 400 - (performance.now() - lastScroll);
+  if (wait > 0) { refreshT = setTimeout(refresh, wait); return; }
+  ScrollTrigger.refresh();
+}
 document.fonts?.ready.then(refresh);
 document.addEventListener('langchange', () => setTimeout(refresh, 50));
-document.querySelectorAll('img[loading="lazy"]').forEach((img) => { if (!img.complete) img.addEventListener('load', refresh, { once: true }); });
+// 画像は width・height を書いてあるので、読み込んでも高さは変わらない。測り直しは全部読み終えたら 1 回だけ
+const lazyImgs = Array.from(document.querySelectorAll('img[loading="lazy"]')).filter((img) => !img.complete);
+let lazyLeft = lazyImgs.length;
+lazyImgs.forEach((img) => { const done = () => { if (--lazyLeft === 0) refresh(); }; img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); });
 window.addEventListener('load', () => {
   refresh();
   // 直リンク（#numbers など）は固定ヘッダーの分だけ下げて止める

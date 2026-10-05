@@ -297,9 +297,17 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   .chapter { padding: 14vh 0; }
   /* 枡。PC で点群が占めていた列の代わりに、文章の上に形を置く */
   .anchor { display: block; width: min(100%, 320px); margin: 0 auto; aspect-ratio: 1 / 1.05; }
-  .anchor--chart { width: 100%; aspect-ratio: 16 / 10; margin: 4px 0 24px; }
+  .anchor--chart { width: 100%; aspect-ratio: 16 / 10; margin: 4px 0 24px; position: relative; }
+  /* グラフの目盛り（年）と終点の累計。描き上がってから出す（main.js が is-drawn を付ける） */
+  .chart__year, .chart__total { position: absolute; font-family: var(--latin); line-height: 1; opacity: 0; transition: opacity .6s var(--ease); }
+  .anchor--chart.is-drawn .chart__year, .anchor--chart.is-drawn .chart__total { opacity: 1; }
+  .chart__year { left: var(--x); bottom: 0; transform: translateX(-50%); font-size: 11px; color: var(--ink-3); padding-top: 6px; }
+  .chart__year::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 1px; height: 6px; background: var(--ink-3); }
+  .chart__total { right: 0; top: -14px; font-size: 15px; font-weight: 600; color: var(--ink); }
+  .chart__total small { font-size: 10px; font-weight: 500; color: var(--ink-3); margin-left: 3px; }
   .anchor--graph { width: 100%; aspect-ratio: 1 / 1.3; margin: 4px 0 20px; }
   .cover { padding: 84px 0 72px; }
+  .cover__cue { left: 50%; transform: translateX(-50%); }
   .cover__name { font-size: clamp(44px, 13vw, 64px); margin: 24px 0 20px -0.03em; }
   .cover__fallback { margin-top: 32px; }
   .cover__fallback .bulb-svg { width: min(100%, 220px); margin: 0 auto; }

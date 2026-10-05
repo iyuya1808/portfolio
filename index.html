@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261005a">
+  <link rel="stylesheet" href="css/style.css?v=20261005b">
   <script>
     (function () {
       var stored = null; try { stored = localStorage.getItem('theme'); } catch (e) {}
@@ -100,7 +100,7 @@
           <p data-i18n="story.p1">最初の読者は、同じゲームで困っている誰か。2021年に Gamerch で攻略サイトの運営を始め、翌年には攻略大百科の専属ライターとして100本以上の記事を書きました。</p>
           <p data-i18n="story.p2">2023年8月、高校3年でテクノフィアを立ち上げました。2026年10月には、株式会社Technophere として法人化。ゲーム攻略メディアを軸に、SEOと解析で読者を増やし、いまは自分のアプリやプラグインもつくっています。設計から実装、ストア公開、リリース後の改善まで、すべて自分の手で。AIは開発の中心にありますが、最後にコードを読むのは自分の目です。</p>
           <figure class="story__photo">
-            <img src="assets/images/profile-yuya.webp" alt="矢上キャンパスのラウンジに座る Yuya Itonaga" width="1200" height="675" loading="lazy" data-i18n-alt="story.photoAlt">
+            <img src="assets/images/profile-yuya.webp?v=20261005" alt="矢上キャンパスのラウンジに座る Yuya Itonaga" width="1200" height="675" loading="lazy" data-i18n-alt="story.photoAlt">
           </figure>
         </div>
       </div>
@@ -135,7 +135,13 @@
         <div class="col-l">
           <h2 data-i18n="numbers.title">数字</h2>
           <p class="lead" data-i18n="numbers.lead">運営しているメディア全体の実測値。</p>
-          <div class="anchor anchor--chart" data-anchor="chart" aria-hidden="true"></div>
+          <div class="anchor anchor--chart" data-anchor="chart" aria-hidden="true">
+            <!-- 目盛り。x は scene の chart() と同じ式（幅 92%・2023年8月が左端、2026年9月が右端） -->
+            <span class="chart__total">19,044,113<small>PV</small></span>
+            <span class="chart__year" style="--x: 16.4%">2024</span>
+            <span class="chart__year" style="--x: 46.2%">2025</span>
+            <span class="chart__year" style="--x: 76.1%">2026</span>
+          </div>
           <dl class="stats">
             <div class="stat">
               <dt data-i18n="numbers.peakLabel">月間ページビューの最高値</dt>
@@ -326,7 +332,7 @@
   <script src="assets/vendor/gsap.min.js"></script>
   <script src="assets/vendor/ScrollTrigger.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
-  <script src="js/i18n.js?v=20261005a"></script>
-  <script type="module" src="js/main.js?v=20261005a"></script>
+  <script src="js/i18n.js?v=20261005b"></script>
+  <script type="module" src="js/main.js?v=20261005b"></script>
 </body>
 </html>

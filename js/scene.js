@@ -1,6 +1,6 @@
 // 画面奥に固定した 1 枚の WebGL キャンバス。点群が章ごとに形を変える。
 import * as THREE from '../assets/vendor/three.module.min.js';
-import * as F from './formations.js?v=20261005a';
+import * as F from './formations.js?v=20261005b';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
@@ -26,7 +26,7 @@ const HALF_H0 = 6 * Math.tan((40 * Math.PI) / 360); // 画面 1 枚分の高さ�
 
 export function createScene(canvas, opts = {}) {
   const isMobile = () => window.innerWidth < 760;
-  const helpers = opts.helpers || (isMobile() ? 180 : 360);
+  const helpers = opts.helpers || (isMobile() ? 300 : 360); // スマホでもグラフの面が寂しくならない程度に
   const N = F.N_MAIN + F.N_BASE + helpers;
   const MAX_EDGES = 140;
 
