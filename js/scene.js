@@ -1,6 +1,6 @@
 // 画面奥に固定した 1 枚の WebGL キャンバス。点群が章ごとに形を変える。
 import * as THREE from '../assets/vendor/three.module.min.js';
-import * as F from './formations.js?v=20261006a';
+import * as F from './formations.js?v=20261006b';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
@@ -285,7 +285,7 @@ export function createScene(canvas, opts = {}) {
 
   // スマホ: キャンバスを章（parent）の中へ移す。null なら PC の画面固定に戻す。
   // 中の点は移った分だけずらすので、章をまたぐ形の変化も文書の上の同じ場所から始まる。移すのは章が変わるときだけ
-  let skipOrigin = false;
+  let skipOrigin = false, snapNext = false;
   const home = { parent: canvas.parentNode, next: canvas.nextSibling };
   function mount(parent) {
     const inSec = !!parent;
@@ -351,6 +351,13 @@ export function createScene(canvas, opts = {}) {
     }
     assignEdges(edges);
 
+    // スマホ: 章が変わったら点を飛ばさず、次の形をその場に置いて透明から出す（形が変わる途中の動きは見せない）
+    if (snapNext) {
+      snapNext = false;
+      pos.set(tgt.pos); size.set(tgt.size); col.set(tgt.col); alpha.fill(0); glowA.fill(0);
+      for (const sl of slots) sl.a = 0;
+    }
+
     // 表紙で組み上がった後は、網のばねの動きをそのまま見せる
     // 道: 形が変わる間はゆっくり集まり（電球から点が一気に飛ばないように）、組み上がってから行の動きに素早く付いていく
     const ramp = Math.min(1, Math.max(0, (sinceSwitch - 1.2) / 1.6));
@@ -406,7 +413,10 @@ export function createScene(canvas, opts = {}) {
 
   const v = new THREE.Vector3();
   return {
-    setFormation(name, side) { if (name !== formation) sinceSwitch = 0; formation = name; if (side != null) L.side = side; },
+    setFormation(name, side) {
+      if (name !== formation) { sinceSwitch = 0; if (L.isMobile && assembled) snapNext = true; } // 読み込み直後の組み上がりはそのまま見せる
+      formation = name; if (side != null) L.side = side;
+    },
     layout() { return { halfW: L.halfW, halfH: L.halfH, scale: L.scale, isMobile: L.isMobile, viewW: L.viewW, viewH: L.viewH, vh: L.vh }; },
     tick: frame,
     mount,

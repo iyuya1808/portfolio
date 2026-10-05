@@ -1,7 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20261006a';
+import { createScene, supportsWebGL } from './scene.js?v=20261006b';
 import { SKILLS, PV_MONTHLY } from './data.js';
-import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261006a';
+import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261006b';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
