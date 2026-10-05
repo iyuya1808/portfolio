@@ -298,6 +298,7 @@ html.no-scene .numbers__fallback[hidden] { display: block; }
   /* 枡。PC で点群が占めていた列の代わりに、文章の上に形を置く */
   .anchor { display: block; width: min(100%, 320px); margin: 0 auto; aspect-ratio: 1 / 1.05; }
   .anchor--chart { width: 100%; aspect-ratio: 16 / 10; margin: 4px 0 24px; position: relative; }
+  .cover .anchor--bulb { width: min(60%, 210px); } /* 表紙の電球は控えめに（名前と一文が主役） */
   /* グラフの目盛り（年）と終点の累計。描き上がってから出す（main.js が is-drawn を付ける） */
   .chart__year, .chart__total { position: absolute; font-family: var(--latin); line-height: 1; opacity: 0; transition: opacity .6s var(--ease); }
   .anchor--chart.is-drawn .chart__year, .anchor--chart.is-drawn .chart__total { opacity: 1; }

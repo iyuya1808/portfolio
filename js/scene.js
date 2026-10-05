@@ -1,6 +1,6 @@
 // 画面奥に固定した 1 枚の WebGL キャンバス。点群が章ごとに形を変える。
 import * as THREE from '../assets/vendor/three.module.min.js';
-import * as F from './formations.js?v=20261005b';
+import * as F from './formations.js?v=20261006a';
 
 const PALETTE = {
   // core: 芯の白熱色。halo: ノードごとのハローの色と強さ。glowA: にじみ 3 層（外・中・芯）の強さ
@@ -352,7 +352,9 @@ export function createScene(canvas, opts = {}) {
     assignEdges(edges);
 
     // 表紙で組み上がった後は、網のばねの動きをそのまま見せる
-    const rate = formation === 'path' ? 3.2 + (14 - 3.2) * Math.min(1, sinceSwitch / 1.2)
+    // 道: 形が変わる間はゆっくり集まり（電球から点が一気に飛ばないように）、組み上がってから行の動きに素早く付いていく
+    const ramp = Math.min(1, Math.max(0, (sinceSwitch - 1.2) / 1.6));
+    const rate = formation === 'path' ? 1.8 + (14 - 1.8) * ramp * ramp
       : formation === 'bulb' && assembled && sinceSwitch > 1.5 && !L.isMobile ? 3.2 + (30 - 3.2) * (L.cursorOn || 0) : 3.2;
     const kp = 1 - Math.exp(-dt * rate), ka = 1 - Math.exp(-dt * 4.5);
     let dist = 0, maxGlow = 0;

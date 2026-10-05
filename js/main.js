@@ -1,7 +1,7 @@
 // ページの配線: テーマ・ナビ・慣性スクロール・章ごとの点群の形・年号スタンプ・スキルラベル
-import { createScene, supportsWebGL } from './scene.js?v=20261005b';
+import { createScene, supportsWebGL } from './scene.js?v=20261006a';
 import { SKILLS, PV_MONTHLY } from './data.js';
-import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261005b';
+import { SKILL_GROUP, SKILL_EDGES } from './formations.js?v=20261006a';
 
 const html = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -136,11 +136,15 @@ const isMobile = () => window.innerWidth < 760;
 wasMobile = isMobile();
 placeScene();
 
-chapters.forEach((section) => {
+// 章が切り替わる位置。スマホの数字・道具・結びは、形が枡に集まって描き上がるまでに時間がかかるので早めに切り替える
+// （55% のままだと、グラフが見える位置に来てもまだ点が飛んでいる途中だった）。表紙→はじまりは電球が見えているうちに崩さないよう 55% のまま
+const EARLY = new Set(['numbers', 'tools', 'contact']);
+const startAt = (section) => (section && isMobile() && EARLY.has(section.id) ? '78%' : '55%');
+chapters.forEach((section, i) => {
   ScrollTrigger.create({
     trigger: section,
-    start: 'top 55%',
-    end: 'bottom 55%',
+    start: () => 'top ' + startAt(section),
+    end: () => 'bottom ' + startAt(chapters[i + 1]), // 次の章の始まりと同じ位置で終える
     onEnter: () => enter(section),
     onEnterBack: () => enter(section),
     onUpdate: (self) => {
@@ -221,11 +225,11 @@ if (scene) {
       };
       // 枡が見えてきた分だけチャートを伸ばし、電球を灯す
       if (el.dataset.anchor === 'chart') {
-        const rv = clamp01((0.9 * vh - r.top) / (0.5 * vh));
+        const rv = clamp01((1.0 * vh - r.top) / (0.4 * vh)); // 枡が画面に入ったら描き始め、画面の 6 割まで上がる頃に描き終える
         scene.setParams({ reveal: rv });
         el.classList.toggle('is-drawn', rv > 0.9);
       }
-      if (el.dataset.anchor === 'lit') scene.setParams({ lit: clamp01((0.85 * vh - r.top) / (0.45 * vh)) });
+      if (el.dataset.anchor === 'lit') scene.setParams({ lit: clamp01((1.0 * vh - r.top) / (0.45 * vh)) });
     }
     scene.setParams({ boxes });
   });
