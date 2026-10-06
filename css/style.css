@@ -155,6 +155,8 @@ h2 {
   object-fit: cover; object-position: 50% 40%;
 }
 .cover__bg { filter: brightness(.62) saturate(.8); }
+/* 背景は人物を消した写真なので、人物だけ足元を基準に小さくする（parallax の transform とは別の scale） */
+.cover__person { scale: .76; transform-origin: 64% 100%; }
 .cover__name {
   position: absolute; left: 0; right: 0; top: 24%;
   padding-inline: var(--gutter);
@@ -190,6 +192,7 @@ h2 {
 @media (max-width: 760px) {
   /* 縦長の画面では写真を下に置き、上の紺に名前を出す */
   .cover__bg, .cover__person { height: 82%; object-position: 68% 0; }
+  .cover__person { scale: .84; transform-origin: 50% 100%; }
   .cover__bg {
     -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
     mask-image: linear-gradient(to bottom, transparent, #000 22%);
