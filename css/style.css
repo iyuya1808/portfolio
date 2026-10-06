@@ -149,16 +149,22 @@ h2 {
   color: #fff;
 }
 .cover__stage { position: absolute; inset: 0; }
-.cover__bg, .cover__person {
-  position: absolute; left: 0; bottom: 0;
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 40%;
+/* 写真は額のように置く。人物の切り抜きは額と同じ枠に重ねるので、背景との大きさの釣り合いは元の写真のまま */
+.cover__frame, .cover__person {
+  position: absolute; bottom: 0;
+  width: var(--fw); left: calc((100% - var(--fw)) / 2);
+  aspect-ratio: 16 / 9;
 }
-.cover__bg { filter: brightness(.62) saturate(.8); }
-/* 背景は人物を消した写真なので、人物だけ足元を基準に小さくする（parallax の transform とは別の scale） */
-.cover__person { scale: .76; transform-origin: 64% 100%; }
+.cover { --fw: min(84vw, 128svh); }
+.cover__frame { overflow: clip; background: var(--navy); }
+.cover__bg, .cover__person { object-fit: cover; object-position: 50% 0; }
+.cover__bg { width: 100%; height: 100%; filter: brightness(.62) saturate(.8); }
+.cover__frame::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 55%;
+  background: linear-gradient(to top, rgb(21 30 54 / .92), rgb(21 30 54 / 0));
+}
 .cover__name {
-  position: absolute; left: 0; right: 0; top: 24%;
+  position: absolute; left: 0; right: 0; top: 23%;
   padding-inline: var(--gutter);
   font-size: 15.4vw;
   font-weight: 800;
@@ -168,12 +174,8 @@ h2 {
   white-space: nowrap;
 }
 .cover__name br { display: none; }
-.cover__stage::after {
-  content: ""; position: absolute; inset: auto 0 0 0; height: 46%;
-  background: linear-gradient(to top, rgb(21 30 54 / .92), rgb(21 30 54 / 0));
-}
 .cover__text {
-  position: absolute; left: var(--gutter); bottom: clamp(40px, 9svh, 96px);
+  position: absolute; left: calc((100% - var(--fw)) / 2 + clamp(24px, 3vw, 48px)); bottom: clamp(32px, 7svh, 80px);
   width: min(44vw, 32em);
 }
 .cover__statement { font-size: clamp(26px, 2.3vw, 36px); white-space: nowrap; font-weight: 800; line-height: 1.3; }
@@ -191,16 +193,16 @@ h2 {
 
 @media (max-width: 760px) {
   /* 縦長の画面では写真を下に置き、上の紺に名前を出す */
-  .cover__bg, .cover__person { height: 82%; object-position: 68% 0; }
-  .cover__person { scale: .84; transform-origin: 50% 100%; }
-  .cover__bg {
+  .cover { --fw: 100%; }
+  .cover__frame, .cover__person { aspect-ratio: auto; height: 64%; }
+  .cover__bg, .cover__person { object-position: 68% 0; }
+  .cover__frame {
     -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
     mask-image: linear-gradient(to bottom, transparent, #000 22%);
   }
   .cover__name { top: calc(var(--top-h) + 3svh); font-size: 25vw; line-height: .84; }
   .cover__name br { display: inline; }
   .cover__text { left: var(--gutter); right: var(--gutter); width: auto; bottom: 28px; }
-  .cover__stage::after { height: 52%; }
   .cover__cue { display: none; }
 }
 
@@ -401,16 +403,16 @@ h2 {
     }
 
     /* 表紙の3層: 背景は遅く、名前は中くらい、人物はほぼページと一緒 */
-    .cover__bg, .cover__name, .cover__person, .cover__text {
+    .cover__frame, .cover__name, .cover__person, .cover__text {
       animation: linear both;
       animation-timeline: scroll(root);
       animation-range: 0 100svh;
     }
-    .cover__bg { animation-name: p-bg; }
+    .cover__frame { animation-name: p-bg; }
     .cover__name { animation-name: p-name; }
     .cover__person { animation-name: p-person; }
     .cover__text { animation-name: p-text; }
-    @keyframes p-bg { to { transform: translate3d(0, 42svh, 0) scale(1.05); } }
+    @keyframes p-bg { to { transform: translate3d(0, 42svh, 0); } }
     @keyframes p-name { to { transform: translate3d(0, 26svh, 0); } }
     @keyframes p-person { to { transform: translate3d(0, 8svh, 0); } }
     @keyframes p-text { to { transform: translate3d(0, -8svh, 0); opacity: 0; } }
