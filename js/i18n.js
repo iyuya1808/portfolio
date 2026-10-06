@@ -1,21 +1,20 @@
 /* ============================================================
    言語切替。日本語は HTML がソース。英語だけ辞書で持つ。
-   切替後に document へ 'langchange' を投げる（main.js が ScrollTrigger.refresh する）。
    ============================================================ */
 (function () {
   var EN = {
-    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech, KPass and ZeroShot, and WordPress plugins.' },
-    nav: { top: 'Back to top', chapters: 'Chapters', theme: 'Dark mode', menu: 'Menu', story: 'Beginnings', numbers: 'Numbers', works: 'Work', media: 'Media', tools: 'Tools', contact: 'Contact' },
+    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere Inc. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech, KPass and ZeroShot, and WordPress plugins.' },
+    nav: { top: 'Back to top', chapters: 'Chapters', menu: 'Menu', story: 'Beginnings', works: 'Work', media: 'Game Labs', tools: 'Tools', contact: 'Contact' },
     cover: {
-      statement: 'Write it, build it, ship it.<br>Media with 19 million page views, and apps that live in the App Store.',
-      role: 'Third-year, Faculty of Science and Technology, Keio University / Head of Technophere',
+      statement: 'Write it, build it, ship it.',
+      sub: 'The game-guide media I started in junior high has passed 19 million page views. Now I build apps too.',
+      role: 'Third-year, Faculty of Science and Technology, Keio University / Head of Technophere Inc.',
       cue: 'Scroll'
     },
     story: {
       title: 'Beginnings',
-      p1: 'My first readers were people stuck on the same game as me. In 2021 I began running strategy sites on Gamerch, and the next year I wrote more than 100 articles as a contract writer for Gamepedia.',
-      p2: 'In August 2023, in my last year of high school, I founded Technophere; in October 2026 it becomes a company, Technophere Inc. Game-guide media is the core; SEO and analytics grew the readership, and now I ship my own apps and plugins too. Design, implementation, store release, post-launch iteration: I do all of it myself. AI sits at the center of how I build, and the last eyes on the code are mine.',
-      photoAlt: 'Yuya Itonaga sitting in the lounge at Yagami Campus'
+      p1: 'In 2021 I started writing strategy guides for people stuck on the same game as me. In August 2023, in my last year of high school, I founded Technophere, and in October 2026 it became Technophere Inc. Design, implementation, store release and improving things after launch: I do it with my own hands.',
+      photoAlt: 'Yuya Itonaga in front of the YAGAMI INNOVATION LABORATORY at Keio Yagami Campus'
     },
     tl: {
       '2018_04': 'Enrolled at Keio Shonan Fujisawa Junior High School',
@@ -36,27 +35,24 @@
       nowYear: 'Now',
       now: 'Third-year, Department of System Design Engineering, Keio University'
     },
-    numbers: {
-      title: 'Numbers', lead: 'Measured across all the media I run.',
-      peakLabel: 'Best month, page views', peakNote: 'May 2024, all sites',
-      totalLabel: 'Page views to date', totalNote: 'August 2023 to September 2026',
-      usersLabel: 'Best month, users', usersNote: 'May 2024, Brawl Stars Lab',
-      clicksLabel: 'Search clicks, last 28 days', clicksNote: 'game.technophere.com. 3.09M impressions, average position 6.4',
-      note: 'As of September 24, 2026. Google Analytics and Search Console.'
-    },
     works: {
-      title: 'Work', lead: 'Apps in the stores, and services and plugins I have published.',
-      brawltech: { what: 'A strategy companion for Brawl Stars', desc: "Rebuilt from the ground up in 2.0. From real match data collected by Brawl Stars Lab, it shows which brawlers are winning on the maps live right now. Win-rate rankings per map, a ban/pick helper for ranked, a full brawler encyclopedia with comparison, match analysis and upgrade planning, all in one app. Built in Flutter for iOS and Android, with data served from a WordPress API and Cloud Functions." },
-      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Reads courses, assignments and timetables from the university's K-LMS (Canvas) API and lays them out inside the app. Keeps you logged in for days and shows deadlines at a glance. Built in SwiftUI and Kotlin Multiplatform for iOS and Android, released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
-      zeroshot: { what: 'A camera that shoots portrait and landscape at once', desc: 'One tap of the shutter saves both a portrait and a landscape frame. From the frames around the shot, it picks the one with the least blur and no closed eyes, on the device, and saves it to your library. Tighter crops and other lenses are kept too, so you can choose again after the fact. Built in SwiftUI and AVFoundation, released in September 2026.', alt0: 'ZeroShot camera screen, capturing portrait and landscape at once', alt1: 'ZeroShot candidates screen, with the best shot picked automatically' },
-      mimishare: { desc: 'Rent a Disney headband for just the day of your visit. Reserve with a deposit, borrow and return by QR code. Built alone in Next.js and Stripe, from catalog to checkout.' },
+      title: 'Work', lead: 'Apps available in the stores.', stack: 'Built with',
+      brawltech: { what: 'A strategy companion for Brawl Stars', desc: 'From match data collected by Brawl Stars Lab, it shows which brawlers are winning on the maps live right now. Win rates per map, a ban/pick helper and match analysis, all in one app. Built in Flutter for iOS and Android.' },
+      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Pulls courses, assignments and timetables from the university's K-LMS into one screen, with deadlines at a glance. Released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
+      zeroshot: { what: 'A camera that shoots portrait and landscape at once', desc: 'One tap saves both a portrait and a landscape frame, and the phone picks the shot with the least blur and no closed eyes. Released in September 2026.', alt0: 'ZeroShot camera screen, capturing portrait and landscape at once', alt1: 'ZeroShot candidates screen, with the best shot picked automatically' },
       more: 'More',
-      alg: { desc: 'A WordPress plugin that generates App Store and Google Play links from the block editor. Published in the official WordPress.org directory.' },
-      pfg: { desc: 'A WordPress plugin that deploys your own themes and plugins from a linked GitHub repository with one click in the admin.' },
-      lemon: { desc: 'An AI platform for Lemon, the engineering club at Keio. A mentor that answers around the clock and an idea gacha. I built the frontend and UI in a team.' }
+      mimishare: { desc: 'Rent a Disney headband for just the day of your visit. Booking to checkout built in Next.js and Stripe' },
+      alg: { desc: 'A WordPress plugin that builds store links in the block editor. In the official plugin directory' },
+      pfg: { desc: 'A plugin that deploys your own themes and plugins to production with one click in the admin' },
+      lemon: { desc: 'An AI platform for Lemon, the engineering club at Keio. I built the frontend and UI' }
     },
     media: {
-      title: 'Media I run', lead: 'One WordPress site per game, with encyclopedias and rankings updated automatically from official APIs and game data. The core of Technophere.',
+      title: 'Game Labs and numbers', lead: 'One WordPress site per game, with encyclopedias and rankings updated automatically from official APIs and game data. The core business of Technophere.',
+      totalNote: 'Total page views (August 2023 to September 2026)',
+      peakLabel: 'Best month, page views', peakNote: 'May 2024, all sites',
+      usersLabel: 'Best month, users', usersNote: 'May 2024, Brawl Stars Lab',
+      clicksLabel: 'Search clicks, last 28 days', clicksNote: 'game.technophere.com, 3.09M impressions',
+      note: 'As of September 24, 2026. Google Analytics and Search Console.',
       hubLink: 'Open game.technophere.com',
       labs: {
         brawlstars: 'Brawler tier list and win rates by map and mode', tsumtsum: 'Gacha news and Tsum rankings', msfs: 'Aircraft encyclopedia, add-ons and airport data',
@@ -66,15 +62,15 @@
       }
     },
     tools: {
-      title: 'Tools', p1: 'AI sits at the center of my workflow. I run Claude Code, Codex, Cursor and Antigravity side by side and pick the model that fits each project. Build fast, then read the code with my own eyes.',
-      p2: 'Apps in Swift and Flutter, the web in WordPress and Next.js. I check the numbers in Search Console and Analytics every day.',
+      title: 'Tools',
+      p1: 'AI is at the center of how I build. I switch between Claude Code, Codex and Cursor for each project, and read the code with my own eyes at the end. Apps in Swift and Flutter, the web in WordPress and Next.js. I check the numbers in Search Console and Analytics every day.',
       app: 'Apps', infra: 'Infra', growth: 'Growth', other: 'Also', otherValue: 'Video editing, drone piloting'
     },
     contact: {
-      title: 'The next idea', lead: 'If you want to make something interesting together, write to me. Work, or just a chat, by email or on X.',
+      title: 'The next idea', lead: 'Want to make something together, talk about work, or just chat? Email me or find me on X.',
       biz: 'I also build websites for businesses. <a href="https://technophere.com/web-production/" target="_blank" rel="noopener noreferrer">About the service</a>'
     },
-    footer: { copy: '© 2026 Yuya Itonaga / Technophere' }
+    footer: { copy: '© 2026 Yuya Itonaga / Technophere Inc.' }
   };
 
   var ja = { text: {}, html: {}, aria: {}, alt: {}, meta: '' };

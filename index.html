@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="light">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Yuya Itonaga | Portfolio</title>
-  <meta name="description" content="Yuya Itonaga（テクノフィア代表）のポートフォリオです。慶應義塾大学理工学部3年。中学生で始めたゲーム攻略メディアは累計1,900万PV。BrawlTech、KPass、ZeroShot などのアプリと WordPress プラグインをつくっています。">
+  <meta name="description" content="Yuya Itonaga（株式会社Technophere 代表）のポートフォリオです。慶應義塾大学理工学部3年。中学生で始めたゲーム攻略メディアは累計1,900万PV。BrawlTech、KPass、ZeroShot などのアプリと WordPress プラグインをつくっています。">
   <link rel="canonical" href="https://technophere.com/portfolio/">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon-64.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Yuya Itonaga | Portfolio">
-  <meta property="og:description" content="書いて、つくって、届ける。累計1,900万PVのメディアと、ストアに並ぶアプリを手がけています。">
+  <meta property="og:description" content="書いて、つくって、届ける。中学生で始めた攻略メディアは累計1,900万PV。いまはアプリもつくっています。">
   <meta property="og:url" content="https://technophere.com/portfolio/">
   <meta property="og:image" content="https://technophere.com/portfolio/assets/images/og-portfolio.png">
   <meta property="og:image:width" content="1200">
@@ -19,19 +19,14 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@technophere">
-  <meta name="theme-color" id="themeColorMeta" content="#F4F6FB">
+  <meta name="theme-color" content="#1E2A4A">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261006b">
+  <link href="https://fonts.googleapis.com/css2?family=Murecho:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/images/photo/cover-bg-1600.webp" imagesrcset="assets/images/photo/cover-bg-960.webp 960w, assets/images/photo/cover-bg-1600.webp 1600w, assets/images/photo/cover-bg-2400.webp 2400w" imagesizes="(max-width: 760px) 260vw, 100vw">
+  <link rel="stylesheet" href="css/style.css?v=20261006r">
   <script>
     (function () {
-      var stored = null; try { stored = localStorage.getItem('theme'); } catch (e) {}
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var theme = stored || (prefersDark ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', theme);
-      var meta = document.getElementById('themeColorMeta');
-      if (meta) meta.setAttribute('content', theme === 'dark' ? '#0B1033' : '#F4F6FB');
       var lang = null; try { lang = localStorage.getItem('lang'); } catch (e) {}
       if (lang === 'en') document.documentElement.setAttribute('data-lang-pending', 'en');
     })();
@@ -39,26 +34,22 @@
 </head>
 <body>
 
-  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <a class="skip" href="#main">本文へ</a>
 
-  <header class="top" id="top">
-    <a href="#cover" class="top__mark" data-scroll aria-label="いちばん上へ" data-i18n-aria="nav.top">
+  <header class="top">
+    <a href="#cover" class="top__mark" aria-label="いちばん上へ" data-i18n-aria="nav.top">
       <svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="107 13 306 467" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".9"><line x1="297" y1="27" x2="192" y2="38"/><line x1="297" y1="27" x2="366" y2="80"/><line x1="297" y1="27" x2="299" y2="94"/><line x1="297" y1="27" x2="247" y2="112"/><line x1="192" y1="38" x2="183" y2="95"/><line x1="192" y1="38" x2="136" y2="95"/><line x1="192" y1="38" x2="247" y2="112"/><line x1="366" y1="80" x2="299" y2="94"/><line x1="366" y1="80" x2="341" y2="145"/><line x1="299" y1="94" x2="247" y2="112"/><line x1="299" y1="94" x2="341" y2="145"/><line x1="183" y1="95" x2="136" y2="95"/><line x1="183" y1="95" x2="247" y2="112"/><line x1="183" y1="95" x2="165" y2="158"/><line x1="136" y1="95" x2="165" y2="158"/><line x1="136" y1="95" x2="121" y2="197"/><line x1="247" y1="112" x2="341" y2="145"/><line x1="247" y1="112" x2="165" y2="158"/><line x1="247" y1="112" x2="274" y2="181"/><line x1="341" y1="145" x2="399" y2="166"/><line x1="341" y1="145" x2="274" y2="181"/><line x1="341" y1="145" x2="349" y2="213"/><line x1="165" y1="158" x2="274" y2="181"/><line x1="165" y1="158" x2="121" y2="197"/><line x1="165" y1="158" x2="198" y2="219"/><line x1="399" y1="166" x2="349" y2="213"/><line x1="399" y1="166" x2="374" y2="245"/><line x1="274" y1="181" x2="349" y2="213"/><line x1="274" y1="181" x2="198" y2="219"/><line x1="274" y1="181" x2="286" y2="248"/><line x1="121" y1="197" x2="198" y2="219"/><line x1="121" y1="197" x2="179" y2="303"/><line x1="349" y1="213" x2="374" y2="245"/><line x1="349" y1="213" x2="286" y2="248"/><line x1="349" y1="213" x2="308" y2="280"/><line x1="198" y1="219" x2="286" y2="248"/><line x1="198" y1="219" x2="222" y2="267"/><line x1="198" y1="219" x2="179" y2="303"/><line x1="286" y1="248" x2="222" y2="267"/><line x1="286" y1="248" x2="308" y2="280"/><line x1="222" y1="267" x2="179" y2="303"/><line x1="222" y1="267" x2="255" y2="320"/><line x1="222" y1="267" x2="197" y2="374"/><line x1="308" y1="280" x2="255" y2="320"/><line x1="308" y1="280" x2="312" y2="372"/><line x1="374" y1="245" x2="332" y2="302"/><line x1="308" y1="280" x2="332" y2="302"/><line x1="332" y1="302" x2="312" y2="372"/><line x1="179" y1="303" x2="197" y2="374"/><line x1="255" y1="320" x2="312" y2="372"/><line x1="255" y1="320" x2="197" y2="374"/></g><circle cx="297" cy="27" r="11.8" fill="#00a0e8"/><circle cx="192" cy="38" r="13.3" fill="#1e2087"/><circle cx="366" cy="80" r="20.6" fill="#1e2087"/><circle cx="299" cy="94" r="13.3" fill="#1e2087"/><circle cx="183" cy="95" r="10.4" fill="#23ab39"/><circle cx="136" cy="95" r="15.1" fill="#00a0e8"/><circle cx="247" cy="112" r="18.3" fill="#00a0e8"/><circle cx="341" cy="145" r="13.3" fill="#1e2087"/><circle cx="165" cy="158" r="13.4" fill="#1e2087"/><circle cx="399" cy="166" r="13.7" fill="#00a0e8"/><circle cx="274" cy="181" r="20.7" fill="#1e2087"/><circle cx="121" cy="197" r="16.8" fill="#1e2087"/><circle cx="349" cy="213" r="9.3" fill="#7e308f"/><circle cx="198" cy="219" r="13.7" fill="#00a0e8"/><circle cx="374" cy="245" r="13.3" fill="#1e2087"/><circle cx="286" cy="248" r="16.1" fill="#e60013"/><circle cx="222" cy="267" r="15.7" fill="#1e2087"/><circle cx="308" cy="280" r="13.7" fill="#00a0e8"/><circle cx="179" cy="303" r="13.2" fill="#f8b62d"/><circle cx="255" cy="320" r="12.3" fill="#006935"/><circle cx="312" cy="372" r="13.4" fill="#1e2087"/><circle cx="197" cy="374" r="16.4" fill="#00a0e8"/><rect x="210" y="397" width="96" height="20" rx="10" fill="#162b88"/><rect x="219" y="430" width="75" height="14" rx="7" fill="#1e2087"/><rect x="234" y="458" width="45" height="17" rx="8" fill="#181c62"/></svg>
       <span class="top__name">Yuya Itonaga</span>
     </a>
     <nav class="top__nav" aria-label="章" data-i18n-aria="nav.chapters">
-      <a href="#story" data-scroll data-i18n="nav.story">はじまり</a>
-      <a href="#numbers" data-scroll data-i18n="nav.numbers">数字</a>
-      <a href="#works" data-scroll data-i18n="nav.works">つくったもの</a>
-      <a href="#media" data-scroll data-i18n="nav.media">メディア</a>
-      <a href="#tools" data-scroll data-i18n="nav.tools">道具</a>
-      <a href="#contact" data-scroll data-i18n="nav.contact">連絡先</a>
+      <a href="#story" data-i18n="nav.story">はじまり</a>
+      <a href="#works" data-i18n="nav.works">つくったもの</a>
+      <a href="#media" data-i18n="nav.media">攻略Lab</a>
+      <a href="#tools" data-i18n="nav.tools">道具</a>
+      <a href="#contact" data-i18n="nav.contact">連絡先</a>
     </nav>
     <div class="top__tools">
       <button type="button" class="top__lang" id="langToggle" aria-label="Switch to English"><span>EN</span></button>
-      <button type="button" class="top__theme" id="themeToggle" role="switch" aria-checked="false" aria-label="ダークモード" data-i18n-aria="nav.theme">
-        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
-      </button>
       <button type="button" class="top__menu" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="メニュー" data-i18n-aria="nav.menu">
         <span></span><span></span>
       </button>
@@ -67,272 +58,212 @@
 
   <div class="menu" id="menu" hidden>
     <nav aria-label="章" data-i18n-aria="nav.chapters">
-      <a href="#story" data-scroll data-i18n="nav.story">はじまり</a>
-      <a href="#numbers" data-scroll data-i18n="nav.numbers">数字</a>
-      <a href="#works" data-scroll data-i18n="nav.works">つくったもの</a>
-      <a href="#media" data-scroll data-i18n="nav.media">メディア</a>
-      <a href="#tools" data-scroll data-i18n="nav.tools">道具</a>
-      <a href="#contact" data-scroll data-i18n="nav.contact">連絡先</a>
+      <a href="#story" data-i18n="nav.story">はじまり</a>
+      <a href="#works" data-i18n="nav.works">つくったもの</a>
+      <a href="#media" data-i18n="nav.media">攻略Lab</a>
+      <a href="#tools" data-i18n="nav.tools">道具</a>
+      <a href="#contact" data-i18n="nav.contact">連絡先</a>
     </nav>
   </div>
 
   <main id="main">
 
-    <!-- 表紙 -->
-    <section class="chapter cover" id="cover" data-formation="bulb" data-side="1">
-      <div class="grid">
-        <div class="anchor anchor--bulb col-w" data-anchor="bulb" aria-hidden="true"></div>
-        <div class="cover__text col-l">
-          <h1 class="cover__name">Yuya <br>Itonaga</h1>
-          <p class="cover__statement" data-i18n-html="cover.statement">書いて、つくって、届ける。<br>累計1,900万PVのメディアと、<br>ストアに並ぶアプリを手がけています。</p>
-          <p class="cover__role" data-i18n="cover.role">慶應義塾大学 理工学部 3年 ／ テクノフィア代表</p>
-        </div>
-        <div class="cover__fallback col-r" id="coverFallback" hidden><svg class="bulb-svg" xmlns="http://www.w3.org/2000/svg" viewBox="107 13 306 467" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".9"><line x1="297" y1="27" x2="192" y2="38"/><line x1="297" y1="27" x2="366" y2="80"/><line x1="297" y1="27" x2="299" y2="94"/><line x1="297" y1="27" x2="247" y2="112"/><line x1="192" y1="38" x2="183" y2="95"/><line x1="192" y1="38" x2="136" y2="95"/><line x1="192" y1="38" x2="247" y2="112"/><line x1="366" y1="80" x2="299" y2="94"/><line x1="366" y1="80" x2="341" y2="145"/><line x1="299" y1="94" x2="247" y2="112"/><line x1="299" y1="94" x2="341" y2="145"/><line x1="183" y1="95" x2="136" y2="95"/><line x1="183" y1="95" x2="247" y2="112"/><line x1="183" y1="95" x2="165" y2="158"/><line x1="136" y1="95" x2="165" y2="158"/><line x1="136" y1="95" x2="121" y2="197"/><line x1="247" y1="112" x2="341" y2="145"/><line x1="247" y1="112" x2="165" y2="158"/><line x1="247" y1="112" x2="274" y2="181"/><line x1="341" y1="145" x2="399" y2="166"/><line x1="341" y1="145" x2="274" y2="181"/><line x1="341" y1="145" x2="349" y2="213"/><line x1="165" y1="158" x2="274" y2="181"/><line x1="165" y1="158" x2="121" y2="197"/><line x1="165" y1="158" x2="198" y2="219"/><line x1="399" y1="166" x2="349" y2="213"/><line x1="399" y1="166" x2="374" y2="245"/><line x1="274" y1="181" x2="349" y2="213"/><line x1="274" y1="181" x2="198" y2="219"/><line x1="274" y1="181" x2="286" y2="248"/><line x1="121" y1="197" x2="198" y2="219"/><line x1="121" y1="197" x2="179" y2="303"/><line x1="349" y1="213" x2="374" y2="245"/><line x1="349" y1="213" x2="286" y2="248"/><line x1="349" y1="213" x2="308" y2="280"/><line x1="198" y1="219" x2="286" y2="248"/><line x1="198" y1="219" x2="222" y2="267"/><line x1="198" y1="219" x2="179" y2="303"/><line x1="286" y1="248" x2="222" y2="267"/><line x1="286" y1="248" x2="308" y2="280"/><line x1="222" y1="267" x2="179" y2="303"/><line x1="222" y1="267" x2="255" y2="320"/><line x1="222" y1="267" x2="197" y2="374"/><line x1="308" y1="280" x2="255" y2="320"/><line x1="308" y1="280" x2="312" y2="372"/><line x1="374" y1="245" x2="332" y2="302"/><line x1="308" y1="280" x2="332" y2="302"/><line x1="332" y1="302" x2="312" y2="372"/><line x1="179" y1="303" x2="197" y2="374"/><line x1="255" y1="320" x2="312" y2="372"/><line x1="255" y1="320" x2="197" y2="374"/></g><circle cx="297" cy="27" r="11.8" fill="#00a0e8"/><circle cx="192" cy="38" r="13.3" fill="#1e2087"/><circle cx="366" cy="80" r="20.6" fill="#1e2087"/><circle cx="299" cy="94" r="13.3" fill="#1e2087"/><circle cx="183" cy="95" r="10.4" fill="#23ab39"/><circle cx="136" cy="95" r="15.1" fill="#00a0e8"/><circle cx="247" cy="112" r="18.3" fill="#00a0e8"/><circle cx="341" cy="145" r="13.3" fill="#1e2087"/><circle cx="165" cy="158" r="13.4" fill="#1e2087"/><circle cx="399" cy="166" r="13.7" fill="#00a0e8"/><circle cx="274" cy="181" r="20.7" fill="#1e2087"/><circle cx="121" cy="197" r="16.8" fill="#1e2087"/><circle cx="349" cy="213" r="9.3" fill="#7e308f"/><circle cx="198" cy="219" r="13.7" fill="#00a0e8"/><circle cx="374" cy="245" r="13.3" fill="#1e2087"/><circle cx="286" cy="248" r="16.1" fill="#e60013"/><circle cx="222" cy="267" r="15.7" fill="#1e2087"/><circle cx="308" cy="280" r="13.7" fill="#00a0e8"/><circle cx="179" cy="303" r="13.2" fill="#f8b62d"/><circle cx="255" cy="320" r="12.3" fill="#006935"/><circle cx="312" cy="372" r="13.4" fill="#1e2087"/><circle cx="197" cy="374" r="16.4" fill="#00a0e8"/><rect x="210" y="397" width="96" height="20" rx="10" fill="#162b88"/><rect x="219" y="430" width="75" height="14" rx="7" fill="#1e2087"/><rect x="234" y="458" width="45" height="17" rx="8" fill="#181c62"/></svg></div>
+    <!-- 表紙: 背景の写真・名前・人物の3層 -->
+    <section class="cover" id="cover">
+      <div class="cover__stage" aria-hidden="true">
+        <img class="cover__bg" src="assets/images/photo/cover-bg-1600.webp" srcset="assets/images/photo/cover-bg-960.webp 960w, assets/images/photo/cover-bg-1600.webp 1600w, assets/images/photo/cover-bg-2400.webp 2400w" sizes="(max-width: 760px) 260vw, 100vw" alt="" width="2400" height="1350" fetchpriority="high">
+        <p class="cover__name">Yuya <br>Itonaga</p>
+        <img class="cover__person" src="assets/images/photo/cover-person-1600.webp" srcset="assets/images/photo/cover-person-960.webp 960w, assets/images/photo/cover-person-1600.webp 1600w, assets/images/photo/cover-person-2400.webp 2400w" sizes="(max-width: 760px) 260vw, 100vw" alt="" width="2400" height="1350">
       </div>
-      <a href="#story" class="cover__cue" data-scroll><span data-i18n="cover.cue">下へ</span><i aria-hidden="true"></i></a>
+      <div class="cover__text">
+        <h1 class="sr-only">Yuya Itonaga</h1>
+        <p class="cover__statement" data-i18n-html="cover.statement">書いて、つくって、届ける。</p>
+        <p class="cover__sub" data-i18n="cover.sub">中学生で始めた攻略メディアは、累計1,900万PV。いまはアプリもつくっています。</p>
+        <p class="cover__role" data-i18n="cover.role">慶應義塾大学 理工学部 3年 ／ 株式会社Technophere 代表</p>
+      </div>
+      <a href="#story" class="cover__cue"><span data-i18n="cover.cue">下へ</span></a>
     </section>
 
     <!-- はじまり -->
-    <section class="chapter story" id="story" data-formation="path" data-side="-1">
-      <div class="grid">
-        <div class="col-r story__intro">
+    <section class="chapter story" id="story">
+      <div class="wrap story__head">
+        <div class="story__intro">
           <h2 data-i18n="story.title">はじまり</h2>
-          <p data-i18n="story.p1">最初の読者は、同じゲームで困っている誰か。2021年に Gamerch で攻略サイトの運営を始め、翌年には攻略大百科の専属ライターとして100本以上の記事を書きました。</p>
-          <p data-i18n="story.p2">2023年8月、高校3年でテクノフィアを立ち上げました。2026年10月には、株式会社Technophere として法人化。ゲーム攻略メディアを軸に、SEOと解析で読者を増やし、いまは自分のアプリやプラグインもつくっています。設計から実装、ストア公開、リリース後の改善まで、すべて自分の手で。AIは開発の中心にありますが、最後にコードを読むのは自分の目です。</p>
-          <figure class="story__photo">
-            <img src="assets/images/profile-yuya.webp?v=20261005" alt="矢上キャンパスのラウンジに座る Yuya Itonaga" width="1200" height="675" loading="lazy" data-i18n-alt="story.photoAlt">
-          </figure>
+          <p data-i18n="story.p1">2021年、同じゲームで困っている誰かに向けて、攻略サイトを書き始めました。2023年8月、高校3年でテクノフィアを立ち上げ、2026年10月に株式会社Technophere として法人化。設計から実装、ストア公開、公開後の改善まで、自分の手で進めます。</p>
         </div>
+        <figure class="frame story__photo">
+          <img class="drift" src="assets/images/photo/lab-1600.webp" srcset="assets/images/photo/lab-800.webp 800w, assets/images/photo/lab-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 50vw" alt="矢上キャンパスの YAGAMI INNOVATION LABORATORY の前に立つ Yuya Itonaga" width="1600" height="900" loading="lazy" data-i18n-alt="story.photoAlt">
+        </figure>
       </div>
-      <div class="grid story__timeline" id="timeline">
-        <div class="col-l story__years" aria-hidden="true">
-          <div class="story__year" id="yearStamp">2018</div>
-        </div>
-        <ol class="col-r story__events" id="events">
-          <li data-year="2018"><time>2018.04</time><p data-i18n="tl.2018_04">慶應義塾湘南藤沢中等部 入学</p></li>
-          <li data-year="2021"><time>2021.01</time><p data-i18n-html="tl.2021_01"><a href="https://gamerch.com/" target="_blank" rel="noopener noreferrer">Gamerch</a> で数種類のゲーム攻略サイトの運営を開始</p></li>
-          <li data-year="2021"><time>2021.04</time><p data-i18n="tl.2021_04">慶應義塾湘南藤沢高等部 入学</p></li>
-          <li data-year="2022"><time>2022.02</time><p data-i18n-html="tl.2022_02"><a href="https://gamepedia.jp/" target="_blank" rel="noopener noreferrer">攻略大百科</a>の専属ライター（業務委託）として100記事以上を寄稿</p></li>
-          <li data-year="2023" class="is-key"><time>2023.08</time><p data-i18n="tl.2023_08">テクノフィア 設立</p></li>
-          <li data-year="2024"><time>2024.03</time><p data-i18n="tl.2024_03">ドローン空撮を用いた学校紹介ムービー制作で「高等部部長賞」受賞</p></li>
-          <li data-year="2024"><time>2024.04</time><p data-i18n="tl.2024_04">慶應義塾大学 理工学部 入学</p></li>
-          <li data-year="2024"><time>2024.06</time><p data-i18n="tl.2024_06">ベンチャー企業「株式会社Taiziii」にてインターン開始</p></li>
-          <li data-year="2025" class="is-key"><time>2025.08</time><p data-i18n="tl.2025_08">ブロスタ戦略サポートアプリ「BrawlTech」リリース</p></li>
-          <li data-year="2025"><time>2025.09</time><p data-i18n="tl.2025_09">企業向け Web サイト制作代行サービスを開始</p></li>
-          <li data-year="2025" class="is-key"><time>2025.12</time><p data-i18n="tl.2025_12">慶應生向けの学習サポートアプリ「KPass」をリリース</p></li>
-          <li data-year="2026"><time>2026.04</time><p data-i18n="tl.2026_04">Life is Tech にて DXメンターとして活動開始</p></li>
-          <li data-year="2026"><time>2026.07</time><p data-i18n="tl.2026_07a">Life is Tech にて中高生向け iPhone アプリ開発メンターとして活動開始（研修100時間以上）</p></li>
-          <li data-year="2026" class="is-key"><time>2026.07</time><p data-i18n="tl.2026_07b">Google AI 学生アンバサダーに就任</p></li>
-          <li data-year="2026" class="is-key"><time>2026.10</time><p data-i18n="tl.2026_10">株式会社Technophere 設立（法人化）</p></li>
-          <li data-year="Now" class="is-now"><time data-i18n="tl.nowYear">現在</time><p data-i18n="tl.now">慶應義塾大学 理工学部 システムデザイン工学科 3年</p></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 数字 -->
-    <section class="chapter numbers" id="numbers" data-formation="chart" data-side="1">
-      <div class="grid">
-        <div class="col-l">
-          <h2 data-i18n="numbers.title">数字</h2>
-          <p class="lead" data-i18n="numbers.lead">運営しているメディア全体の実測値。</p>
-          <div class="anchor anchor--chart" data-anchor="chart" aria-hidden="true">
-            <!-- 目盛り。x は scene の chart() と同じ式（幅 92%・2023年8月が左端、2026年9月が右端） -->
-            <span class="chart__total">19,044,113<small>PV</small></span>
-            <span class="chart__year" style="--x: 16.4%">2024</span>
-            <span class="chart__year" style="--x: 46.2%">2025</span>
-            <span class="chart__year" style="--x: 76.1%">2026</span>
-          </div>
-          <dl class="stats">
-            <div class="stat">
-              <dt data-i18n="numbers.peakLabel">月間ページビューの最高値</dt>
-              <dd><span class="stat__num">1,433,841</span><small data-i18n="numbers.peakNote">2024年5月・運営サイト合計</small></dd>
-            </div>
-            <div class="stat">
-              <dt data-i18n="numbers.totalLabel">累計ページビュー</dt>
-              <dd><span class="stat__num">19,044,113</span><small data-i18n="numbers.totalNote">2023年8月〜2026年9月</small></dd>
-            </div>
-            <div class="stat">
-              <dt data-i18n="numbers.usersLabel">月間ユーザーの最高値</dt>
-              <dd><span class="stat__num">448,208</span><small data-i18n="numbers.usersNote">2024年5月・ブロスタ攻略Lab</small></dd>
-            </div>
-            <div class="stat">
-              <dt data-i18n="numbers.clicksLabel">直近28日の検索クリック</dt>
-              <dd><span class="stat__num">100,669</span><small data-i18n="numbers.clicksNote">game.technophere.com・表示 309万回・平均掲載順位 6.4</small></dd>
-            </div>
-          </dl>
-          <p class="note" data-i18n="numbers.note">2026年9月24日時点。Google Analytics と Search Console の値です。</p>
-        </div>
-        <div class="col-r numbers__fallback" id="numbersFallback" hidden></div>
-      </div>
+      <ol class="wrap timeline">
+        <li><time>2018.04</time><p data-i18n="tl.2018_04">慶應義塾湘南藤沢中等部 入学</p></li>
+        <li><time>2021.01</time><p data-i18n-html="tl.2021_01"><a href="https://gamerch.com/" target="_blank" rel="noopener noreferrer">Gamerch</a> で数種類のゲーム攻略サイトの運営を開始</p></li>
+        <li><time>2021.04</time><p data-i18n="tl.2021_04">慶應義塾湘南藤沢高等部 入学</p></li>
+        <li><time>2022.02</time><p data-i18n-html="tl.2022_02"><a href="https://gamepedia.jp/" target="_blank" rel="noopener noreferrer">攻略大百科</a>の専属ライター（業務委託）として100記事以上を寄稿</p></li>
+        <li class="is-key"><time>2023.08</time><p data-i18n="tl.2023_08">テクノフィア 設立</p></li>
+        <li><time>2024.03</time><p data-i18n="tl.2024_03">ドローン空撮を用いた学校紹介ムービー制作で「高等部部長賞」受賞</p></li>
+        <li><time>2024.04</time><p data-i18n="tl.2024_04">慶應義塾大学 理工学部 入学</p></li>
+        <li><time>2024.06</time><p data-i18n="tl.2024_06">ベンチャー企業「株式会社Taiziii」にてインターン開始</p></li>
+        <li class="is-key"><time>2025.08</time><p data-i18n="tl.2025_08">ブロスタ戦略サポートアプリ「BrawlTech」リリース</p></li>
+        <li><time>2025.09</time><p data-i18n="tl.2025_09">企業向け Web サイト制作代行サービスを開始</p></li>
+        <li class="is-key"><time>2025.12</time><p data-i18n="tl.2025_12">慶應生向けの学習サポートアプリ「KPass」をリリース</p></li>
+        <li><time>2026.04</time><p data-i18n="tl.2026_04">Life is Tech にて DXメンターとして活動開始</p></li>
+        <li><time>2026.07</time><p data-i18n="tl.2026_07a">Life is Tech にて中高生向け iPhone アプリ開発メンターとして活動開始（研修100時間以上）</p></li>
+        <li class="is-key"><time>2026.07</time><p data-i18n="tl.2026_07b">Google AI 学生アンバサダーに就任</p></li>
+        <li class="is-key"><time>2026.10</time><p data-i18n="tl.2026_10">株式会社Technophere 設立（法人化）</p></li>
+        <li class="is-now"><time data-i18n="tl.nowYear">現在</time><p data-i18n="tl.now">慶應義塾大学 理工学部 システムデザイン工学科 3年</p></li>
+      </ol>
     </section>
 
     <!-- つくったもの -->
-    <section class="chapter works" id="works" data-formation="field" data-side="0">
-      <div class="grid">
-        <div class="col-l">
-          <h2 data-i18n="works.title">つくったもの</h2>
-          <p class="lead" data-i18n="works.lead">ストアで配信しているアプリと、公開しているサービス・プラグインです。</p>
-        </div>
+    <section class="chapter works" id="works">
+      <div class="wrap">
+        <h2 data-i18n="works.title">つくったもの</h2>
+        <p class="lead" data-i18n="works.lead">ストアで配信しているアプリです。</p>
       </div>
 
-      <article class="work work--app grid">
-        <div class="work__text col-l">
+      <article class="work wrap">
+        <div class="work__text">
           <h3 class="work__name">BrawlTech</h3>
           <p class="work__what" data-i18n="works.brawltech.what">ブロスタの戦略サポートアプリ</p>
-          <p data-i18n="works.brawltech.desc">2.0 で全面的に作り直しました。ブロスタ攻略Lab に集まる実際の対戦データから、開催中のマップで勝っているキャラをひと目で表示。マップ別の勝率ランキング、ガチバトルの BAN/PICK 補助、全キャラ図鑑と比較、戦績分析と育成計画まで、ひとつのアプリにまとめています。Flutter で iOS と Android に対応し、データは WordPress の API と Cloud Functions から配信しています。</p>
-          <ul class="work__stack" aria-label="使った技術"><li>Flutter</li><li>Riverpod</li><li>Firebase</li><li>WordPress REST API</li></ul>
+          <p data-i18n="works.brawltech.desc">ブロスタ攻略Lab に集まる対戦データから、開催中のマップで勝っているキャラをひと目で表示します。マップ別の勝率、BAN/PICK の補助、戦績分析までひとつに。Flutter で iOS と Android に対応しています。</p>
+          <ul class="work__stack" aria-label="使った技術" data-i18n-aria="works.stack"><li>Flutter</li><li>Riverpod</li><li>Firebase</li><li>WordPress REST API</li></ul>
           <div class="work__stores">
             <a href="https://apps.apple.com/jp/app/brawltech-%E3%83%96%E3%83%AD%E3%83%86%E3%82%AF/id6749449425" target="_blank" rel="noopener noreferrer" aria-label="App Store で BrawlTech を見る"><img src="assets/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
             <a href="https://play.google.com/store/apps/details?id=com.technophere.brawltech" target="_blank" rel="noopener noreferrer" aria-label="Google Play で BrawlTech を見る"><img src="assets/images/google-play-badge.png" alt="Get it on Google Play" width="135" height="40"></a>
           </div>
         </div>
-        <div class="work__screens col-r">
-          <figure class="phone"><img src="assets/images/works/brawltech-00.webp" alt="BrawlTech のホーム画面。開催中のマップで勝っているキャラを表示" width="640" height="1390" loading="lazy"></figure>
-          <figure class="phone"><img src="assets/images/works/brawltech-01.webp" alt="BrawlTech のマップ詳細画面。マップ別の勝率ランキング" width="640" height="1390" loading="lazy"></figure>
+        <div class="work__screens">
+          <figure class="phone phone--back"><img src="assets/images/works/brawltech-01.webp" alt="BrawlTech のマップ詳細画面。マップ別の勝率ランキング" width="640" height="1391" loading="lazy"></figure>
+          <figure class="phone phone--front"><img src="assets/images/works/brawltech-00.webp" alt="BrawlTech のホーム画面。開催中のマップで勝っているキャラを表示" width="640" height="1391" loading="lazy"></figure>
         </div>
       </article>
 
-      <article class="work work--app work--flip grid">
-        <div class="work__text col-r">
+      <article class="work work--flip wrap">
+        <div class="work__text">
           <h3 class="work__name">KPass</h3>
           <p class="work__what" data-i18n="works.kpass.what">慶應生の授業と課題をひとつにするアプリ</p>
-          <p data-i18n="works.kpass.desc">大学の学習支援システム K-LMS（Canvas）の API から授業・課題・時間割を取り込み、アプリの中で整理して表示します。ログインを数日保持し、課題の締切もひと目で確認できます。SwiftUI と Kotlin Multiplatform で iOS と Android に対応し、2025年12月に公開。App Store の評価は 4.4（173件）です。</p>
-          <ul class="work__stack" aria-label="使った技術"><li>SwiftUI</li><li>Kotlin Multiplatform</li><li>Firebase</li><li>Canvas API</li></ul>
+          <p data-i18n="works.kpass.desc">大学の K-LMS から授業・課題・時間割を取り込み、ひとつの画面にまとめます。締切もひと目で確認できます。2025年12月公開。App Store の評価は 4.4（173件）です。</p>
+          <ul class="work__stack" aria-label="使った技術" data-i18n-aria="works.stack"><li>SwiftUI</li><li>Kotlin Multiplatform</li><li>Firebase</li><li>Canvas API</li></ul>
           <div class="work__stores">
             <a href="https://apps.apple.com/jp/app/kpass-%E3%82%B1%E3%83%BC%E3%83%91%E3%82%B9-klms%E9%80%A3%E6%90%BA%E3%81%AE%E6%8E%88%E6%A5%AD-%E8%AA%B2%E9%A1%8C-%E6%99%82%E9%96%93%E5%89%B2/id6754703817" target="_blank" rel="noopener noreferrer" aria-label="App Store で KPass を見る"><img src="assets/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
             <a href="https://play.google.com/store/apps/details?id=com.technophere.kpass" target="_blank" rel="noopener noreferrer" aria-label="Google Play で KPass を見る"><img src="assets/images/google-play-badge.png" alt="Get it on Google Play" width="135" height="40"></a>
           </div>
         </div>
-        <div class="work__screens col-l">
-          <figure class="phone"><img src="assets/images/works/kpass-00.webp" alt="KPass のホーム画面" width="640" height="1390" loading="lazy"></figure>
-          <figure class="phone"><img src="assets/images/works/kpass-01.webp" alt="KPass の課題一覧画面" width="640" height="1390" loading="lazy"></figure>
+        <div class="work__screens">
+          <figure class="phone phone--back"><img src="assets/images/works/kpass-01.webp" alt="KPass の課題一覧画面" width="640" height="1385" loading="lazy"></figure>
+          <figure class="phone phone--front"><img src="assets/images/works/kpass-00.webp" alt="KPass のホーム画面" width="640" height="1385" loading="lazy"></figure>
         </div>
       </article>
 
-      <article class="work work--app grid">
-        <div class="work__text col-l">
+      <article class="work wrap">
+        <div class="work__text">
           <h3 class="work__name">ZeroShot</h3>
           <p class="work__what" data-i18n="works.zeroshot.what">縦と横を同時に撮れる、失敗しないカメラ</p>
-          <p data-i18n="works.zeroshot.desc">シャッター1回で、縦と横の構図を同時に保存。前後のフレームからブレや目つぶりの少ない1枚を端末の中で選び、写真ライブラリへ自動で保存します。寄りや別レンズの候補も残るので、撮った後に選び直せます。SwiftUI と AVFoundation で開発し、2026年9月に公開しました。</p>
-          <ul class="work__stack" aria-label="使った技術"><li>SwiftUI</li><li>AVFoundation</li><li>Vision</li><li>Core Image</li></ul>
+          <p data-i18n="works.zeroshot.desc">シャッター1回で、縦と横の構図を同時に保存。ブレや目つぶりの少ない1枚を、端末の中で選びます。2026年9月公開。</p>
+          <ul class="work__stack" aria-label="使った技術" data-i18n-aria="works.stack"><li>SwiftUI</li><li>AVFoundation</li><li>Vision</li><li>Core Image</li></ul>
           <div class="work__stores">
             <a href="https://apps.apple.com/jp/app/zeroshot-%E5%A4%B1%E6%95%97%E3%81%97%E3%81%AA%E3%81%84%E3%82%AB%E3%83%A1%E3%83%A9/id6814582654" target="_blank" rel="noopener noreferrer" aria-label="App Store で ZeroShot を見る"><img src="assets/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
           </div>
         </div>
-        <div class="work__screens col-r">
-          <figure class="phone"><img src="assets/images/works/zeroshot-00.webp" alt="ZeroShot のカメラ画面。縦と横を同時に撮影している" width="640" height="1385" loading="lazy" data-i18n-alt="works.zeroshot.alt0"></figure>
-          <figure class="phone"><img src="assets/images/works/zeroshot-01.webp" alt="ZeroShot の候補画面。自動で選んだ BEST の1枚" width="640" height="1385" loading="lazy" data-i18n-alt="works.zeroshot.alt1"></figure>
+        <div class="work__screens">
+          <figure class="phone phone--back"><img src="assets/images/works/zeroshot-01.webp" alt="ZeroShot の候補画面。自動で選んだ BEST の1枚" width="640" height="1385" loading="lazy" data-i18n-alt="works.zeroshot.alt1"></figure>
+          <figure class="phone phone--front"><img src="assets/images/works/zeroshot-00.webp" alt="ZeroShot のカメラ画面。縦と横を同時に撮影している" width="640" height="1385" loading="lazy" data-i18n-alt="works.zeroshot.alt0"></figure>
         </div>
       </article>
 
-      <div class="grid">
-        <div class="col-l"><h3 class="works__more" data-i18n="works.more">ほかにも</h3></div>
+      <div class="wrap more">
+        <h3 class="more__title" data-i18n="works.more">ほかにも</h3>
+        <dl class="more__list">
+          <div><dt><a href="https://mimishare.technophere.com/" target="_blank" rel="noopener noreferrer">Mimishare</a></dt><dd data-i18n="works.mimishare.desc">ディズニーのカチューシャを1日だけ借りられるサービス。予約から決済まで Next.js と Stripe で</dd></div>
+          <div><dt><a href="https://wordpress.org/plugins/app-link-generator/" target="_blank" rel="noopener noreferrer">App Link Generator</a></dt><dd data-i18n="works.alg.desc">ストアへのリンクをブロックエディタで作る WordPress プラグイン。公式ディレクトリで公開中</dd></div>
+          <div><dt><a href="https://github.com/iyuya1808/Push-from-GitHub" target="_blank" rel="noopener noreferrer">Push from GitHub</a></dt><dd data-i18n="works.pfg.desc">自作のテーマ・プラグインを、管理画面からワンクリックで本番に反映するプラグイン</dd></div>
+          <div><dt><a href="https://app.lemon-tech.jp/" target="_blank" rel="noopener noreferrer">Lemon AI</a></dt><dd data-i18n="works.lemon.desc">慶應のエンジニアサークル Lemon の AI プラットフォーム。フロントエンドと UI を担当</dd></div>
+        </dl>
       </div>
-      <ul class="rows grid">
-        <li class="row col-w">
-          <h3 class="row__name">Mimishare</h3>
-          <p data-i18n="works.mimishare.desc">ディズニーのカチューシャを、来園の1日だけ借りられるサービスです。デポジット制で予約し、QRコードで貸出と返却。Next.js と Stripe で、カタログから決済まで一人で組みました。</p>
-          <p class="row__links"><a href="https://mimishare.technophere.com/" target="_blank" rel="noopener noreferrer">mimishare.technophere.com</a></p>
-        </li>
-        <li class="row col-w">
-          <h3 class="row__name">App Link Generator</h3>
-          <p data-i18n="works.alg.desc">App Store と Google Play のリンクをブロックエディタから生成する WordPress プラグインです。WordPress.org の公式ディレクトリで公開しています。</p>
-          <p class="row__links">
-            <a href="https://wordpress.org/plugins/app-link-generator/" target="_blank" rel="noopener noreferrer">WordPress.org</a>
-            <a href="https://github.com/iyuya1808/App-Link-Generator" target="_blank" rel="noopener noreferrer">GitHub</a>
-          </p>
-        </li>
-        <li class="row col-w">
-          <h3 class="row__name">Push from GitHub</h3>
-          <p data-i18n="works.pfg.desc">GitHub のリポジトリと連携した自作テーマ・プラグインを、管理画面からワンクリックで本番に反映する WordPress プラグインです。</p>
-          <p class="row__links"><a href="https://github.com/iyuya1808/Push-from-GitHub" target="_blank" rel="noopener noreferrer">GitHub</a></p>
-        </li>
-        <li class="row col-w">
-          <h3 class="row__name">Lemon AI</h3>
-          <p data-i18n="works.lemon.desc">慶應のエンジニアサークル Lemon 専用の AI プラットフォーム。24時間答える AI メンターとアイデアガチャを備えています。チーム開発で、フロントエンドと UI を担当しました。</p>
-          <p class="row__links"><a href="https://app.lemon-tech.jp/" target="_blank" rel="noopener noreferrer">app.lemon-tech.jp</a></p>
-        </li>
-      </ul>
     </section>
 
-    <!-- 運営しているメディア -->
-    <section class="chapter media" id="media" data-formation="field" data-side="0">
-      <div class="grid">
-        <div class="col-l">
-          <h2 data-i18n="media.title">運営しているメディア</h2>
-          <p class="lead" data-i18n="media.lead">ゲームごとに1つずつ WordPress を立て、公式 API やゲームデータから図鑑とランキングを自動更新している攻略サイト群です。テクノフィアの主力事業。</p>
-          <p class="work__links"><a href="https://game.technophere.com/" target="_blank" rel="noopener noreferrer" data-i18n="media.hubLink">game.technophere.com を開く</a></p>
-        </div>
-        <div class="col-r">
-          <figure class="browser"><img src="assets/images/media/game-hub.webp" alt="攻略Lab のトップページ" width="960" height="600" loading="lazy"></figure>
-        </div>
+    <!-- 攻略Labと数字 -->
+    <section class="chapter media" id="media">
+      <p class="media__ghost" aria-hidden="true">19,044,113</p>
+      <div class="wrap">
+        <h2 data-i18n="media.title">攻略Labと数字</h2>
+        <p class="lead" data-i18n="media.lead">ゲームごとに WordPress を立て、公式 API やゲームデータから図鑑とランキングを自動で更新しています。テクノフィアの主力事業です。</p>
       </div>
-      <ul class="labs grid">
-        <li class="lab"><a href="https://game.technophere.com/brawlstars/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/brawlstars.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">ブロスタ攻略Lab</span><span class="lab__what" data-i18n="media.labs.brawlstars">最強キャラランキングと、マップ・モード別の勝率</span></a></li>
-        <li class="lab"><a href="https://game.technophere.com/tsumtsum/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/tsumtsum.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">ツムツム攻略Lab</span><span class="lab__what" data-i18n="media.labs.tsumtsum">ガチャ情報と、ツムのランキング</span></a></li>
-        <li class="lab"><a href="https://game.technophere.com/msfs/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/msfs.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">MSFS攻略Lab</span><span class="lab__what" data-i18n="media.labs.msfs">機体図鑑とアドオン、空港のデータ</span></a></li>
-        <li class="lab"><a href="https://game.technophere.com/efootball/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/efootball.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">eFootball攻略Lab</span><span class="lab__what" data-i18n="media.labs.efootball">選手・監督データベースと育成シミュレーター</span></a></li>
-        <li class="lab"><a href="https://game.technophere.com/clashroyale/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/clashroyale.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">クラロワ攻略Lab</span><span class="lab__what" data-i18n="media.labs.clashroyale">公式 API で集計したカード図鑑と、デッキの使用率・勝率</span></a></li>
-        <li class="lab"><a href="https://game.technophere.com/cities-skylines/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/cities-skylines.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">Cities: Skylines攻略Lab</span><span class="lab__what" data-i18n="media.labs.cs">都市づくりの攻略ガイドと MOD</span></a></li>
-        <li class="lab"><a href="https://game.technophere.com/nte/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/nte.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">NTE攻略Lab</span><span class="lab__what" data-i18n="media.labs.nte">キャラ・弧盤の性能とガチャ予定。ゲームデータから自動更新</span></a></li>
-        <li class="lab"><a href="https://blog.technophere.com/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/blog.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">テクログ</span><span class="lab__what" data-i18n="media.labs.blog">技術からライフスタイルまで書く総合ブログ</span></a></li>
-        <li class="lab"><a href="https://app.technophere.com/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/app.webp" alt="" width="960" height="420" loading="lazy"><span class="lab__name">App Gallery</span><span class="lab__what" data-i18n="media.labs.app">テクノフィアのアプリとドキュメントをまとめたギャラリー</span></a></li>
+      <div class="wrap numbers">
+        <figure class="chart">
+          <p class="chart__total"><span class="chart__num">19,044,113</span><span class="chart__unit">PV</span></p>
+          <p class="chart__label" data-i18n="media.totalNote">累計ページビュー（2023年8月〜2026年9月）</p>
+          <svg class="chart__svg" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true">
+            <path class="chart__area" d="M0 320 L27 320 L54 320 L81 320 L108 317 L135 310 L162 299 L189 279 L216 259 L243 236 L270 213 L297 190 L324 172 L351 155 L378 135 L405 118 L432 105 L459 93 L486 84 L514 77 L541 73 L568 68 L595 62 L622 57 L649 51 L676 46 L703 40 L730 34 L757 30 L784 27 L811 25 L838 23 L865 21 L892 19 L919 18 L946 16 L973 11 L1000 8 L1000 320 L0 320 Z"/>
+          </svg>
+          <div class="chart__years" aria-hidden="true"><span style="--x:13.5%">2024</span><span style="--x:45.9%">2025</span><span style="--x:78.4%">2026</span></div>
+        </figure>
+        <dl class="stats">
+          <div><dt data-i18n="media.peakLabel">月間ページビューの最高</dt><dd>1,433,841</dd><dd class="stats__note" data-i18n="media.peakNote">2024年5月・運営サイト合計</dd></div>
+          <div><dt data-i18n="media.usersLabel">月間ユーザーの最高</dt><dd>448,208</dd><dd class="stats__note" data-i18n="media.usersNote">2024年5月・ブロスタ攻略Lab</dd></div>
+          <div><dt data-i18n="media.clicksLabel">直近28日の検索クリック</dt><dd>100,669</dd><dd class="stats__note" data-i18n="media.clicksNote">game.technophere.com・表示 309万回</dd></div>
+        </dl>
+        <p class="note" data-i18n="media.note">2026年9月24日時点。Google Analytics と Search Console の値です。</p>
+      </div>
+      <ul class="wrap labs">
+        <li><a href="https://game.technophere.com/brawlstars/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/brawlstars.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">ブロスタ攻略Lab</span><span class="labs__what" data-i18n="media.labs.brawlstars">最強キャラランキングと、マップ・モード別の勝率</span></a></li>
+        <li><a href="https://game.technophere.com/tsumtsum/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/tsumtsum.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">ツムツム攻略Lab</span><span class="labs__what" data-i18n="media.labs.tsumtsum">ガチャ情報と、ツムのランキング</span></a></li>
+        <li><a href="https://game.technophere.com/msfs/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/msfs.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">MSFS攻略Lab</span><span class="labs__what" data-i18n="media.labs.msfs">機体図鑑とアドオン、空港のデータ</span></a></li>
+        <li><a href="https://game.technophere.com/efootball/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/efootball.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">eFootball攻略Lab</span><span class="labs__what" data-i18n="media.labs.efootball">選手・監督データベースと育成シミュレーター</span></a></li>
+        <li><a href="https://game.technophere.com/clashroyale/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/clashroyale.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">クラロワ攻略Lab</span><span class="labs__what" data-i18n="media.labs.clashroyale">公式 API で集計したカード図鑑と、デッキの使用率・勝率</span></a></li>
+        <li><a href="https://game.technophere.com/cities-skylines/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/cities-skylines.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">Cities: Skylines攻略Lab</span><span class="labs__what" data-i18n="media.labs.cs">都市づくりの攻略ガイドと MOD</span></a></li>
+        <li><a href="https://game.technophere.com/nte/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/nte.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">NTE攻略Lab</span><span class="labs__what" data-i18n="media.labs.nte">キャラ・弧盤の性能とガチャ予定。ゲームデータから自動更新</span></a></li>
+        <li><a href="https://blog.technophere.com/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/blog.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">テクログ</span><span class="labs__what" data-i18n="media.labs.blog">技術からライフスタイルまで書く総合ブログ</span></a></li>
+        <li><a href="https://app.technophere.com/" target="_blank" rel="noopener noreferrer"><img src="assets/images/media/app.webp" alt="" width="960" height="420" loading="lazy"><span class="labs__name">App Gallery</span><span class="labs__what" data-i18n="media.labs.app">テクノフィアのアプリとドキュメントをまとめたギャラリー</span></a></li>
       </ul>
+      <p class="wrap media__hub"><a href="https://game.technophere.com/" target="_blank" rel="noopener noreferrer" data-i18n="media.hubLink">game.technophere.com を開く</a></p>
     </section>
 
     <!-- 使う道具 -->
-    <section class="chapter tools" id="tools" data-formation="graph" data-side="1">
-      <div class="grid">
-        <div class="tools__text col-l">
-          <h2 data-i18n="tools.title">使う道具</h2>
-          <p class="lead" data-i18n="tools.p1">AI が開発の中心です。Claude Code、Codex、Cursor、Antigravity を並べて使い、プロジェクトごとに向いているモデルを選びます。速くつくり、コードは自分の目で確かめる。それが基本の進め方です。</p>
-        </div>
-        <div class="anchor anchor--graph col-r" data-anchor="graph" aria-hidden="true"></div>
-        <div class="tools__more col-l">
-          <p data-i18n="tools.p2">アプリは Swift と Flutter、Web は WordPress と Next.js。数字は Search Console と Analytics で毎日確認しています。</p>
-        </div>
-        <dl class="tools__list col-l">
-            <div data-g="ai"><dt>AI</dt><dd>Claude Code, Codex (ChatGPT), Cursor, Antigravity, Gemini CLI, GitHub Copilot</dd></div>
-            <div data-g="app"><dt data-i18n="tools.app">アプリ</dt><dd>Swift / SwiftUI, Flutter, Kotlin Multiplatform</dd></div>
-            <div data-g="web"><dt>Web</dt><dd>WordPress, PHP, Next.js / React, Tailwind CSS, Ruby on Rails</dd></div>
-            <div data-g="infra"><dt data-i18n="tools.infra">基盤</dt><dd>Firebase, Git / GitHub</dd></div>
-            <div data-g="growth"><dt data-i18n="tools.growth">数字</dt><dd>SEO, Search Console, Google Analytics</dd></div>
-            <div><dt data-i18n="tools.other">ほか</dt><dd data-i18n="tools.otherValue">動画編集、ドローン操縦</dd></div>
+    <section class="chapter tools" id="tools">
+      <div class="bleed" aria-hidden="true"><img class="drift" src="assets/images/photo/keys-1600.webp" srcset="assets/images/photo/keys-800.webp 800w, assets/images/photo/keys-1600.webp 1600w" sizes="100vw" alt="" width="1600" height="900" loading="lazy"></div>
+      <div class="wrap tools__body">
+        <h2 data-i18n="tools.title">使う道具</h2>
+        <p class="lead" data-i18n="tools.p1">開発の中心は AI です。Claude Code、Codex、Cursor をプロジェクトごとに使い分け、コードは最後に自分の目で確かめます。アプリは Swift と Flutter、Web は WordPress と Next.js。数字は Search Console と Analytics で毎日見ています。</p>
+        <dl class="tools__list">
+          <div data-g="ai"><dt>AI</dt><dd>Claude Code, Codex (ChatGPT), Cursor, Antigravity, Gemini CLI, GitHub Copilot</dd></div>
+          <div data-g="app"><dt data-i18n="tools.app">アプリ</dt><dd>Swift / SwiftUI, Flutter, Kotlin Multiplatform</dd></div>
+          <div data-g="web"><dt>Web</dt><dd>WordPress, PHP, Next.js / React, Tailwind CSS, Ruby on Rails</dd></div>
+          <div data-g="infra"><dt data-i18n="tools.infra">基盤</dt><dd>Firebase, Git / GitHub</dd></div>
+          <div data-g="growth"><dt data-i18n="tools.growth">数字</dt><dd>SEO, Search Console, Google Analytics</dd></div>
+          <div><dt data-i18n="tools.other">ほか</dt><dd data-i18n="tools.otherValue">動画編集、ドローン操縦</dd></div>
         </dl>
       </div>
     </section>
 
     <!-- 次のアイデアへ -->
-    <section class="chapter contact" id="contact" data-formation="lit" data-side="1">
-      <div class="grid">
-        <div class="anchor anchor--bulb col-w" data-anchor="lit" aria-hidden="true"></div>
-        <div class="col-l">
-          <h2 data-i18n="contact.title">次のアイデアへ</h2>
-          <p class="lead" data-i18n="contact.lead">面白いことを一緒にやりたい方へ。仕事の相談も、ただの雑談も、メールか X でお気軽にどうぞ。</p>
-          <ul class="contact__list">
-            <li><a href="mailto:contact@technophere.com">contact@technophere.com</a></li>
-            <li><a href="https://x.com/technophere" target="_blank" rel="noopener noreferrer">x.com/technophere</a></li>
-            <li><a href="https://github.com/iyuya1808" target="_blank" rel="noopener noreferrer">github.com/iyuya1808</a></li>
-            <li><a href="https://technophere.com/" target="_blank" rel="noopener noreferrer">technophere.com</a></li>
-          </ul>
-          <p class="note" data-i18n-html="contact.biz">企業向けの Web サイト制作も受けています。<a href="https://technophere.com/web-production/" target="_blank" rel="noopener noreferrer">制作サービスの案内</a></p>
-        </div>
+    <section class="chapter contact" id="contact">
+      <div class="bleed" aria-hidden="true">
+        <img class="drift" src="assets/images/photo/lamps-1600.webp" srcset="assets/images/photo/lamps-800.webp 800w, assets/images/photo/lamps-1600.webp 1600w" sizes="100vw" alt="" width="1600" height="1200" loading="lazy">
+        <span class="contact__glow"></span>
+      </div>
+      <div class="wrap contact__body">
+        <h2 data-i18n="contact.title">次のアイデアへ</h2>
+        <p class="lead" data-i18n="contact.lead">一緒に何かつくりたい方も、仕事の相談も、ただの雑談も。メールか X でどうぞ。</p>
+        <ul class="contact__list">
+          <li><a href="mailto:contact@technophere.com">contact@technophere.com</a></li>
+          <li><a href="https://x.com/technophere" target="_blank" rel="noopener noreferrer">x.com/technophere</a></li>
+          <li><a href="https://github.com/iyuya1808" target="_blank" rel="noopener noreferrer">github.com/iyuya1808</a></li>
+          <li><a href="https://technophere.com/" target="_blank" rel="noopener noreferrer">technophere.com</a></li>
+        </ul>
+        <p class="note" data-i18n-html="contact.biz">企業向けの Web サイト制作も受けています。<a href="https://technophere.com/web-production/" target="_blank" rel="noopener noreferrer">制作サービスの案内</a></p>
       </div>
     </section>
 
   </main>
 
-  <div class="labels" id="skillLabels" aria-hidden="true"></div>
-
   <footer class="foot">
-    <p data-i18n="footer.copy">© 2026 Yuya Itonaga ／ テクノフィア</p>
-    <p class="foot__ver">v2.0.0</p>
+    <p data-i18n="footer.copy">© 2026 Yuya Itonaga ／ 株式会社Technophere</p>
+    <p>v3.0.0</p>
   </footer>
 
-  <script src="assets/vendor/gsap.min.js"></script>
-  <script src="assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="assets/vendor/lenis.min.js"></script>
-  <script src="js/i18n.js?v=20261006b"></script>
-  <script type="module" src="js/main.js?v=20261006b"></script>
+  <script src="js/i18n.js?v=20261006r"></script>
+  <script src="js/main.js?v=20261006r"></script>
 </body>
 </html>

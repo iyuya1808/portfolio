@@ -29,3 +29,4 @@ jobs:
             .github/**
             CLAUDE.md
             DESIGN_RULE.md
+            CONTENT.md
