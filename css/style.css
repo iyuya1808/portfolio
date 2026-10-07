@@ -295,13 +295,12 @@ h2 {
 .more__list dt { font-weight: 700; }
 .more__list dd { color: var(--muted); font-size: 15px; }
 .teach { margin-top: clamp(72px, 9vw, 120px); }
-.teach .more__list { grid-template-columns: repeat(3, 1fr); }
 
 @media (max-width: 760px) {
   .work { grid-template-columns: 1fr; }
   .work--flip .work__text { order: 0; }
   .work__screens { height: 118vw; }
-  .more__list, .teach .more__list { grid-template-columns: 1fr; }
+  .more__list { grid-template-columns: 1fr; }
 }
 
 /* ---------- 攻略Labと数字 ---------- */

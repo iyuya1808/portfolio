@@ -36,10 +36,9 @@
       now: 'Third-year, Department of System Design Engineering, Keio University'
     },
     teach: {
-      title: 'Teaching and sharing',
+      title: 'Teaching',
       youth: { dt: 'For teens', dd: 'iPhone app development mentor at Life is Tech, with 100+ hours of training. At hackathons I work alongside each team until their app takes shape' },
-      biz: { dt: 'For companies', dd: 'DX mentor at Life is Tech, helping working people bring AI and tools into their jobs' },
-      campus: { dt: 'For students', dd: 'Google AI Student Ambassador, spreading how to use AI on campus' }
+      biz: { dt: 'For companies', dd: 'DX mentor at Life is Tech, helping working people bring AI and tools into their jobs' }
     },
     works: {
       title: 'Work', lead: 'Apps available in the stores.', stack: 'Built with',
