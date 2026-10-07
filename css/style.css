@@ -50,7 +50,8 @@ body {
 }
 
 img { display: block; max-width: 100%; height: auto; }
-a { color: var(--leaf); text-underline-offset: .2em; text-decoration-thickness: 1px; }
+a { color: var(--navy); text-decoration-color: var(--wood); text-underline-offset: .22em; text-decoration-thickness: 1.5px; }
+a:hover { text-decoration-color: currentColor; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; border-radius: 2px; }
 h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; }
