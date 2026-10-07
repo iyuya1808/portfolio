@@ -221,7 +221,7 @@ h2 {
 .story__intro p { max-width: 30em; }
 .frame { position: relative; overflow: clip; border-radius: 4px; aspect-ratio: 4 / 3; background: var(--navy); }
 .frame .drift { position: absolute; left: 0; top: -12%; width: 100%; height: 124%; object-fit: cover; }
-.story__photo .drift { object-position: 42% 50%; }
+.story__photo .drift { top: -6%; height: 112%; }
 
 .timeline {
   margin-top: clamp(72px, 10vw, 140px);
@@ -488,6 +488,12 @@ h2 {
     .drift {
       animation: p-drift linear both;
       animation-timeline: view();
+    }
+    /* はじまりの写真は下側まで見せたいので、流れる量を控えめに（top -6% に収まる ±5%） */
+    .story__photo .drift { animation-name: p-drift-soft; }
+    @keyframes p-drift-soft {
+      from { transform: translate3d(0, -5%, 0); }
+      to { transform: translate3d(0, 5%, 0); }
     }
     @keyframes p-drift {
       from { transform: translate3d(0, -9%, 0); }
