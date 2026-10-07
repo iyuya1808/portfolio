@@ -140,50 +140,50 @@ h2 {
 }
 
 /* ---------- 表紙 ---------- */
+/* ロゴの電球（点と線）を大きく置く。点は奥・中・手前の3段に分けてあり、スクロールで段ごとに違う速さでずれる */
 .cover {
   position: relative;
   height: 100svh;
   min-height: 560px;
   overflow: clip;
-  background: var(--navy-deep);
-  color: #fff;
+  color: var(--navy);
+  background: var(--concrete);
 }
-.cover__stage { position: absolute; inset: 0; }
-/* 写真は額のように置く。人物の切り抜きは額と同じ枠に重ねるので、背景との大きさの釣り合いは元の写真のまま */
-.cover__frame, .cover__person {
-  position: absolute; bottom: 0;
-  width: var(--fw); left: calc((100% - var(--fw)) / 2);
-  aspect-ratio: 16 / 9;
+.cover__bulb {
+  position: absolute;
+  right: clamp(16px, 8vw, 140px); top: calc(var(--top-h) + 4svh);
+  height: min(calc(100svh - var(--top-h) - 10svh), 60vw);
+  aspect-ratio: 306 / 467;
 }
-.cover { --fw: min(84vw, 128svh); }
-.cover__frame { overflow: clip; background: var(--navy); }
-.cover__bg, .cover__person { object-fit: cover; object-position: 50% 0; }
-.cover__bg { width: 100%; height: 100%; filter: brightness(.62) saturate(.8); }
-.cover__frame::after {
-  content: ""; position: absolute; inset: auto 0 0 0; height: 55%;
-  background: linear-gradient(to top, rgb(21 30 54 / .92), rgb(21 30 54 / 0));
+.bulb { position: relative; width: 100%; height: 100%; overflow: visible; }
+.cover__glow {
+  position: absolute; left: 50%; top: 40%;
+  width: 150%; aspect-ratio: 1; translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 222 150 / .55), rgb(255 222 150 / .18) 55%, transparent);
+  pointer-events: none;
+}
+.bulb__lines line { stroke: rgb(30 42 74 / .34); stroke-width: 2.2; stroke-linecap: butt; }
+/* 変形の基準を SVG の座標の原点 (0,0) にそろえる（view-box の基準は viewBox の左上ではなく原点。線の行列はこの原点で計算してある） */
+.bulb line, .bulb circle, .bulb rect { transform-box: view-box; transform-origin: 0 0; }
+
+.cover__text {
+  position: absolute; left: var(--gutter); bottom: clamp(48px, 12svh, 128px);
+  max-width: min(40em, 52vw);
 }
 .cover__name {
-  position: absolute; left: 0; right: 0; top: 23%;
-  padding-inline: var(--gutter);
-  font-size: 15.4vw;
+  font-size: clamp(52px, 7.4vw, 120px);
   font-weight: 800;
-  line-height: .86;
-  letter-spacing: -0.045em;
-  color: var(--lamp);
-  white-space: nowrap;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  margin-bottom: .32em;
 }
-.cover__name br { display: none; }
-.cover__text {
-  position: absolute; left: calc((100% - var(--fw)) / 2 + clamp(24px, 3vw, 48px)); bottom: clamp(32px, 7svh, 80px);
-  width: min(44vw, 32em);
-}
-.cover__statement { font-size: clamp(26px, 2.3vw, 36px); white-space: nowrap; font-weight: 800; line-height: 1.3; }
-.cover__sub { margin-top: 10px; font-size: clamp(15px, 1.25vw, 18px); }
-.cover__role { margin-top: 12px; font-size: 13px; color: rgb(255 255 255 / .72); }
+.cover__statement { font-size: clamp(22px, 2.1vw, 32px); font-weight: 700; line-height: 1.4; }
+.cover__sub { margin-top: 8px; font-size: clamp(15px, 1.2vw, 17px); color: var(--muted); }
+.cover__role { margin-top: 12px; font-size: 13px; color: var(--muted); }
 .cover__cue {
   position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
-  font-size: 12px; color: rgb(255 255 255 / .7); text-decoration: none;
+  font-size: 12px; color: var(--muted); text-decoration: none;
   padding: 8px 12px;
 }
 .cover__cue::after {
@@ -191,18 +191,26 @@ h2 {
   background: currentColor;
 }
 
-@media (max-width: 760px) {
-  /* 縦長の画面では写真を下に置き、上の紺に名前を出す */
-  .cover { --fw: 100%; }
-  .cover__frame, .cover__person { aspect-ratio: auto; height: 64%; }
-  .cover__bg, .cover__person { object-position: 68% 0; }
-  .cover__frame {
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
-    mask-image: linear-gradient(to bottom, transparent, #000 22%);
+/* PC のマウス: 点をつまんで引っぱれる（js/main.js） */
+.bulb.is-playable circle { cursor: grab; transition: filter .2s ease; }
+.bulb.is-playable circle:hover { filter: brightness(1.15) drop-shadow(0 0 6px rgb(30 42 74 / .25)); }
+.bulb.is-grabbing, .bulb.is-grabbing circle { cursor: grabbing; }
+.bulb { user-select: none; -webkit-user-select: none; }
+
+@media (max-width: 760px), (max-width: 1100px) and (orientation: portrait) {
+  /* スマホと縦長のタブレットは、名前と電球を横に並べ、その下に一文を続ける */
+  .cover {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-content: center;
+    column-gap: 12px;
+    padding: calc(var(--top-h) + 16px) var(--gutter) 48px;
   }
-  .cover__name { top: calc(var(--top-h) + 3svh); font-size: 25vw; line-height: .84; }
-  .cover__name br { display: inline; }
-  .cover__text { left: var(--gutter); right: var(--gutter); width: auto; bottom: 28px; }
+  .cover__text { display: contents; }
+  .cover__name { grid-column: 1; grid-row: 1; align-self: center; font-size: min(14.5vw, 120px); line-height: .95; margin: 0; }
+  .cover__bulb { position: relative; inset: auto; grid-column: 2; grid-row: 1; align-self: center; height: min(44vw, 380px); translate: none; }
+  .cover__statement { grid-column: 1 / -1; margin-top: 28px; }
+  .cover__sub, .cover__role { grid-column: 1 / -1; }
   .cover__cue { display: none; }
 }
 
@@ -398,23 +406,80 @@ h2 {
       animation-range: 40svh 85svh;
     }
     @keyframes top-solid {
-      from { background-color: rgb(228 227 222 / 0); color: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+      from { background-color: rgb(228 227 222 / 0); -webkit-backdrop-filter: none; backdrop-filter: none; }
       to { background-color: rgb(228 227 222 / .92); color: var(--navy); }
     }
 
-    /* 表紙の3層: 背景は遅く、名前は中くらい、人物はほぼページと一緒 */
-    .cover__frame, .cover__name, .cover__person, .cover__text {
+    /* 表紙: 電球の中心に光が集まり、点がはじけ飛んでそれぞれの位置に収まる（読み込み時の1回、約0.9秒）。
+       点・棒は外側の g（.pop / .pop-bar）で登場し、中の circle / rect はスクロールの動き（p-dot）を受け持つ。
+       同じ要素で transform を2つのアニメーションが取り合わないように分けてある */
+    .bulb .pop, .bulb .pop-bar, .bulb__lines { transform-box: view-box; }
+    .bulb .pop {
+      transform-origin: var(--cx) var(--cy);
+      animation: dot-burst .62s cubic-bezier(.34, 1.56, .64, 1) var(--t) both;
+    }
+    @keyframes dot-burst {
+      from { transform: translate(var(--ox), var(--oy)) scale(.15); opacity: 0; }
+      30% { opacity: 1; }
+    }
+    .bulb .pop-bar {
+      transform-origin: var(--cx) 0;
+      animation: bar-stretch .45s cubic-bezier(.34, 1.56, .64, 1) var(--t) both;
+    }
+    @keyframes bar-stretch { from { transform: scaleX(0); } }
+    .bulb__lines {
+      transform-origin: 255px 205px;
+      animation: web-spread .62s cubic-bezier(.34, 1.56, .64, 1) .16s both;
+    }
+    @keyframes web-spread { from { transform: scale(.2); opacity: 0; } }
+    .cover__glow { animation: glow-flash .9s ease-out .45s both; }
+    @keyframes glow-flash {
+      0% { opacity: 0; }
+      30% { opacity: 1; }
+      100% { opacity: .75; }
+    }
+    /* スクロール: 点・線・棒が1つずつ違う速さで上へ */
+    .bulb circle, .bulb rect, .bulb line {
       animation: linear both;
       animation-timeline: scroll(root);
       animation-range: 0 100svh;
     }
-    .cover__frame { animation-name: p-bg; }
-    .cover__name { animation-name: p-name; }
-    .cover__person { animation-name: p-person; }
+    .bulb circle, .bulb rect { animation-name: p-dot; }
+    .bulb line { animation-name: p-line; }
+    .cover__bulb, .cover__text {
+      animation-timing-function: linear;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    .cover__bulb { animation-name: p-bulb; }
     .cover__text { animation-name: p-text; }
-    @keyframes p-bg { to { transform: translate3d(0, 42svh, 0); } }
-    @keyframes p-name { to { transform: translate3d(0, 26svh, 0); } }
-    @keyframes p-person { to { transform: translate3d(0, 8svh, 0); } }
+    @keyframes p-bulb { to { transform: translate3d(0, -6svh, 0); } }
+    @keyframes p-dot { to { transform: translate(0, var(--dy)); } }
+    /* 行列から行列への補間はブラウザが回転・せん断に分けて行い、途中で線の端が点からずれる。
+       5% ごとに行列をそのまま指定して、どの位置でも端が点に一致するようにする */
+    @keyframes p-line {
+      0% { transform: matrix(1, 0, 0, 1, 0, 0); }
+      5% { transform: matrix(1, calc(var(--b) * 0.05), 0, calc(1 + (var(--d) - 1) * 0.05), 0, calc(var(--f) * 0.05)); }
+      10% { transform: matrix(1, calc(var(--b) * 0.1), 0, calc(1 + (var(--d) - 1) * 0.1), 0, calc(var(--f) * 0.1)); }
+      15% { transform: matrix(1, calc(var(--b) * 0.15), 0, calc(1 + (var(--d) - 1) * 0.15), 0, calc(var(--f) * 0.15)); }
+      20% { transform: matrix(1, calc(var(--b) * 0.2), 0, calc(1 + (var(--d) - 1) * 0.2), 0, calc(var(--f) * 0.2)); }
+      25% { transform: matrix(1, calc(var(--b) * 0.25), 0, calc(1 + (var(--d) - 1) * 0.25), 0, calc(var(--f) * 0.25)); }
+      30% { transform: matrix(1, calc(var(--b) * 0.3), 0, calc(1 + (var(--d) - 1) * 0.3), 0, calc(var(--f) * 0.3)); }
+      35% { transform: matrix(1, calc(var(--b) * 0.35), 0, calc(1 + (var(--d) - 1) * 0.35), 0, calc(var(--f) * 0.35)); }
+      40% { transform: matrix(1, calc(var(--b) * 0.4), 0, calc(1 + (var(--d) - 1) * 0.4), 0, calc(var(--f) * 0.4)); }
+      45% { transform: matrix(1, calc(var(--b) * 0.45), 0, calc(1 + (var(--d) - 1) * 0.45), 0, calc(var(--f) * 0.45)); }
+      50% { transform: matrix(1, calc(var(--b) * 0.5), 0, calc(1 + (var(--d) - 1) * 0.5), 0, calc(var(--f) * 0.5)); }
+      55% { transform: matrix(1, calc(var(--b) * 0.55), 0, calc(1 + (var(--d) - 1) * 0.55), 0, calc(var(--f) * 0.55)); }
+      60% { transform: matrix(1, calc(var(--b) * 0.6), 0, calc(1 + (var(--d) - 1) * 0.6), 0, calc(var(--f) * 0.6)); }
+      65% { transform: matrix(1, calc(var(--b) * 0.65), 0, calc(1 + (var(--d) - 1) * 0.65), 0, calc(var(--f) * 0.65)); }
+      70% { transform: matrix(1, calc(var(--b) * 0.7), 0, calc(1 + (var(--d) - 1) * 0.7), 0, calc(var(--f) * 0.7)); }
+      75% { transform: matrix(1, calc(var(--b) * 0.75), 0, calc(1 + (var(--d) - 1) * 0.75), 0, calc(var(--f) * 0.75)); }
+      80% { transform: matrix(1, calc(var(--b) * 0.8), 0, calc(1 + (var(--d) - 1) * 0.8), 0, calc(var(--f) * 0.8)); }
+      85% { transform: matrix(1, calc(var(--b) * 0.85), 0, calc(1 + (var(--d) - 1) * 0.85), 0, calc(var(--f) * 0.85)); }
+      90% { transform: matrix(1, calc(var(--b) * 0.9), 0, calc(1 + (var(--d) - 1) * 0.9), 0, calc(var(--f) * 0.9)); }
+      95% { transform: matrix(1, calc(var(--b) * 0.95), 0, calc(1 + (var(--d) - 1) * 0.95), 0, calc(var(--f) * 0.95)); }
+      100% { transform: matrix(1, calc(var(--b) * 1), 0, calc(1 + (var(--d) - 1) * 1), 0, calc(var(--f) * 1)); }
+    }
     @keyframes p-text { to { transform: translate3d(0, -8svh, 0); opacity: 0; } }
 
     /* 枠の中の写真が遅れて流れる */
