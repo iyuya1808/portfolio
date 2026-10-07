@@ -44,7 +44,7 @@
     works: {
       title: 'Work', lead: 'Apps available in the stores.', stack: 'Built with',
       brawltech: { what: 'A strategy companion for Brawl Stars', desc: 'From match data collected by Brawl Stars Lab, it shows which brawlers are winning on the maps live right now. Win rates per map, a ban/pick helper and match analysis, all in one app. Built in Flutter for iOS and Android.' },
-      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Pulls courses, assignments and timetables from the university's K-LMS into one screen, with deadlines at a glance. Released in December 2025. Now used by more than 15% of Keio students, and rated 4.4 on the App Store (173 ratings)." },
+      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Pulls courses, assignments and timetables from the university's K-LMS into one screen, with deadlines at a glance. Released in December 2025. Now used by more than 15% of Keio students, and rated 4.5 on the App Store." },
       zeroshot: { what: 'A camera that shoots portrait and landscape at once', desc: 'One tap saves both a portrait and a landscape frame, and the phone picks the shot with the least blur and no closed eyes. Released in September 2026.', alt0: 'ZeroShot camera screen, capturing portrait and landscape at once', alt1: 'ZeroShot candidates screen, with the best shot picked automatically' },
       more: 'More',
       mimishare: { desc: 'Rent a Disney headband for just the day of your visit. Booking to checkout built in Next.js and Stripe' },
