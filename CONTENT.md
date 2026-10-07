@@ -16,7 +16,7 @@
 | id | 見出し | 動き |
 |----|--------|------|
 | cover | Yuya Itonaga | ロゴの電球（点と線）。読み込み時に中心から点がはじけて収まる。スクロールで点・線・台座が1つずつ違う速さで上へ（電球がほどける） |
-| story | はじまり | 写真が枠の中で遅れて流れる。下に年表 |
+| story | はじまり | 写真が枠の中で遅れて流れる。下に年表と「教える・広める」（Life is Tech のメンター2つ、Google AI 学生アンバサダー。細かいイベント名は書かない） |
 | works | つくったもの | 端末2枚。奥は遅く、手前は速い |
 | media | 攻略Labと数字 | 紺の地。奥の大きな数字がゆっくり、累計グラフが下から満ちる |
 | tools | 使う道具 | 背景の写真が遅れて流れる |
@@ -53,7 +53,7 @@ GA4 / Search Console の実測、2026-09-24 取得。累計と直近28日、KPas
 
 ## つくったもの
 
-大きく見せる3件: BrawlTech、KPass、ZeroShot。「ほかにも」: Mimishare、App Link Generator、Push from GitHub、Lemon AI。
+大きく見せる3件: BrawlTech、KPass、ZeroShot。KPass の「慶應生の15%以上」はコーポレートサイト（technophere_corporate/index.php）と同じ表記。数字の見直しのときに両方そろえる。「ほかにも」: Mimishare、App Link Generator、Push from GitHub、Lemon AI。
 App Store のスクリーンショットは iTunes Lookup API の `screenshotUrls` から取得し `assets/images/works/` に保存。
 
 ## 攻略Lab
@@ -63,6 +63,10 @@ App Store のスクリーンショットは iTunes Lookup API の `screenshotUrl
 ## 文体
 
 です・ます調。見出し・一覧・短い補足は体言止めを混ぜる。
+
+## 構造化データ
+
+`<head>` の JSON-LD（ProfilePage → Person）。X（@technophere）は会社のアカウントなので Organization 側の sameAs に置く。肩書・所属が変わったらここも直す。
 
 ## 共有画像
 

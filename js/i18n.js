@@ -35,10 +35,16 @@
       nowYear: 'Now',
       now: 'Third-year, Department of System Design Engineering, Keio University'
     },
+    teach: {
+      title: 'Teaching and sharing',
+      youth: { dt: 'For teens', dd: 'iPhone app development mentor at Life is Tech, with 100+ hours of training. At hackathons I work alongside each team until their app takes shape' },
+      biz: { dt: 'For companies', dd: 'DX mentor at Life is Tech, helping working people bring AI and tools into their jobs' },
+      campus: { dt: 'For students', dd: 'Google AI Student Ambassador, spreading how to use AI on campus' }
+    },
     works: {
       title: 'Work', lead: 'Apps available in the stores.', stack: 'Built with',
       brawltech: { what: 'A strategy companion for Brawl Stars', desc: 'From match data collected by Brawl Stars Lab, it shows which brawlers are winning on the maps live right now. Win rates per map, a ban/pick helper and match analysis, all in one app. Built in Flutter for iOS and Android.' },
-      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Pulls courses, assignments and timetables from the university's K-LMS into one screen, with deadlines at a glance. Released in December 2025. Rated 4.4 on the App Store (173 ratings)." },
+      kpass: { what: 'Classes and assignments in one place for Keio students', desc: "Pulls courses, assignments and timetables from the university's K-LMS into one screen, with deadlines at a glance. Released in December 2025. Now used by more than 15% of Keio students, and rated 4.4 on the App Store (173 ratings)." },
       zeroshot: { what: 'A camera that shoots portrait and landscape at once', desc: 'One tap saves both a portrait and a landscape frame, and the phone picks the shot with the least blur and no closed eyes. Released in September 2026.', alt0: 'ZeroShot camera screen, capturing portrait and landscape at once', alt1: 'ZeroShot candidates screen, with the best shot picked automatically' },
       more: 'More',
       mimishare: { desc: 'Rent a Disney headband for just the day of your visit. Booking to checkout built in Next.js and Stripe' },
