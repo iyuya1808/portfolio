@@ -66,7 +66,7 @@ App Store のスクリーンショットは iTunes Lookup API の `screenshotUrl
 
 ## 共有画像
 
-`assets/images/og-portfolio.png`（1200×630）。`.github/og-source.html` を 1200×630 で撮る。v3 の見た目に合わせた作り直しはまだ（2026-10-06 時点）。
+`assets/images/og-portfolio.png`（1200×630）。`.github/og-source.html` を 1200×630 で撮る。2026-10-07 に v3（ロゴの電球の表紙）の見た目で作り直した。画像を変えたら og:image の `?v=` も上げる（SNS が前の画像を覚えているため）。
 
 ## 更新のしかた
 
