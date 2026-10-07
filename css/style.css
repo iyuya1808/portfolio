@@ -221,6 +221,7 @@ h2 {
 .story__intro p { max-width: 30em; }
 .frame { position: relative; overflow: clip; border-radius: 4px; aspect-ratio: 4 / 3; background: var(--navy); }
 .frame .drift { position: absolute; left: 0; top: -12%; width: 100%; height: 124%; object-fit: cover; }
+.story__photo .drift { object-position: 42% 50%; }
 
 .timeline {
   margin-top: clamp(72px, 10vw, 140px);
@@ -369,6 +370,7 @@ h2 {
 .tools__list dd { color: rgb(255 255 255 / .85); }
 
 .contact { min-height: 100svh; display: flex; align-items: center; }
+.contact .bleed .drift { top: -11%; height: 122%; }
 .contact .bleed::after { background: linear-gradient(to top, rgb(21 30 54 / .95) 10%, rgb(21 30 54 / .55)); }
 .contact__glow {
   position: absolute; inset: 0; z-index: 1;

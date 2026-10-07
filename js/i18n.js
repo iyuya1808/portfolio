@@ -14,7 +14,7 @@
     story: {
       title: 'Beginnings',
       p1: 'In 2021 I started writing strategy guides for people stuck on the same game as me. In August 2023, in my last year of high school, I founded Technophere, and in October 2026 it became Technophere Inc. Design, implementation, store release and improving things after launch: I do it with my own hands.',
-      photoAlt: 'Yuya Itonaga in front of the YAGAMI INNOVATION LABORATORY at Keio Yagami Campus'
+      photoAlt: 'Yuya Itonaga sitting on a bench in the lounge at Keio Yagami Campus'
     },
     tl: {
       '2018_04': 'Enrolled at Keio Shonan Fujisawa Junior High School',
