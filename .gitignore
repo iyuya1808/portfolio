@@ -6,3 +6,5 @@ AGENTS.md
 DESIGN_RULE.md
 .vscode/
 .antigravitycli/
+node_modules/
+en/

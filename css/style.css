@@ -115,6 +115,7 @@ h2 {
   appearance: none; border: 1px solid currentColor; background: none; color: inherit;
   height: 34px; min-width: 44px; border-radius: 17px; font: 500 13px var(--font); cursor: pointer;
 }
+.top__lang { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
 .top__menu { display: none; position: relative; width: 44px; }
 .top__menu span {
   position: absolute; left: 13px; right: 13px; height: 1.5px; background: currentColor;

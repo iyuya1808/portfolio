@@ -12,6 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build English page
+        run: |
+          npm ci --no-audit --no-fund
+          node scripts/build-en.mjs
+
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -30,3 +39,6 @@ jobs:
             CLAUDE.md
             DESIGN_RULE.md
             CONTENT.md
+            scripts/**
+            package.json
+            package-lock.json

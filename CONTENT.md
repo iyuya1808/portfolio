@@ -1,6 +1,9 @@
 # Yuya Itonaga Portfolio — コンテンツ（v3.0.0、2026-10-06）
 
 日本語は `index.html` がソース。英語は `js/i18n.js` の `EN` 辞書。
+英語版は別の URL（`/portfolio/en/`）。`scripts/build-en.mjs` が `index.html` と辞書から `en/index.html` を作る（GitHub Actions が配信前に実行。`en/` は Git に入れない）。
+ページ上の EN / JA は互いのページへのリンク。`i18n.js` はページに読み込まない。辞書に無い日本語が英語版に残るとビルドが止まる（攻略Lab の名前は固有名なので許す）。
+`sitemap.xml` に両方の URL と hreflang を載せ、Search Console に送信済み（2026-10-07）。
 
 ## 作りの方針
 
