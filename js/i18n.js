@@ -33,6 +33,8 @@
       '2026_07a': 'Started as an iPhone app development mentor for teens at Life is Tech! (100+ hours of training)',
       '2026_07b': 'Appointed Google AI Student Ambassador',
       '2026_10': 'Incorporated as Technophere Inc.',
+      '2026_10b': 'Reached the final stage of the <a href="https://odhackathon.metro.tokyo.lg.jp/" target="_blank" rel="noopener noreferrer">Tokyo Governor\'s Cup Open Data Hackathon 2026</a> as the developer on a team of five',
+      '2026_10c': 'Won the Hack Day Audience Award (1st in participant votes) at <a href="https://jphacks.com/" target="_blank" rel="noopener noreferrer">JPHACKS 2026</a> as the developer on a team of five',
       nowYear: 'Now',
       now: 'Third-year, Department of System Design Engineering, Keio University'
     },
