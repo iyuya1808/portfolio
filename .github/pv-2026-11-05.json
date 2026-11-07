@@ -1,0 +1,2325 @@
+{
+  "retrievedOn": "2026-11-07",
+  "startDate": "2023-08-01",
+  "endDate": "2026-11-05",
+  "metric": "screenPageViews",
+  "scope": "site-map.tsv active media: game Lab properties, blog, App Gallery. Excludes corporate site, apps, retired sites. No country or channel filters.",
+  "propertyIds": [
+    419318300,
+    426227565,
+    478759637,
+    480975767,
+    491235029,
+    545353659,
+    545378093,
+    554901801,
+    555062818,
+    555367523,
+    558019811,
+    559318909,
+    560119535
+  ],
+  "total": 19632593,
+  "monthly": {
+    "202312": 189713,
+    "202401": 412766,
+    "202402": 670236,
+    "202403": 1216709,
+    "202404": 1210999,
+    "202405": 1433841,
+    "202406": 1388914,
+    "202407": 1382761,
+    "202408": 1111127,
+    "202409": 1083485,
+    "202410": 1215387,
+    "202411": 988757,
+    "202412": 804893,
+    "202501": 722079,
+    "202502": 581128,
+    "202503": 434684,
+    "202504": 220482,
+    "202505": 326519,
+    "202506": 358933,
+    "202507": 280730,
+    "202508": 379682,
+    "202509": 331296,
+    "202510": 360708,
+    "202511": 339382,
+    "202512": 286534,
+    "202601": 167409,
+    "202602": 134698,
+    "202603": 106394,
+    "202604": 110181,
+    "202605": 95643,
+    "202606": 84678,
+    "202607": 138135,
+    "202608": 290519,
+    "202609": 242321,
+    "202610": 373454,
+    "202611": 157416
+  },
+  "reports": [
+    {
+      "id": 419318300,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202405"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1424220"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202406"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1376956"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202407"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1371871"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202403"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1209861"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202404"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1203102"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202410"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1201126"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202408"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1099732"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202409"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1070251"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202411"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "963374"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202412"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "781901"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202501"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "704363"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202402"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "668073"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202502"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "567049"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202503"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "417543"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202401"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "412766"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202508"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "357460"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202506"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "345791"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202510"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "326265"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202505"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "314723"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202509"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "309231"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202511"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "293951"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202507"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "265258"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202512"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "228080"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202504"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "212785"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202312"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "189713"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202601"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "125959"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202602"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "115122"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "113592"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "94335"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "93760"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202604"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "90734"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202603"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "85678"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202605"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "75994"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "66834"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202606"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "60546"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "13270"
+              }
+            ]
+          }
+        ],
+        "row_count": 36,
+        "metadata": {
+          "data_loss_from_other_row": true,
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 426227565,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202411"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "25383"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202512"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "24206"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202412"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "22992"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202501"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "17716"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202410"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "14261"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202409"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "13234"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202502"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "12976"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202503"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "12458"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202406"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "11958"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202408"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "11395"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202407"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "10890"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202510"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "10045"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202511"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "9885"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202405"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "9621"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202601"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "9454"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202509"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "8849"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "8642"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202508"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "8465"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "8325"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202404"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "7897"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202403"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "6848"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5731"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202602"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5629"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202507"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5437"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202603"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5332"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202505"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5178"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202506"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4710"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202605"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4689"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202604"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4685"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202606"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4112"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4056"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202504"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2973"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202402"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2163"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1134"
+              }
+            ]
+          }
+        ],
+        "row_count": 34,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 478759637,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202604"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "7413"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202505"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "6514"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202512"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "6496"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202603"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5520"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202601"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5343"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202506"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5176"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202511"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5050"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202605"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5029"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202602"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4915"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202504"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4723"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202503"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4672"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202510"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4619"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202508"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4455"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202509"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4365"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202507"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "4227"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "3373"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "3364"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202606"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "3238"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2859"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2833"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202502"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1103"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "744"
+              }
+            ]
+          }
+        ],
+        "row_count": 22,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 480975767,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "680"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "462"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202510"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "261"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202509"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "237"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202602"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "176"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202603"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "170"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "111"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202511"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "107"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202512"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "106"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202605"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "106"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202505"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "104"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202507"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "101"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202506"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "100"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202508"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "95"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202606"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "89"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202604"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "88"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202601"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "83"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "62"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "44"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202503"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "11"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202504"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1"
+              }
+            ]
+          }
+        ],
+        "row_count": 21,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 491235029,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "115600"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "106608"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "96728"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "56556"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202511"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "30389"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202512"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "27646"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202601"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "26570"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202510"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "19518"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202606"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "16693"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "14949"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202605"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "9825"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202603"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "9694"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202508"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "9207"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202602"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "8856"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202509"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "8614"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202604"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "7261"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202507"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5707"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202506"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "3156"
+              }
+            ]
+          }
+        ],
+        "row_count": 18,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 545353659,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1268"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1001"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "550"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "322"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "212"
+              }
+            ]
+          }
+        ],
+        "row_count": 5,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 545378093,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "121314"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "116795"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202608"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "70877"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "36800"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202607"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "6950"
+              }
+            ]
+          }
+        ],
+        "row_count": 5,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 554901801,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1471"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "364"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "330"
+              }
+            ]
+          }
+        ],
+        "row_count": 3,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 555062818,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "5904"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1490"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "1330"
+              }
+            ]
+          }
+        ],
+        "row_count": 3,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 555367523,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2582"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "408"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202609"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "249"
+              }
+            ]
+          }
+        ],
+        "row_count": 3,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 558019811,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "10959"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2530"
+              }
+            ]
+          }
+        ],
+        "row_count": 2,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 559318909,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "2041"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "564"
+              }
+            ]
+          }
+        ],
+        "row_count": 2,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    },
+    {
+      "id": 560119535,
+      "report": {
+        "dimension_headers": [
+          {
+            "name": "yearMonth"
+          }
+        ],
+        "metric_headers": [
+          {
+            "name": "screenPageViews",
+            "type_": "TYPE_INTEGER"
+          }
+        ],
+        "rows": [
+          {
+            "dimension_values": [
+              {
+                "value": "202611"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "486"
+              }
+            ]
+          },
+          {
+            "dimension_values": [
+              {
+                "value": "202610"
+              }
+            ],
+            "metric_values": [
+              {
+                "value": "396"
+              }
+            ]
+          }
+        ],
+        "row_count": 2,
+        "metadata": {
+          "currency_code": "JPY",
+          "time_zone": "Asia/Tokyo",
+          "data_loss_from_other_row": false,
+          "sampling_metadatas": [],
+          "data_truncation_reasons": []
+        },
+        "kind": "analyticsData#runReport",
+        "totals": [],
+        "maximums": [],
+        "minimums": []
+      }
+    }
+  ]
+}

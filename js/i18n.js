@@ -4,11 +4,11 @@
    ============================================================ */
 (function () {
   var EN = {
-    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere Inc. Started writing game guides in junior high; the media he runs has passed 19 million page views. Builds apps like BrawlTech, KPass and ZeroShot, and WordPress plugins.' },
+    meta: { description: 'Portfolio of Yuya Itonaga, third-year engineering student at Keio University and head of Technophere Inc. Started writing game guides in junior high; the media he runs has passed 19.6 million page views. Builds apps like BrawlTech, KPass and ZeroShot, and WordPress plugins.' },
     nav: { top: 'Back to top', chapters: 'Chapters', menu: 'Menu', story: 'Beginnings', works: 'Work', media: 'Game Labs', tools: 'Tools', contact: 'Contact' },
     cover: {
       statement: 'Write it, build it, ship it.',
-      sub: 'The game-guide media I started in junior high has passed 19 million page views. Now I build apps too.',
+      sub: 'The game-guide media I started in junior high has passed 19.6 million page views. Now I build apps too.',
       role: 'Third-year, Faculty of Science and Technology, Keio University / Head of Technophere Inc.',
       cue: 'Scroll'
     },
@@ -56,11 +56,11 @@
     },
     media: {
       title: 'Game Labs and numbers', lead: 'One WordPress site per game, with encyclopedias and rankings updated automatically from official APIs and game data. The core business of Technophere.',
-      totalNote: 'Total page views (August 2023 to September 2026)',
+      totalNote: 'Total page views (August 1, 2023 to November 5, 2026)',
       peakLabel: 'Best month, page views', peakNote: 'May 2024, all sites',
       usersLabel: 'Best month, users', usersNote: 'May 2024, Brawl Stars Lab',
       clicksLabel: 'Search clicks, last 28 days', clicksNote: 'game.technophere.com, 3.09M impressions',
-      note: 'As of September 24, 2026. Google Analytics and Search Console.',
+      note: 'Total page views: Google Analytics across 13 media sites through November 5, 2026. Monthly records and search clicks were retrieved on September 24, 2026.',
       hubLink: 'Open game.technophere.com',
       labs: {
         brawlstars: 'Brawler tier list and win rates by map and mode', tsumtsum: 'Gacha news and Tsum rankings', msfs: 'Aircraft encyclopedia, add-ons and airport data',
